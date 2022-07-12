@@ -34,9 +34,9 @@ const Application = () => {
 };
 
 ReactDOM.render(
-  <StrictMode>
-    <Application />
-  </StrictMode>,
+  // <StrictMode>
+    <Application />,
+  // </StrictMode>,
   document.getElementById("root"),
 );
 

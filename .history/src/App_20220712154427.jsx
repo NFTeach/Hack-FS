@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Account from "./components/Account/Account";
 import Chains from "./components/Chains/Chains";
-import { Layout } from "antd";
+import { Layout, Tabs } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
 import "./style.css";
