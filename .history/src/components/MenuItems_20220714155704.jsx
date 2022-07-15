@@ -25,7 +25,7 @@ function MenuItems() {
         <NavLink to="/content">📚 Content</NavLink>
       </Menu.Item>
       <Menu.Item key="/createtest">
-        <NavLink to="/createtest">🧠 Create Test</NavLink>
+        <NavLink to="/createtest">📝 Tests</NavLink>
       </Menu.Item>
       <Menu.Item key="/tests">
         <NavLink to="/tests">📝 Tests</NavLink>
