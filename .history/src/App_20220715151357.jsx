@@ -17,7 +17,6 @@ import Content from "./components/Content";
 import Tests from "./components/Tests";
 import CreateTest from "./components/CreateTest";
 import Profile from "./components/Profile";
-import ProfileSettings from "./components/ProfileSettings";
 const { Header } = Layout;
 
 const styles = {
@@ -89,9 +88,6 @@ const App = ({ isServerInfo }) => {
             </Route>
             <Route exact path="/profile">
               <Profile isServerInfo={isServerInfo} />
-            </Route>
-            <Route exact path="/profilesettings">
-              <ProfileSettings isServerInfo={isServerInfo} />
             </Route>
           </Switch>
         </div>

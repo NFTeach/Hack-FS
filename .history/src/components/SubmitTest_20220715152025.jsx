@@ -1,6 +1,8 @@
 import React from 'react';
 import { 
     Card, 
+    Typography, 
+    Input, 
     Button
 } from 'antd';
 import useWindowDimensions from '../util/useWindowDimensions';
