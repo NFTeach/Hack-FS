@@ -8,7 +8,7 @@ const styles = {
   item: {
     display: "flex",
     alignItems: "center",
-    height: "60px",
+    height: "42px",
     fontWeight: "500",
     fontFamily: "Roboto, sans-serif",
     fontSize: "14px",
@@ -32,8 +32,7 @@ const userType = [
 ];
 
 function MenuItems() {
-  const { educatorDefaultPath } = "/uploadcontent";
-  const { studentDefaultPath } = "/content"
+  const { pathname } = useLocation();
   const [id, setId] = useState("0");
   const [selected, setSelected] = useState({});
 
@@ -43,6 +42,8 @@ function MenuItems() {
     setSelected(newSelected);
   }, [id])
 
+  console.log(selected)
+
   const handleMenuClick = (e) => {
     console.log("switch to: ", e.key);
     setId(e.key)
@@ -51,7 +52,7 @@ function MenuItems() {
   const menu = (
     <Menu onClick={handleMenuClick}>
       {userType.map((item) => (
-        <Menu.Item key={item.key} style={styles.item}>
+        <Menu.Item key={item.key} >
           <span style={{ marginLeft: "5px" }}>{item.value}</span>
         </Menu.Item>
       ))}
@@ -59,45 +60,6 @@ function MenuItems() {
   )
 
   if (!id) return null;
-  // console.log(id)
-
-  if(id == 0) {
-    return (
-        <Menu
-        theme="light"
-        mode="horizontal"
-        style={{
-          display: "flex",
-          fontSize: "17px",
-          fontWeight: "500",
-          width: "100%",
-          justifyContent: "center",
-        }}
-        defaultSelectedKeys={["/content"]}
-      >
-        <Menu.Item>
-        <Dropdown overlay={menu} trigger={["click"]}>
-          <Button
-            key={selected?.key}
-            style={{ ...styles.button, ...styles.item }}
-            >
-            <span style={{ marginLeft: "5px" }}>{selected?.value}</span>
-            <DownOutlined />
-          </Button>
-        </Dropdown>
-        </Menu.Item>
-        <Menu.Item key="/content">
-          <NavLink to="/content">📚 Content</NavLink>
-        </Menu.Item>
-        <Menu.Item key="/tests">
-          <NavLink to="/tests">📝 Tests</NavLink>
-        </Menu.Item>
-        <Menu.Item key="/profile">
-          <NavLink to="/profile">😀 Profile</NavLink>
-        </Menu.Item>
-      </Menu>
-    );
-  };
 
   return (
     <Menu
@@ -110,9 +72,8 @@ function MenuItems() {
         width: "100%",
         justifyContent: "center",
       }}
-      defaultSelectedKeys={["/uploadcontent"]}
+      defaultSelectedKeys={[pathname]}
     >
-      <Menu.Item>
       <Dropdown overlay={menu} trigger={["click"]}>
         <Button
           key={selected?.key}
@@ -122,12 +83,17 @@ function MenuItems() {
           <DownOutlined />
         </Button>
       </Dropdown>
-      </Menu.Item>
       <Menu.Item key="/uploadcontent">
         <NavLink to="/uploadcontent">⬆️ Upload Content</NavLink>
       </Menu.Item>
+      <Menu.Item key="/content">
+        <NavLink to="/content">📚 Content</NavLink>
+      </Menu.Item>
       <Menu.Item key="/createtest">
         <NavLink to="/createtest">🧠 Create Test</NavLink>
+      </Menu.Item>
+      <Menu.Item key="/tests">
+        <NavLink to="/tests">📝 Tests</NavLink>
       </Menu.Item>
       <Menu.Item key="/profile">
         <NavLink to="/profile">😀 Profile</NavLink>

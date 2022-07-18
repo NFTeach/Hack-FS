@@ -73,7 +73,7 @@ function MenuItems() {
           width: "100%",
           justifyContent: "center",
         }}
-        defaultSelectedKeys={["/content"]}
+        defaultSelectedKeys={"/content"}
       >
         <Menu.Item>
         <Dropdown overlay={menu} trigger={["click"]}>
@@ -110,7 +110,7 @@ function MenuItems() {
         width: "100%",
         justifyContent: "center",
       }}
-      defaultSelectedKeys={["/uploadcontent"]}
+      defaultSelectedKeys={studentDefaultPath}
     >
       <Menu.Item>
       <Dropdown overlay={menu} trigger={["click"]}>
