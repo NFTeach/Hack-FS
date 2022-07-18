@@ -61,7 +61,6 @@ function MenuItems() {
 
   if(id == 0) {
     return (
-      <>
         <Menu
         theme="light"
         mode="horizontal"
@@ -95,13 +94,10 @@ function MenuItems() {
           <NavLink to="/profile">😀 Profile</NavLink>
         </Menu.Item>
       </Menu>
-      <Redirect to="/content" />
-      </>
     );
   };
 
   return (
-    <>
     <Menu
       theme="light"
       mode="horizontal"
@@ -135,8 +131,6 @@ function MenuItems() {
         <NavLink to="/profile">😀 Profile</NavLink>
       </Menu.Item>
     </Menu>
-    <Redirect to="/uploadcontent" />
-    </>
   );
 }
 

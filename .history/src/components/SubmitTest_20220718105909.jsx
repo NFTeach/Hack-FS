@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { 
     Card, 
     Button
@@ -7,8 +7,8 @@ import useWindowDimensions from '../util/useWindowDimensions';
 import { useMoralis } from 'react-moralis';
 import moralis from "moralis";
 
-moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
-moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
+moralis.initialize(process.env.NEXT_PUBLIC_MORALIS_APPLICATION_ID);
+moralis.serverURL = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL;
 
 const SubmitTest = (props) => {
     const styles = {
@@ -102,8 +102,6 @@ const SubmitTest = (props) => {
         newTest.set("educatorUsername", user?.attributes.username)
 
         await newTest.save();
-
-        // NEED TO FINISH THIS ONCE DISCUSS WITH OLIVIER
     }
     
   return (

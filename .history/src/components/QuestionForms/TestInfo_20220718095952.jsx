@@ -7,7 +7,7 @@ import {
 } from 'antd';
 import useWindowDimensions from '../../util/useWindowDimensions';
 
-const QuestionForm1 = (props) => {
+const TestInfo = (props) => {
     const styles = {
         title: {
             fontSize: "20px",
@@ -40,10 +40,6 @@ const QuestionForm1 = (props) => {
             float: "right",
             marginTop: "10px",
         },
-        backButton: {
-            float: "left",
-            marginTop: "10px",
-        },
         text: {
             fontSize: "14px",
             alignSelf: "center",
@@ -57,7 +53,6 @@ const QuestionForm1 = (props) => {
     const isMobile = width < 700;
 
     const { data, handleChange, next, back } = props;
-
     return (
         <form style={styles.container}>
             <main style={styles.main}>
@@ -153,4 +148,4 @@ const QuestionForm1 = (props) => {
     )
 }
 
-export default QuestionForm1
+export default TestInfo
