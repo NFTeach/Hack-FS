@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { useLocation, Redirect } from "react-router";
+import { useLocation } from "react-router";
 import { Menu, Dropdown, Button } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
@@ -61,7 +61,6 @@ function MenuItems() {
 
   if(id == 0) {
     return (
-      <>
         <Menu
         theme="light"
         mode="horizontal"
@@ -95,13 +94,10 @@ function MenuItems() {
           <NavLink to="/profile">😀 Profile</NavLink>
         </Menu.Item>
       </Menu>
-      <Redirect to="/content" />
-      </>
     );
   };
 
   return (
-    <>
     <Menu
       theme="light"
       mode="horizontal"
@@ -135,8 +131,6 @@ function MenuItems() {
         <NavLink to="/profile">😀 Profile</NavLink>
       </Menu.Item>
     </Menu>
-    <Redirect to="/uploadcontent" />
-    </>
   );
 }
 

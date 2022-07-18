@@ -7,8 +7,8 @@ import useWindowDimensions from '../util/useWindowDimensions';
 import { useMoralis } from 'react-moralis';
 import moralis from "moralis";
 
-moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
-moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
+moralis.initialize(process.env.NEXT_PUBLIC_MORALIS_APPLICATION_ID);
+moralis.serverURL = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL;
 
 const SubmitTest = (props) => {
     const styles = {

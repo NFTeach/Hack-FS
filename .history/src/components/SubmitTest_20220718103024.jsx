@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { 
     Card, 
     Button
@@ -7,8 +7,8 @@ import useWindowDimensions from '../util/useWindowDimensions';
 import { useMoralis } from 'react-moralis';
 import moralis from "moralis";
 
-moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
-moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
+moralis.initialize(process.env.NEXT_PUBLIC_MORALIS_APPLICATION_ID);
+moralis.serverURL = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL;
 
 const SubmitTest = (props) => {
     const styles = {
@@ -59,23 +59,9 @@ const SubmitTest = (props) => {
         </li>
     ));
     
-    const { 
-        Moralis,
-        isWeb3Enabled,
-        enableWeb3,
-        isAuthenticated,
-        isWeb3EnableLoading 
-    } = useMoralis();
+    const { Moralis } = useMoralis();
     const user = moralis.User.current();
-
-    const [isTestSaving, setIsTestSaving] = useState(false);
     // console.log(user)
-
-    useEffect(() => {
-        if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
-            enableWeb3();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isAuthenticated, isWeb3Enabled]);
 
     async function saveTest() {
         let link;
@@ -102,8 +88,6 @@ const SubmitTest = (props) => {
         newTest.set("educatorUsername", user?.attributes.username)
 
         await newTest.save();
-
-        // NEED TO FINISH THIS ONCE DISCUSS WITH OLIVIER
     }
     
   return (
@@ -124,11 +108,7 @@ const SubmitTest = (props) => {
                     <Button
                         style={styles.submitButton}
                         type="primary"
-                        loading={isTestSaving}
-                        onClick={async () => {
-                            setIsTestSaving(true);
-                            await saveTest();
-                        }}
+                        onClick={saveTest}
                     >
                         Submit Q&A's
                     </Button> 

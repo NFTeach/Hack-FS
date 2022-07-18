@@ -3,11 +3,12 @@ import {
     Card, 
     Typography, 
     Input, 
-    Button
+    Button,
+    Select
 } from 'antd';
 import useWindowDimensions from '../../util/useWindowDimensions';
 
-const QuestionForm1 = (props) => {
+const TestInfo = (props) => {
     const styles = {
         title: {
             fontSize: "20px",
@@ -40,10 +41,6 @@ const QuestionForm1 = (props) => {
             float: "right",
             marginTop: "10px",
         },
-        backButton: {
-            float: "left",
-            marginTop: "10px",
-        },
         text: {
             fontSize: "14px",
             alignSelf: "center",
@@ -57,7 +54,6 @@ const QuestionForm1 = (props) => {
     const isMobile = width < 700;
 
     const { data, handleChange, next, back } = props;
-
     return (
         <form style={styles.container}>
             <main style={styles.main}>
@@ -65,74 +61,66 @@ const QuestionForm1 = (props) => {
                     style={!isMobile ? styles.card : styles.mobileCard}
                     title={"Create Multiple Choice Test (10 Questions)"}
                 >
-                    <Text style={styles.title}>Question 1</Text>
+                    <Text style={styles.title}>Test Info</Text>
                     <br/>
                     <br/>
                     <Text style={styles.text}>
-                        Question  
+                        Test Name  
                     </Text>
                     <TextArea
-                        placeholder="What is the question?"
+                        placeholder="What is the name of the test?"
                         showCount
-                        name="Question_1"
+                        name="Name"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
-                        value={data.question1}
+                        value={data.name}
                         onChange={handleChange}
                     />
                     <Text style={styles.text}>
-                        Answer 
+                        Test Category 
+                    </Text>
+                    <Select
+                        placeholder="What is the category?"
+                        name="Category"
+                        style={{  width: 155, marginLeft: "10px" }}
+                        onChange={handleChange}
+                        value={data.category}
+                    >
+                        <Option value="NFTs">NFTs</Option>
+                        <Option value="DAOs">DAOs</Option>
+                        <Option value="Defi">Defi</Option>
+                        <Option value="Science">Science</Option>
+                        <Option value="History">History</Option>
+                        <Option value="Other">Other</Option>
+                    </Select>
+                    <Text style={styles.text}>
+                        Educator
                     </Text>
                     <TextArea
-                        placeholder="What is correct answer?"
+                        placeholder="What is the educator's name?"
                         showCount
-                        name="Answer_1"
+                        name="Educator"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
                         onChange={handleChange}
-                        value={data.answer}
+                        value={data.educator}
                     />
                     <Text style={styles.text}>
-                        False Answer 1
+                        Difficulty
                     </Text>
-                    <TextArea
-                        placeholder="What is first false answer?"
-                        showCount
-                        name="Question_1_False_Answer_1"
-                        maxLength={512}
-                        style={{ height: 100}}
-                        autoSize={{ minRows: 2, maxRows: 2 }}
+                    <Select
+                        placeholder="What is the test difficulty?"
+                        name="Difficulty"
+                        style={{  width: 155, marginLeft: "10px" }}
                         onChange={handleChange}
-                        value={data.fAnswer}
-                    />
-                    <Text style={styles.text}>
-                        False Answer 2
-                    </Text>
-                    <TextArea
-                        placeholder="What is second false answer?"
-                        showCount
-                        name="Question_1_False_Answer_2"
-                        maxLength={512}
-                        style={{ height: 100}}
-                        autoSize={{ minRows: 2, maxRows: 2 }}
-                        onChange={handleChange}
-                        value={data.fAnswer}
-                    />
-                    <Text style={styles.text}>
-                        False Answer 3
-                    </Text>
-                    <TextArea
-                        placeholder="What is third false answer?"
-                        showCount
-                        name="Question_1_False_Answer_3"
-                        maxLength={512}
-                        style={{ height: 100}}
-                        autoSize={{ minRows: 2, maxRows: 2 }}
-                        onChange={handleChange}
-                        value={data.fAnswer}
-                    />
+                        value={data.difficulty}
+                    >
+                        <Option value="Easy">Easy</Option>
+                        <Option value="Intermediate">Intermediate</Option>
+                        <Option value="Hard">Hard</Option>
+                    </Select>
                     <Button
                         style={styles.nextButton}
                         type="primary"
@@ -140,17 +128,10 @@ const QuestionForm1 = (props) => {
                     >
                         Next Question
                     </Button>
-                    <Button
-                        style={styles.backButton}
-                        type="primary"
-                        onClick={back}
-                    >
-                        Test Info
-                    </Button>
                 </Card>
             </main>
         </form>
     )
 }
 
-export default QuestionForm1
+export default TestInfo

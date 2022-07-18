@@ -96,7 +96,7 @@ const App = ({ isServerInfo }) => {
               <ProfileSettings isServerInfo={isServerInfo} />
             </Route>
           </Switch>
-          <Redirect to="/content" />
+          {/* <Redirect to="/content" /> */}
         </div>
       </Router>
     </Layout>
