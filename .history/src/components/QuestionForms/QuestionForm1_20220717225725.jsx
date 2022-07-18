@@ -7,7 +7,7 @@ import {
 } from 'antd';
 import useWindowDimensions from '../../util/useWindowDimensions';
 
-const QuestionForm8 = (props) => {
+const QuestionForm1 = (props) => {
     const styles = {
         title: {
             fontSize: "20px",
@@ -40,10 +40,6 @@ const QuestionForm8 = (props) => {
             float: "right",
             marginTop: "10px",
         },
-        backButton: {
-            float: "left",
-            marginTop: "10px",
-        },
         text: {
             fontSize: "14px",
             alignSelf: "center",
@@ -56,16 +52,16 @@ const QuestionForm8 = (props) => {
     const { width } = useWindowDimensions();
     const isMobile = width < 700;
 
-    const { data, handleChange, next, back } = props;
+    const { data, handleChange, next } = props;
 
     return (
-        <div style={styles.container}>
+        <form style={styles.container}>
             <main style={styles.main}>
                 <Card
                     style={!isMobile ? styles.card : styles.mobileCard}
                     title={"Create Multiple Choice Test (10 Questions)"}
                 >
-                    <Text style={styles.title}>Question 8</Text>
+                    <Text style={styles.title}>Question 1</Text>
                     <br/>
                     <br/>
                     <Text style={styles.text}>
@@ -74,12 +70,12 @@ const QuestionForm8 = (props) => {
                     <TextArea
                         placeholder="What is the question?"
                         showCount
-                        name="Question_8"
+                        name="Question_1"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
+                        value={data.question1}
                         onChange={handleChange}
-                        value={data.question}
                     />
                     <Text style={styles.text}>
                         Answer 
@@ -87,7 +83,7 @@ const QuestionForm8 = (props) => {
                     <TextArea
                         placeholder="What is correct answer?"
                         showCount
-                        name="Answer_8"
+                        name="Answer_1"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
@@ -100,7 +96,7 @@ const QuestionForm8 = (props) => {
                     <TextArea
                         placeholder="What is first false answer?"
                         showCount
-                        name="Question_8_False_Answer_1"
+                        name="Q1_False_Answer_1"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
@@ -113,20 +109,20 @@ const QuestionForm8 = (props) => {
                     <TextArea
                         placeholder="What is second false answer?"
                         showCount
-                        name="Question_8_False_Answer_2"
+                        name="Q1_False_Answer_2"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
                         onChange={handleChange}
                         value={data.fAnswer}
                     />
-                    <Text style={styles.text}>
-                        False Answer 3
+                     <Text style={styles.text}>
+                        False Answer 2
                     </Text>
                     <TextArea
                         placeholder="What is third false answer?"
                         showCount
-                        name="Question_8_False_Answer_3"
+                        name="Q1_False_Answer_3"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
@@ -140,17 +136,10 @@ const QuestionForm8 = (props) => {
                     >
                         Next Question
                     </Button>
-                    <Button
-                        style={styles.backButton}
-                        type="primary"
-                        onClick={back}
-                    >
-                        Previous Question
-                    </Button>
                 </Card>
             </main>
-        </div>
+        </form>
     )
 }
 
-export default QuestionForm8
+export default QuestionForm1

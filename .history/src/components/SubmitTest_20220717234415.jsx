@@ -4,11 +4,6 @@ import {
     Button
 } from 'antd';
 import useWindowDimensions from '../util/useWindowDimensions';
-import { useMoralis } from 'react-moralis';
-import moralis from "moralis";
-
-moralis.initialize(process.env.NEXT_PUBLIC_MORALIS_APPLICATION_ID);
-moralis.serverURL = process.env.NEXT_PUBLIC_MORALIS_SERVER_URL;
 
 const SubmitTest = (props) => {
     const styles = {
@@ -58,32 +53,7 @@ const SubmitTest = (props) => {
             <strong>{key}:</strong> {value}
         </li>
     ));
-    
-    // console.log(data)
-    const { Moralis } = useMoralis();
-    const user = moralis.User.current();
-
-    async function saveTest() {
-        let link;
-        if (data) {
-            const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(data))});
-            link = await file.saveIPFS();
-        } else {
-            link = "No data"
-        }
-        console.log(link._ipfs)
-        if(!link._ipfs) return;
-
-        const Tests = moralis.Object.extend("Tests");
-
-        const newTest = new Tests();
-
-        newTest.set("testData", link._ipfs)
-        newTest.set("educatorAcc", user?.attributes.ethAddress)
-
-        await newTest.save();
-    }
-    
+    console.log(data)
   return (
         <div style={styles.container}>
             <main style={styles.main}>
@@ -102,7 +72,7 @@ const SubmitTest = (props) => {
                     <Button
                         style={styles.submitButton}
                         type="primary"
-                        onClick={saveTest}
+                        // onClick={next}
                     >
                         Submit Q&A's
                     </Button> 
