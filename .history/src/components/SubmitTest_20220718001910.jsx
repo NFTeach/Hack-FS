@@ -63,25 +63,29 @@ const SubmitTest = (props) => {
     const { Moralis } = useMoralis();
     const user = moralis.User.current();
 
-    async function saveTest() {
-        let link;
+    let link;
+    const submit = async () => {
         if (data) {
             const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(data))});
             link = await file.saveIPFS();
+            console.log(link)
         } else {
             link = "No data"
         }
-        console.log(link._ipfs)
-        if(!link._ipfs) return;
+    }
 
-        const Tests = moralis.Object.extend("Tests");
+    async function saveTest() {
+        submit();
 
-        const newTest = new Tests();
+        // if(!link) return;
 
-        newTest.set("testData", link._ipfs)
-        newTest.set("educatorAcc", user?.attributes.ethAddress)
+        // const Tests = moralis.Object.extend("Tests");
 
-        await newTest.save();
+        // const newTest = new Tests();
+
+        // newTest.set("testData", link)
+
+
     }
     
   return (

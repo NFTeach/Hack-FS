@@ -72,16 +72,15 @@ const SubmitTest = (props) => {
             link = "No data"
         }
         console.log(link._ipfs)
-        if(!link._ipfs) return;
+        // if(!link) return;
 
-        const Tests = moralis.Object.extend("Tests");
+        // const Tests = moralis.Object.extend("Tests");
 
-        const newTest = new Tests();
+        // const newTest = new Tests();
 
-        newTest.set("testData", link._ipfs)
-        newTest.set("educatorAcc", user?.attributes.ethAddress)
+        // newTest.set("testData", link)
 
-        await newTest.save();
+
     }
     
   return (

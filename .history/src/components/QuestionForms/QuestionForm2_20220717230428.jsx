@@ -7,7 +7,7 @@ import {
 } from 'antd';
 import useWindowDimensions from '../../util/useWindowDimensions';
 
-const QuestionForm8 = (props) => {
+const QuestionForm2 = (props) => {
     const styles = {
         title: {
             fontSize: "20px",
@@ -57,7 +57,6 @@ const QuestionForm8 = (props) => {
     const isMobile = width < 700;
 
     const { data, handleChange, next, back } = props;
-
     return (
         <div style={styles.container}>
             <main style={styles.main}>
@@ -65,7 +64,7 @@ const QuestionForm8 = (props) => {
                     style={!isMobile ? styles.card : styles.mobileCard}
                     title={"Create Multiple Choice Test (10 Questions)"}
                 >
-                    <Text style={styles.title}>Question 8</Text>
+                    <Text style={styles.title}>Question 2</Text>
                     <br/>
                     <br/>
                     <Text style={styles.text}>
@@ -74,7 +73,7 @@ const QuestionForm8 = (props) => {
                     <TextArea
                         placeholder="What is the question?"
                         showCount
-                        name="Question_8"
+                        name="Question_2"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
@@ -87,7 +86,7 @@ const QuestionForm8 = (props) => {
                     <TextArea
                         placeholder="What is correct answer?"
                         showCount
-                        name="Answer_8"
+                        name="answer2"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
@@ -100,7 +99,7 @@ const QuestionForm8 = (props) => {
                     <TextArea
                         placeholder="What is first false answer?"
                         showCount
-                        name="Question_8_False_Answer_1"
+                        name="fAnswer21"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
@@ -113,20 +112,7 @@ const QuestionForm8 = (props) => {
                     <TextArea
                         placeholder="What is second false answer?"
                         showCount
-                        name="Question_8_False_Answer_2"
-                        maxLength={512}
-                        style={{ height: 100}}
-                        autoSize={{ minRows: 2, maxRows: 2 }}
-                        onChange={handleChange}
-                        value={data.fAnswer}
-                    />
-                    <Text style={styles.text}>
-                        False Answer 3
-                    </Text>
-                    <TextArea
-                        placeholder="What is third false answer?"
-                        showCount
-                        name="Question_8_False_Answer_3"
+                        name="fAnswer22"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
@@ -153,4 +139,4 @@ const QuestionForm8 = (props) => {
     )
 }
 
-export default QuestionForm8
+export default QuestionForm2
