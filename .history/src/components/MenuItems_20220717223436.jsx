@@ -32,8 +32,7 @@ const userType = [
 ];
 
 function MenuItems() {
-  const { educatorDefaultPath } = "/uploadcontent";
-  const { studentDefaultPath } = "/content"
+  const { pathname } = useLocation();
   const [id, setId] = useState("0");
   const [selected, setSelected] = useState({});
 
@@ -59,7 +58,7 @@ function MenuItems() {
   )
 
   if (!id) return null;
-  // console.log(id)
+  console.log(id)
 
   if(id == 0) {
     return (
@@ -73,7 +72,7 @@ function MenuItems() {
           width: "100%",
           justifyContent: "center",
         }}
-        defaultSelectedKeys={["/content"]}
+        defaultSelectedKeys={[pathname]}
       >
         <Menu.Item>
         <Dropdown overlay={menu} trigger={["click"]}>
@@ -110,7 +109,7 @@ function MenuItems() {
         width: "100%",
         justifyContent: "center",
       }}
-      defaultSelectedKeys={["/uploadcontent"]}
+      defaultSelectedKeys={[pathname]}
     >
       <Menu.Item>
       <Dropdown overlay={menu} trigger={["click"]}>
@@ -126,8 +125,14 @@ function MenuItems() {
       <Menu.Item key="/uploadcontent">
         <NavLink to="/uploadcontent">⬆️ Upload Content</NavLink>
       </Menu.Item>
+      <Menu.Item key="/content">
+        <NavLink to="/content">📚 Content</NavLink>
+      </Menu.Item>
       <Menu.Item key="/createtest">
         <NavLink to="/createtest">🧠 Create Test</NavLink>
+      </Menu.Item>
+      <Menu.Item key="/tests">
+        <NavLink to="/tests">📝 Tests</NavLink>
       </Menu.Item>
       <Menu.Item key="/profile">
         <NavLink to="/profile">😀 Profile</NavLink>

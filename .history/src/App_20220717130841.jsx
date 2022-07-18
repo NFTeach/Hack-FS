@@ -18,7 +18,7 @@ import Tests from "./components/Tests";
 import CreateTest from "./components/CreateTest";
 import Profile from "./components/Profile";
 import ProfileSettings from "./components/ProfileSettings";
-
+import User from "./components/User/User";
 const { Header } = Layout;
 
 const styles = {
@@ -68,6 +68,7 @@ const App = ({ isServerInfo }) => {
         <Header style={styles.header}>
           <MenuItems />
           <div style={styles.headerRight}>
+            <User />
             <Chains />
             <NativeBalance />
             <Account />

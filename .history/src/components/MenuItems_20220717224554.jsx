@@ -32,8 +32,8 @@ const userType = [
 ];
 
 function MenuItems() {
-  const { educatorDefaultPath } = "/uploadcontent";
-  const { studentDefaultPath } = "/content"
+  const { pathname } = useLocation();
+  console.log(pathname)
   const [id, setId] = useState("0");
   const [selected, setSelected] = useState({});
 
@@ -73,7 +73,7 @@ function MenuItems() {
           width: "100%",
           justifyContent: "center",
         }}
-        defaultSelectedKeys={["/content"]}
+        defaultSelectedKeys={[pathname]}
       >
         <Menu.Item>
         <Dropdown overlay={menu} trigger={["click"]}>
@@ -110,7 +110,7 @@ function MenuItems() {
         width: "100%",
         justifyContent: "center",
       }}
-      defaultSelectedKeys={["/uploadcontent"]}
+      defaultSelectedKeys={[pathname]}
     >
       <Menu.Item>
       <Dropdown overlay={menu} trigger={["click"]}>
