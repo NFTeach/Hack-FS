@@ -57,10 +57,9 @@ const SubmitTest = (props) => {
     const listItems = Object.entries(data).map(([key, value]) => (
         <List>
             <List.Item key={key}>
-                <List.Item.Meta
-                title={key} 
-                description={value} />
+                <List.Item.Meta description={value} />
             </List.Item>
+            {/* <strong>{key}:</strong> {value} */}
         </List>
     ));
     

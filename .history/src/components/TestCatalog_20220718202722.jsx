@@ -77,7 +77,7 @@ const TestCatalog = () => {
                             }
                             </div>
                         </div>
-                        <Link to="/test">
+                        <Link to ="/test">
                             Take the test!
                         </Link>
                     </div>

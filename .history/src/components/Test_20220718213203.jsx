@@ -53,7 +53,7 @@ const Test = () => {
     const { width } = useWindowDimensions();
     const isMobile = width < 700;
 
-    // console.log(data)
+    console.log(data)
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [myAnswer, setMyAnswer] = useState("");
     const [score, setScore] = useState(0);

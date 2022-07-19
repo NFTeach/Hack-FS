@@ -5,6 +5,7 @@ import { useMoralis } from "react-moralis";
 import moralis from "moralis";
 import "../css/Tests.css";
 import "../css/Profile.css";
+import Test from './Test';
 import { Button } from "antd";
 
 moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);

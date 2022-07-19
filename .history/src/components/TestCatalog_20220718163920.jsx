@@ -30,14 +30,11 @@ const TestCatalog = () => {
         getTestInfo();
     }, []);
 
-    const handleClick = (e) => {
-        // console.log(testArr)
-    }
     // console.log(testArr)
 
     return (
         <>
-        {testArr.map((e) => {
+        {testArr.map((e, index) => {
             // console.log(e.id)
             return (
                 <>
@@ -77,7 +74,7 @@ const TestCatalog = () => {
                             }
                             </div>
                         </div>
-                        <Link to="/test">
+                        <Link to ="/test">
                             Take the test!
                         </Link>
                     </div>

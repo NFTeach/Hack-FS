@@ -31,7 +31,7 @@ const TestCatalog = () => {
     }, []);
 
     const handleClick = (e) => {
-        // console.log(testArr)
+        console.log(testArr[e])
     }
     // console.log(testArr)
 
@@ -77,7 +77,7 @@ const TestCatalog = () => {
                             }
                             </div>
                         </div>
-                        <Link to="/test">
+                        <Link to ="/test" onClick={handleClick}>
                             Take the test!
                         </Link>
                     </div>

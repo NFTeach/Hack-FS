@@ -53,7 +53,7 @@ const Test = () => {
     const { width } = useWindowDimensions();
     const isMobile = width < 700;
 
-    // console.log(data)
+    console.log(data)
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [myAnswer, setMyAnswer] = useState("");
     const [score, setScore] = useState(0);
@@ -131,7 +131,9 @@ const Test = () => {
                         {data[currentQuestion].question}
                     </Text>
                     <br/>
-                    
+                    {/* {currentQuestion < data.length - 1 && (
+
+                    )} */}
                     {data[currentQuestion].variants.map((variant) => (
                         <Button
                             key={variant.id}
@@ -145,25 +147,14 @@ const Test = () => {
                               }`}
                             onClick={() => {
                                 checkAnswer(variant);
-                                
-                            }}
-                        >
-                            {variant}
-                        </Button>
-                    ))}
-                    <br/>
-
-                    {currentQuestion < data.length - 1 && (
-                        <Button
-                            onClick={() => {
                                 setCurrentQuestion(currentQuestion + 1);
                                 checkCorrectAnswer();
                                 reset();
                             }}
                         >
-                            Next Question
+                            {variant}
                         </Button>
-                    )}
+                    ))}
 
                     {currentQuestion === data.length - 1 && (
                         <Button
@@ -176,7 +167,9 @@ const Test = () => {
                 </main>
             </form>
         )
-    }    
+    }
+
+    
 }
 
 export default Test
