@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 import { useMoralis } from "react-moralis";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 import Account from "./components/Account/Account";
 import Chains from "./components/Chains/Chains";
 import { Layout } from "antd";
@@ -14,6 +19,8 @@ import Tests from "./components/Tests";
 import CreateTest from "./components/CreateTest";
 import Profile from "./components/Profile";
 import ProfileSettings from "./components/ProfileSettings";
+import Test from "./components/Test";
+
 const { Header } = Layout;
 
 const styles = {
@@ -83,13 +90,17 @@ const App = ({ isServerInfo }) => {
             <Route exact path='/tests'>
               <Tests isServerInfo={isServerInfo} />
             </Route>
-            <Route exact path='/profile'>
+            <Route exact path="/test">
+              <Test isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path="/profile">
               <Profile isServerInfo={isServerInfo} />
             </Route>
             <Route exact path='/profilesettings'>
               <ProfileSettings isServerInfo={isServerInfo} />
             </Route>
           </Switch>
+          <Redirect to="/content" />
         </div>
       </Router>
     </Layout>
