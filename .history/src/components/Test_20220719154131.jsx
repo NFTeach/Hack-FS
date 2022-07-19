@@ -38,7 +38,7 @@ const Test = () => {
             width: "100vw",
         },
         button: {
-            float: "right",
+            float: "left",
             marginTop: "10px",
         },
         text: {
@@ -76,9 +76,9 @@ const Test = () => {
             }
         }
         fetchTestData();
-    }, []);
-    
-    console.log(testData.e)
+    }, []); 
+
+    console.log(testData.e.attributes.testName)
     
     const checkAnswer = (variant) => {
         setMyAnswer(variant);
@@ -180,8 +180,6 @@ const Test = () => {
 
                     {currentQuestion < data.length - 1 && (
                         <Button
-                            style={styles.button}
-                            type="primary"
                             onClick={() => {
                                 setCurrentQuestion(currentQuestion + 1);
                                 checkCorrectAnswer();
@@ -194,8 +192,6 @@ const Test = () => {
 
                     {currentQuestion === data.length - 1 && (
                         <Button
-                            style={styles.button}
-                            type="primary"
                             onClick={() => finishHandler()}
                         >
                             Finish Test

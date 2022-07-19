@@ -220,7 +220,6 @@ const SubmitTest = (props) => {
         newTest.set("educatorName", data.Educator)
         newTest.set("testCategory", data.Category)
         newTest.set("testDifficulty", data.Difficulty)
-        newTest.set("passingGrade", data.PassingGrade)
         newTest.set("educatorAcc", user?.attributes.ethAddress)
         newTest.set("educatorPfp", user?.attributes.pfp)
         newTest.set("educatorUsername", user?.attributes.username)
