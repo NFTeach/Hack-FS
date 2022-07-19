@@ -1,0 +1,17 @@
+.page {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mainWindow {
+    width: 800px;
+    color: white
+}
+
+.testContent{
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    gap:10px;
+    color: gray;
+}
