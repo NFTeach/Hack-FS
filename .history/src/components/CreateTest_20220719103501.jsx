@@ -14,12 +14,17 @@ import SubmitTest from './SubmitTest';
 
 const CreateTest = () => {
     const [currentStep, setCurrentStep] = useState(1);
+    const [formData0, setFormData0] = useState({
+        id: "0",
+        answer: "",
+        question: "",
+        variants: {}
+    })
     const [formData, setFormData] = useState({
         Name: "",
         Category: "",
         Educator: "",
         Difficulty: "",
-        PassingGrade: "",
         Question_1: "",
         Answer_1: "",
         Question_1_False_Answer_1: "",
@@ -72,7 +77,13 @@ const CreateTest = () => {
         Question_10_False_Answer_3: "",
     });
 
-    // console.log(formData)
+    const handleChange0 = (event) => {
+        setFormData0({
+          ...formData0,
+          [event.target.name]: event.target.value,
+        });
+    };
+
     const handleChange = (event) => {
         setFormData({
           ...formData,
@@ -83,17 +94,18 @@ const CreateTest = () => {
     const next = () => {
     setCurrentStep(currentStep + 1);
     };
-
     const back = () => {
         setCurrentStep(currentStep - 1);
     };
+
+    console.log(formData0)
 
     switch(currentStep) {
         case 1:
             return (
                 <TestInfo
-                    data={formData}
-                    handleChange={handleChange}
+                    data={formData0}
+                    handleChange={handleChange0}
                     next={next}
                 />
             );

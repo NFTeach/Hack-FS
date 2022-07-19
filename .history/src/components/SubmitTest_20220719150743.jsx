@@ -198,7 +198,7 @@ const SubmitTest = (props) => {
         ]
         setFormattedData(dataFormatted)
     },[])
-    console.log(data)
+    console.log(formattedData)
 
     async function saveTest() {
         let link;
@@ -220,14 +220,13 @@ const SubmitTest = (props) => {
         newTest.set("educatorName", data.Educator)
         newTest.set("testCategory", data.Category)
         newTest.set("testDifficulty", data.Difficulty)
-        newTest.set("passingGrade", data.PassingGrade)
         newTest.set("educatorAcc", user?.attributes.ethAddress)
         newTest.set("educatorPfp", user?.attributes.pfp)
         newTest.set("educatorUsername", user?.attributes.username)
 
         await newTest.save();
 
-        // NEED TO ADD CONTRACT INTERACTION HERE AND THEN ADD THE SUCCESS MODAL AND MAKE IT WORK PROPERLY
+        // NEED TO ADD CONTRACT INTERACTION HERE
     }
     
   return (

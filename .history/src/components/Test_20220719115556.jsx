@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import { dummyData } from "../util/testData";
 import { 
     Card, 
-    Typography,  
+    Typography, 
+    Input, 
     Button
 } from 'antd';
 import useWindowDimensions from '../util/useWindowDimensions';
@@ -48,6 +49,7 @@ const Test = () => {
     };
 
     const { Text } = Typography;
+    const { TextArea } = Input;
 
     const { width } = useWindowDimensions();
     const isMobile = width < 700;
@@ -58,27 +60,30 @@ const Test = () => {
     const [score, setScore] = useState(0);
     const [finish, setFinish] = useState(false);
     const [clickAnswer, setClickAnswer] = useState(false);
+    const [unformattedData, setUnformattedData] = useState({})
     const [data, setData] = useState(dummyData);
 
     const { testData } = location.state;
     const ipfsUrl = testData.e.attributes.testData;
     const ipfsHash = ipfsUrl.slice(34);
     
+    // console.log(ipfsHash)
     useEffect(() => {
         async function fetchTestData() {
             try {
                 const url = `https://gateway.moralisipfs.com/ipfs/${ipfsHash}`;
                 const response = await fetch(url);
                 const dataJson = await response.json();
-                setData(dataJson);
+                setUnformattedData(dataJson)
             } catch (error) {
                 console.error(error)
             }
         }
         fetchTestData();
-    }, []);
-    
-    console.log(testData.e)
+    }, []); 
+
+    console.log(unformattedData)
+    // console.log(data)
     
     const checkAnswer = (variant) => {
         setMyAnswer(variant);
@@ -116,7 +121,7 @@ const Test = () => {
                 <main style={styles.main}>
                     <Card
                       style={!isMobile ? styles.card : styles.mobileCard}
-                      title={`Test ${testData.e.attributes.testName}`}
+                      title={"Test (PASS IN TEST NAME HERE)"}
                     >
                         <Text style={styles.text}>
                             {`Test over! Your Final Score is ${score}/${data.length - 1}`}
@@ -147,7 +152,7 @@ const Test = () => {
                 <main style={styles.main}>
                 <Card
                     style={!isMobile ? styles.card : styles.mobileCard}
-                    title={`Test ${testData.e.attributes.testName}`}
+                    title={"Test (PASS IN TEST NAME HERE)"}
                 >
                     <Text style={styles.text}>
                         {data[currentQuestion].question}
@@ -180,8 +185,6 @@ const Test = () => {
 
                     {currentQuestion < data.length - 1 && (
                         <Button
-                            style={styles.button}
-                            type="primary"
                             onClick={() => {
                                 setCurrentQuestion(currentQuestion + 1);
                                 checkCorrectAnswer();
@@ -194,8 +197,6 @@ const Test = () => {
 
                     {currentQuestion === data.length - 1 && (
                         <Button
-                            style={styles.button}
-                            type="primary"
                             onClick={() => finishHandler()}
                         >
                             Finish Test

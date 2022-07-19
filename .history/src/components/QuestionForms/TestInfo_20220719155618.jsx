@@ -4,6 +4,7 @@ import {
     Typography, 
     Input, 
     Button,
+    Select,
 } from 'antd';
 import useWindowDimensions from '../../util/useWindowDimensions';
 
@@ -48,6 +49,7 @@ const TestInfo = (props) => {
 
     const { Text } = Typography;
     const { TextArea } = Input;
+    const { Option } = Select;
 
     const { width } = useWindowDimensions();
     const isMobile = width < 700;
@@ -89,6 +91,19 @@ const TestInfo = (props) => {
                         value={data.category}
                         onChange={handleChange}
                     />
+                    {/* <Select
+                        placeholder="What is the category?"
+                        name="Category"
+                        style={{  width: 155, marginLeft: "10px" }}
+                        onChange={handleChange}
+                    >
+                        <Option value="NFTs">NFTs</Option>
+                        <Option value="DAOs">DAOs</Option>
+                        <Option value="Defi">Defi</Option>
+                        <Option value="Science">Science</Option>
+                        <Option value="History">History</Option>
+                        <Option value="Other">Other</Option>
+                    </Select> */}
                     <Text style={styles.text}>
                         Educator
                     </Text>
@@ -116,10 +131,10 @@ const TestInfo = (props) => {
                         value={data.difficulty}
                     />
                     <Text style={styles.text}>
-                        Passing Grade (Please only single digit input! (i.e. 7 = 7/10 or 70%))
+                        Passing Grade
                     </Text>
                     <TextArea
-                        placeholder="What is passing grade out of 10 questions? "
+                        placeholder="What is passing grade out 10 questions? Please only single digit input! (i.e. 7 = 7/10 or 70%)"
                         showCount
                         name="PassingGrade"
                         maxLength={512}
