@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts@4.7.0/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts@4.7.0/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SBT is ERC1155, Ownable {
     uint256 public counterIDs = 0;
@@ -38,7 +38,7 @@ contract SBT is ERC1155, Ownable {
       * @param tokenId Id of the test and corresponding token
       * @param student address of the student which completed the test
       */
-    event MintSBT(uint256 tokenID, address student);
+    event MintSBT(uint256 tokenId, address student);
 
     /** @notice emitted when an educator withdraws their payoff
       * @param educator address of the withdrawing educator
@@ -181,7 +181,7 @@ contract SBT is ERC1155, Ownable {
         students[msg.sender].sbtMinted += 1;
         _mint(msg.sender, _tokenId, 1, "");
 
-        emit MintSBT(_tokenID, msg.sender);
+        emit MintSBT(_tokenId, msg.sender);
     }
 
     function withdrawCoursesPayoff() public {
