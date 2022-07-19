@@ -61,6 +61,7 @@ const SubmitTest = (props) => {
                 title={key} 
                 description={value} />
             </List.Item>
+            {/* <strong>{key}:</strong> {value} */}
         </List>
     ));
     

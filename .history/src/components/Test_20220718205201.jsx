@@ -57,7 +57,7 @@ const Test = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [myAnswer, setMyAnswer] = useState("");
     const [score, setScore] = useState(0);
-    const [finish, setFinish] = useState(false);
+    const [finish, setFinish] = useState(true);
     const [clickAnswer, setClickAnswer] = useState(false);
 
     const checkAnswer = (variant) => {
@@ -100,14 +100,6 @@ const Test = () => {
                             {`Test over! Your Final Score is ${score}/${data.length - 1}`}
                         </Text>
                         <br/>
-                        <Button
-                            style={styles.button}
-                            type="primary"
-                            onClick={() => startOver()}
-                        >
-                            Start Over
-                        </Button>
-                        {/* USE TERNARY OPERATOR CONDITIONAL ON PASSING TEST TO DISPLAY THESE BUTTONS? */}
                         {/* <Button 
                             style={styles.button}
                             type="primary"
@@ -119,64 +111,17 @@ const Test = () => {
                 </main>
             </form>
         )
-    } else {
-        return (
-            <form style={styles.container}>
-                <main style={styles.main}>
-                <Card
-                    style={!isMobile ? styles.card : styles.mobileCard}
-                    title={"Test (PASS IN TEST NAME HERE)"}
-                >
-                    <Text style={styles.text}>
-                        {data[currentQuestion].question}
-                    </Text>
-                    <br/>
-                    
-                    {data[currentQuestion].variants.map((variant) => (
-                        <Button
-                            key={variant.id}
-                            block
-                            className={`variant ${
-                                myAnswer === variant
-                                  ? myAnswer === data[currentQuestion].answer
-                                    ? "correctAnswer"
-                                    : "incorrectAnswer"
-                                  : null
-                              }`}
-                            onClick={() => {
-                                checkAnswer(variant);
-                                
-                            }}
-                        >
-                            {variant}
-                        </Button>
-                    ))}
-                    <br/>
+    }
 
-                    {currentQuestion < data.length - 1 && (
-                        <Button
-                            onClick={() => {
-                                setCurrentQuestion(currentQuestion + 1);
-                                checkCorrectAnswer();
-                                reset();
-                            }}
-                        >
-                            Next Question
-                        </Button>
-                    )}
-
-                    {currentQuestion === data.length - 1 && (
-                        <Button
-                            onClick={() => finishHandler()}
-                        >
-                            Finish Test
-                        </Button>
-                    )}
-                </Card>
-                </main>
-            </form>
-        )
-    }    
+    // return (
+    //     <>
+    //         <div style={styles.container}>
+    //             <main style={styles.main}>
+    //                 <h1>Hello world!</h1>
+    //             </main>
+    //         </div>
+    //     </>
+    // )
 }
 
 export default Test

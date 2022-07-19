@@ -53,7 +53,7 @@ const Test = () => {
     const { width } = useWindowDimensions();
     const isMobile = width < 700;
 
-    // console.log(data)
+    console.log(data)
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [myAnswer, setMyAnswer] = useState("");
     const [score, setScore] = useState(0);
@@ -131,52 +131,30 @@ const Test = () => {
                         {data[currentQuestion].question}
                     </Text>
                     <br/>
-                    
                     {data[currentQuestion].variants.map((variant) => (
-                        <Button
+                        <div className="m-2 h-14 border-2 border-black mx-auto text-center">
+                        <p
                             key={variant.id}
-                            block
                             className={`variant ${
-                                myAnswer === variant
-                                  ? myAnswer === data[currentQuestion].answer
-                                    ? "correctAnswer"
-                                    : "incorrectAnswer"
-                                  : null
-                              }`}
-                            onClick={() => {
-                                checkAnswer(variant);
-                                
-                            }}
+                            myAnswer === variant
+                                ? myAnswer === data[currentQuestion].answer
+                                ? "correctAnswer"
+                                : "incorrectAnswer"
+                                : null
+                            }`}
+                            onClick={() => checkAnswer(variant)}
                         >
                             {variant}
-                        </Button>
+                        </p>
+                        </div>
                     ))}
-                    <br/>
-
-                    {currentQuestion < data.length - 1 && (
-                        <Button
-                            onClick={() => {
-                                setCurrentQuestion(currentQuestion + 1);
-                                checkCorrectAnswer();
-                                reset();
-                            }}
-                        >
-                            Next Question
-                        </Button>
-                    )}
-
-                    {currentQuestion === data.length - 1 && (
-                        <Button
-                            onClick={() => finishHandler()}
-                        >
-                            Finish Test
-                        </Button>
-                    )}
                 </Card>
                 </main>
             </form>
         )
-    }    
+    }
+
+    
 }
 
 export default Test

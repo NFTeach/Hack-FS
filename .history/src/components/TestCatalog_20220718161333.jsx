@@ -6,6 +6,7 @@ import moralis from "moralis";
 import "../css/Tests.css";
 import "../css/Profile.css";
 import { Button } from "antd";
+import Test from "../components/Test";
 
 moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
 moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
@@ -14,7 +15,6 @@ const TestCatalog = () => {
 
     const { Moralis } = useMoralis();
     const [testArr, setTestArr] = useState([]);
-    const [data, setData] = useState([]);
     
     useEffect(() => {
         async function getTestInfo() {
@@ -30,9 +30,6 @@ const TestCatalog = () => {
         getTestInfo();
     }, []);
 
-    const handleClick = (e) => {
-        // console.log(testArr)
-    }
     // console.log(testArr)
 
     return (
@@ -77,9 +74,13 @@ const TestCatalog = () => {
                             }
                             </div>
                         </div>
-                        <Link to="/test">
-                            Take the test!
-                        </Link>
+                        
+                        <Button
+                            type="primary"
+                            // onClick={}
+                        >
+                            Take the Test!
+                        </Button>
                     </div>
                 </div>
                 </>
@@ -89,4 +90,10 @@ const TestCatalog = () => {
     )
 }
 
-export default TestCatalog;
+export default TestCatalog() {
+    return (
+        <div>
+            <Test />
+        </div>
+    )
+}

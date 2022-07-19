@@ -77,7 +77,7 @@ const TestCatalog = () => {
                             }
                             </div>
                         </div>
-                        <Link to="/test">
+                        <Link to ="/test" onClick={handleClick}>
                             Take the test!
                         </Link>
                     </div>

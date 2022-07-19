@@ -123,60 +123,13 @@ const Test = () => {
         return (
             <form style={styles.container}>
                 <main style={styles.main}>
-                <Card
-                    style={!isMobile ? styles.card : styles.mobileCard}
-                    title={"Test (PASS IN TEST NAME HERE)"}
-                >
-                    <Text style={styles.text}>
-                        {data[currentQuestion].question}
-                    </Text>
-                    <br/>
-                    
-                    {data[currentQuestion].variants.map((variant) => (
-                        <Button
-                            key={variant.id}
-                            block
-                            className={`variant ${
-                                myAnswer === variant
-                                  ? myAnswer === data[currentQuestion].answer
-                                    ? "correctAnswer"
-                                    : "incorrectAnswer"
-                                  : null
-                              }`}
-                            onClick={() => {
-                                checkAnswer(variant);
-                                
-                            }}
-                        >
-                            {variant}
-                        </Button>
-                    ))}
-                    <br/>
-
-                    {currentQuestion < data.length - 1 && (
-                        <Button
-                            onClick={() => {
-                                setCurrentQuestion(currentQuestion + 1);
-                                checkCorrectAnswer();
-                                reset();
-                            }}
-                        >
-                            Next Question
-                        </Button>
-                    )}
-
-                    {currentQuestion === data.length - 1 && (
-                        <Button
-                            onClick={() => finishHandler()}
-                        >
-                            Finish Test
-                        </Button>
-                    )}
-                </Card>
+                    <h1>Hello world!</h1>
                 </main>
             </form>
         )
-    }    
+    }
+
+    
 }
 
 export default Test
