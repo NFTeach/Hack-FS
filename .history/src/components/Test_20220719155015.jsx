@@ -76,9 +76,7 @@ const Test = () => {
             }
         }
         fetchTestData();
-    }, []);
-    
-    console.log(testData.e)
+    }, []); 
     
     const checkAnswer = (variant) => {
         setMyAnswer(variant);

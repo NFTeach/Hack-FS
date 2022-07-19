@@ -19,7 +19,6 @@ const CreateTest = () => {
         Category: "",
         Educator: "",
         Difficulty: "",
-        PassingGrade: "",
         Question_1: "",
         Answer_1: "",
         Question_1_False_Answer_1: "",

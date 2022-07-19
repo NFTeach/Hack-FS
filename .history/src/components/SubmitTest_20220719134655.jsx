@@ -118,92 +118,15 @@ const SubmitTest = (props) => {
                     data.Question_3_False_Answer_3, 
                 ]
             },
-            {
-                id: "3",
-                question: data.Question_4,
-                answer: data.Answer_4,
-                variants: [
-                    data.Question_4_False_Answer_1,
-                    data.Answer_4,
-                    data.Question_4_False_Answer_2,
-                    data.Question_4_False_Answer_3, 
-                ]
-            },
-            {
-                id: "4",
-                question: data.Question_5,
-                answer: data.Answer_5,
-                variants: [
-                    data.Question_5_False_Answer_1,
-                    data.Question_5_False_Answer_2,  
-                    data.Question_5_False_Answer_3,
-                    data.Answer_5, 
-                ]
-            },
-            {
-                id: "5",
-                question: data.Question_6,
-                answer: data.Answer_6,
-                variants: [
-                    data.Answer_6,
-                    data.Question_6_False_Answer_1,
-                    data.Question_6_False_Answer_2,
-                    data.Question_6_False_Answer_3, 
-                ]
-            },
-            {
-                id: "6",
-                question: data.Question_7,
-                answer: data.Answer_7,
-                variants: [
-                    data.Question_7_False_Answer_1,
-                    data.Question_7_False_Answer_2,
-                    data.Answer_7,  
-                    data.Question_7_False_Answer_3, 
-                ]
-            },
-            {
-                id: "7",
-                question: data.Question_8,
-                answer: data.Answer_8,
-                variants: [
-                    data.Question_8_False_Answer_1,
-                    data.Question_8_False_Answer_2,
-                    data.Question_8_False_Answer_3,
-                    data.Answer_8, 
-                ]
-            },
-            {
-                id: "8",
-                question: data.Question_9,
-                answer: data.Answer_9,
-                variants: [
-                    data.Question_9_False_Answer_1,
-                    data.Question_9_False_Answer_2,
-                    data.Answer_9,  
-                    data.Question_9_False_Answer_3, 
-                ]
-            },
-            {
-                id: "9",
-                question: data.Question_10,
-                answer: data.Answer_10,
-                variants: [
-                    data.Answer_10,
-                    data.Question_10_False_Answer_1,
-                    data.Question_10_False_Answer_2, 
-                    data.Question_10_False_Answer_3, 
-                ]
-            },
         ]
         setFormattedData(dataFormatted)
     },[])
-    console.log(data)
+    console.log(formattedData)
 
     async function saveTest() {
         let link;
         if (formattedData) {
-            const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(formattedData))});
+            const file = new Moralis.File(data.Name, formattedData);
             link = await file.saveIPFS();
         } else {
             link = "No data"
@@ -220,14 +143,13 @@ const SubmitTest = (props) => {
         newTest.set("educatorName", data.Educator)
         newTest.set("testCategory", data.Category)
         newTest.set("testDifficulty", data.Difficulty)
-        newTest.set("passingGrade", data.PassingGrade)
         newTest.set("educatorAcc", user?.attributes.ethAddress)
         newTest.set("educatorPfp", user?.attributes.pfp)
         newTest.set("educatorUsername", user?.attributes.username)
 
         await newTest.save();
 
-        // NEED TO ADD CONTRACT INTERACTION HERE AND THEN ADD THE SUCCESS MODAL AND MAKE IT WORK PROPERLY
+        // NEED TO ADD CONTRACT INTERACTION HERE
     }
     
   return (

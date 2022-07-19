@@ -19,7 +19,6 @@ const CreateTest = () => {
         Category: "",
         Educator: "",
         Difficulty: "",
-        PassingGrade: "",
         Question_1: "",
         Answer_1: "",
         Question_1_False_Answer_1: "",
@@ -72,7 +71,6 @@ const CreateTest = () => {
         Question_10_False_Answer_3: "",
     });
 
-    // console.log(formData)
     const handleChange = (event) => {
         setFormData({
           ...formData,
@@ -83,7 +81,6 @@ const CreateTest = () => {
     const next = () => {
     setCurrentStep(currentStep + 1);
     };
-
     const back = () => {
         setCurrentStep(currentStep - 1);
     };
