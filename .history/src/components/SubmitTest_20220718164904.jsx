@@ -1,0 +1,147 @@
+import React, { useEffect, useState } from 'react';
+import { 
+    Card, 
+    Button,
+    List
+} from 'antd';
+import useWindowDimensions from '../util/useWindowDimensions';
+import { useMoralis } from 'react-moralis';
+import moralis from "moralis";
+
+moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
+moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
+
+const SubmitTest = (props) => {
+    const styles = {
+        title: {
+            fontSize: "20px",
+            fontWeight: "700",
+        },
+        card: {
+            boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
+            border: "1px solid #e7eaf3",
+            borderRadius: "0.5rem",
+            width: "50%",
+        },
+        mobileCard: {
+            boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
+            border: "1px solid #e7eaf3",
+            borderRadius: "0.5rem",
+            width: "100%",
+        },
+        container: {
+            padding: "0 2rem",
+        },
+        main: {
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100vw",
+        },
+        backButton: {
+            float: "left",
+            marginTop: "10px",
+        },
+        submitButton: {
+            float: "right",
+            marginTop: "10px",
+        },
+    };
+
+    const { width } = useWindowDimensions();
+    const isMobile = width < 700;
+
+    const { data, back } = props;
+    const listItems = Object.entries(data).map(([key, value]) => (
+        <List>
+            <List.Item key={key}>
+                <List.Item.Meta
+                title={key} 
+                description={value} />
+            </List.Item>
+            {/* <strong>{key}:</strong> {value} */}
+        </List>
+    ));
+    
+    const { 
+        Moralis,
+        isWeb3Enabled,
+        enableWeb3,
+        isAuthenticated,
+        isWeb3EnableLoading 
+    } = useMoralis();
+    const user = moralis.User.current();
+
+    const [isTestSaving, setIsTestSaving] = useState(false);
+    // console.log(user)
+
+    useEffect(() => {
+        if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
+            enableWeb3();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAuthenticated, isWeb3Enabled]);
+
+    async function saveTest() {
+        let link;
+        if (data) {
+            const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(data))});
+            link = await file.saveIPFS();
+        } else {
+            link = "No data"
+        }
+        // console.log(link._ipfs)
+        if(!link._ipfs) return;
+
+        const Tests = moralis.Object.extend("Tests");
+
+        const newTest = new Tests();
+
+        newTest.set("testData", link._ipfs)
+        newTest.set("testName", data.Name)
+        newTest.set("educatorName", data.Educator)
+        newTest.set("testCategory", data.Category)
+        newTest.set("testDifficulty", data.Difficulty)
+        newTest.set("educatorAcc", user?.attributes.ethAddress)
+        newTest.set("educatorPfp", user?.attributes.pfp)
+        newTest.set("educatorUsername", user?.attributes.username)
+
+        await newTest.save();
+
+        // NEED TO FINISH THIS ONCE DISCUSS WITH OLIVIER
+    }
+    
+  return (
+        <div style={styles.container}>
+            <main style={styles.main}>
+                <Card
+                    style={!isMobile ? styles.card : styles.mobileCard}
+                    title={"Create Multiple Choice Test (10 Questions)"}
+                >
+                    <ul>{listItems}</ul>
+                    <Button
+                        style={styles.backButton}
+                        type="primary"
+                        onClick={back}
+                    >
+                        Previous Question
+                    </Button>
+                    <Button
+                        style={styles.submitButton}
+                        type="primary"
+                        loading={isTestSaving}
+                        onClick={async () => {
+                            setIsTestSaving(true);
+                            await saveTest();
+                        }}
+                    >
+                        Submit Q&A's
+                    </Button> 
+                </Card>
+            </main>
+        </div>
+    )
+}
+
+export default SubmitTest
