@@ -76,9 +76,9 @@ const Test = () => {
             }
         }
         fetchTestData();
-    }, []);
-    
-    console.log(testData.e)
+    }, []); 
+
+    console.log(testData.e.attributes.testName)
     
     const checkAnswer = (variant) => {
         setMyAnswer(variant);
@@ -116,7 +116,7 @@ const Test = () => {
                 <main style={styles.main}>
                     <Card
                       style={!isMobile ? styles.card : styles.mobileCard}
-                      title={`Test ${testData.e.attributes.testName}`}
+                      title={"Test (PASS IN TEST NAME HERE)"}
                     >
                         <Text style={styles.text}>
                             {`Test over! Your Final Score is ${score}/${data.length - 1}`}
@@ -147,7 +147,7 @@ const Test = () => {
                 <main style={styles.main}>
                 <Card
                     style={!isMobile ? styles.card : styles.mobileCard}
-                    title={`Test ${testData.e.attributes.testName}`}
+                    title={"Test (PASS IN TEST NAME HERE)"}
                 >
                     <Text style={styles.text}>
                         {data[currentQuestion].question}
@@ -180,8 +180,6 @@ const Test = () => {
 
                     {currentQuestion < data.length - 1 && (
                         <Button
-                            style={styles.button}
-                            type="primary"
                             onClick={() => {
                                 setCurrentQuestion(currentQuestion + 1);
                                 checkCorrectAnswer();
@@ -194,8 +192,6 @@ const Test = () => {
 
                     {currentQuestion === data.length - 1 && (
                         <Button
-                            style={styles.button}
-                            type="primary"
                             onClick={() => finishHandler()}
                         >
                             Finish Test

@@ -95,115 +95,82 @@ const SubmitTest = (props) => {
                     data.Question_1_False_Answer_3, 
                     data.Answer_1
                 ]
-            },
-            {
+              },
+          
+              {
                 id: "1",
-                question: data.Question_2,
-                answer: data.Answer_2,
-                variants: [
-                    data.Question_2_False_Answer_1,
-                    data.Answer_2, 
-                    data.Question_2_False_Answer_2, 
-                    data.Question_2_False_Answer_3, 
-                ]
-            },
-            {
+                question: "What kind of dog keeps the best time?",
+                answer: "Watchdog",
+                variants: [`Watchdog`, `hotdog`, `Cutedog`, 'Fundog']
+              },
+          
+              {
                 id: "2",
-                question: data.Question_3,
-                answer: data.Answer_3,
-                variants: [
-                    data.Question_3_False_Answer_1,
-                    data.Question_3_False_Answer_2,
-                    data.Answer_3,  
-                    data.Question_3_False_Answer_3, 
-                ]
-            },
-            {
+                question:
+                  "What time of day, when written in a capital letters, is the same forwards, backwards and upside down?",
+                answer: "Noon",
+                variants: [`Morning`, `Noon`, `Evening`, 'Midnight']
+              },
+            
+              {
                 id: "3",
-                question: data.Question_4,
-                answer: data.Answer_4,
-                variants: [
-                    data.Question_4_False_Answer_1,
-                    data.Answer_4,
-                    data.Question_4_False_Answer_2,
-                    data.Question_4_False_Answer_3, 
-                ]
-            },
-            {
+                question: "What has a face and two hands but no arms or legs?",
+                answer: "Clock",
+                variants: [`Clock`, `Watch`, `Person`, 'Cat']
+              },
+          
+              {
                 id: "4",
-                question: data.Question_5,
-                answer: data.Answer_5,
-                variants: [
-                    data.Question_5_False_Answer_1,
-                    data.Question_5_False_Answer_2,  
-                    data.Question_5_False_Answer_3,
-                    data.Answer_5, 
-                ]
-            },
-            {
+                question:
+                  "What five-letter word becomes shorter when you add two letters to it?",
+                answer: "Short",
+                variants: [`Long`, `Short`, `Little`, 'Huge']
+              },
+            
+              {
                 id: "5",
-                question: data.Question_6,
-                answer: data.Answer_6,
-                variants: [
-                    data.Answer_6,
-                    data.Question_6_False_Answer_1,
-                    data.Question_6_False_Answer_2,
-                    data.Question_6_False_Answer_3, 
-                ]
-            },
-            {
+                question: "What has a neck but no head?",
+                answer: "Bottle",
+                variants: [`Pan`, `Bottle`, `Plate`, 'Bowl']
+              },
+            
+              {
                 id: "6",
-                question: data.Question_7,
-                answer: data.Answer_7,
-                variants: [
-                    data.Question_7_False_Answer_1,
-                    data.Question_7_False_Answer_2,
-                    data.Answer_7,  
-                    data.Question_7_False_Answer_3, 
-                ]
-            },
-            {
+                question:
+                  "What starts with a 'P', ends with an 'E' and has thousands of letters?",
+                answer: "Post Office",
+                variants: [`Letter`, `Envelope`, `Post Office`, 'Parchment']
+              }, 
+          
+              {
                 id: "7",
-                question: data.Question_8,
-                answer: data.Answer_8,
-                variants: [
-                    data.Question_8_False_Answer_1,
-                    data.Question_8_False_Answer_2,
-                    data.Question_8_False_Answer_3,
-                    data.Answer_8, 
-                ]
-            },
-            {
+                question: "What has to be broken before you can eat it?",
+                answer: "Egg",
+                variants: [`Bread`, `Banana`, `Egg`, 'Banana']
+              },
+          
+              {
                 id: "8",
-                question: data.Question_9,
-                answer: data.Answer_9,
-                variants: [
-                    data.Question_9_False_Answer_1,
-                    data.Question_9_False_Answer_2,
-                    data.Answer_9,  
-                    data.Question_9_False_Answer_3, 
-                ]
-            },
-            {
+                question: "What begins with T, ends with T and has T in it?",
+                answer: "Teapot",
+                variants: [`Teapot`, `Teacup`, `Teatree`, 'Tweet']
+              },
+          
+              {
                 id: "9",
-                question: data.Question_10,
-                answer: data.Answer_10,
-                variants: [
-                    data.Answer_10,
-                    data.Question_10_False_Answer_1,
-                    data.Question_10_False_Answer_2, 
-                    data.Question_10_False_Answer_3, 
-                ]
-            },
+                question: "Teddy bears are never hungry because they are always what?",
+                answer: "Stuffed",
+                variants: [`Full`, `Stuffed`, `Sleep`, 'Tired']
+              },
         ]
         setFormattedData(dataFormatted)
     },[])
-    console.log(data)
+    console.log(formattedData)
 
     async function saveTest() {
         let link;
-        if (formattedData) {
-            const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(formattedData))});
+        if (data) {
+            const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(data))});
             link = await file.saveIPFS();
         } else {
             link = "No data"
@@ -220,14 +187,13 @@ const SubmitTest = (props) => {
         newTest.set("educatorName", data.Educator)
         newTest.set("testCategory", data.Category)
         newTest.set("testDifficulty", data.Difficulty)
-        newTest.set("passingGrade", data.PassingGrade)
         newTest.set("educatorAcc", user?.attributes.ethAddress)
         newTest.set("educatorPfp", user?.attributes.pfp)
         newTest.set("educatorUsername", user?.attributes.username)
 
         await newTest.save();
 
-        // NEED TO ADD CONTRACT INTERACTION HERE AND THEN ADD THE SUCCESS MODAL AND MAKE IT WORK PROPERLY
+        // NEED TO ADD CONTRACT INTERACTION HERE
     }
     
   return (
