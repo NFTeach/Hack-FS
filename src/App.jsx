@@ -1,10 +1,6 @@
 import { useEffect } from "react";
 import { useMoralis } from "react-moralis";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Account from "./components/Account/Account";
 import Chains from "./components/Chains/Chains";
 import { Layout } from "antd";
@@ -75,22 +71,22 @@ const App = ({ isServerInfo }) => {
 
         <div style={styles.content}>
           <Switch>
-            <Route exact path="/uploadcontent">
+            <Route exact path='/uploadcontent'>
               <UploadContent isServerInfo={isServerInfo} />
             </Route>
-            <Route exact path="/content">
+            <Route exact path='/content'>
               <Content isServerInfo={isServerInfo} />
             </Route>
-            <Route exact path="/createtest">
+            <Route exact path='/createtest'>
               <CreateTest isServerInfo={isServerInfo} />
             </Route>
-            <Route exact path="/tests">
+            <Route exact path='/tests'>
               <Tests isServerInfo={isServerInfo} />
             </Route>
-            <Route exact path="/profile">
+            <Route exact path='/profile'>
               <Profile isServerInfo={isServerInfo} />
             </Route>
-            <Route exact path="/profilesettings">
+            <Route exact path='/profilesettings'>
               <ProfileSettings isServerInfo={isServerInfo} />
             </Route>
           </Switch>
@@ -101,4 +97,3 @@ const App = ({ isServerInfo }) => {
 };
 
 export default App;
-
