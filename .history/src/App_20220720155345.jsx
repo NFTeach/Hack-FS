@@ -18,6 +18,7 @@ import {
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
 import "./style.css";
+// import MenuItems from "./components/MenuItems";
 import UploadContent from "./components/UploadContent";
 import Content from "./components/Content";
 import Tests from "./components/Tests";
@@ -27,6 +28,7 @@ import ProfileSettings from "./components/ProfileSettings";
 import Test from "./components/Test";
 import EducatorMenuItems from "./components/EducatorMenuItems";
 import StudentMenuItems from "./components/StudentMenuItems";
+// import Login from "./components/Login";
 import { ConnectButton } from "web3uikit";
 import useWindowDimensions from './util/useWindowDimensions';
 
@@ -127,8 +129,8 @@ const App = ({ isServerInfo }) => {
   const registerStudent = async () => {
     if (isAuthenticated) {
         notification.info({
-          message: "Address registered as student!",
-          description: "Your address has been registered as a student!"
+            message: "Register address as student",
+            description: "Your address will be registered as a student. PLEASE DON'T REFRESH PAGE!"
         })  
     }
 
@@ -149,8 +151,8 @@ const App = ({ isServerInfo }) => {
   const registerEducator = async () => {
     if (isAuthenticated) {
       notification.info({
-        message: "Address registered as educator!",
-        description: "Your address has been registered as a educator!"
+        message: "Register address as educator",
+        description: "Your address will be registered as a educator. PLEASE DON'T REFRESH PAGE!"
       })  
     }
 
