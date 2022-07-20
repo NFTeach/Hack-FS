@@ -3,11 +3,12 @@ import {
     Card, 
     Typography, 
     Input, 
-    Button
+    Button,
+    InputNumber
 } from 'antd';
 import useWindowDimensions from '../../util/useWindowDimensions';
 
-const QuestionForm7 = (props) => {
+const TestInfo = (props) => {
     const styles = {
         title: {
             fontSize: "20px",
@@ -40,10 +41,6 @@ const QuestionForm7 = (props) => {
             float: "right",
             marginTop: "10px",
         },
-        backButton: {
-            float: "left",
-            marginTop: "10px",
-        },
         text: {
             fontSize: "14px",
             alignSelf: "center",
@@ -56,83 +53,101 @@ const QuestionForm7 = (props) => {
     const { width } = useWindowDimensions();
     const isMobile = width < 700;
 
-    const { testData, handleChange, next, back } = props;
+    const { data, handleChange, next } = props;
 
+    // const numberChange = (value) => {
+    //     console.log('changed', value);
+    // }
     return (
-        <div style={styles.container}>
+        <form style={styles.container}>
             <main style={styles.main}>
                 <Card
                     style={!isMobile ? styles.card : styles.mobileCard}
                     title={"Create Multiple Choice Test (10 Questions)"}
                 >
-                    <Text style={styles.title}>Question 7</Text>
+                    <Text style={styles.title}>Test Info</Text>
                     <br/>
                     <br/>
                     <Text style={styles.text}>
-                        Question  
+                        Test Name  
                     </Text>
                     <TextArea
-                        placeholder="What is the question?"
+                        placeholder="What is the name of the test?"
                         showCount
-                        name="Question_7"
+                        name="Name"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
+                        value={data.name}
                         onChange={handleChange}
-                        value={testData.question}
                     />
                     <Text style={styles.text}>
-                        Answer 
+                        Test Category 
                     </Text>
                     <TextArea
-                        placeholder="What is correct answer?"
+                        placeholder="What is the test category?"
                         showCount
-                        name="Answer_7"
+                        name="Category"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
+                        value={data.category}
                         onChange={handleChange}
-                        value={testData.answer}
                     />
                     <Text style={styles.text}>
-                        False Answer 1
+                        Educator
                     </Text>
                     <TextArea
-                        placeholder="What is first false answer?"
+                        placeholder="What is the educator's name?"
                         showCount
-                        name="Question_7_False_Answer_1"
+                        name="Educator"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
                         onChange={handleChange}
-                        value={testData.fAnswer}
+                        value={data.educator}
                     />
                     <Text style={styles.text}>
-                        False Answer 2
+                        Difficulty
                     </Text>
                     <TextArea
-                        placeholder="What is second false answer?"
+                        placeholder="What is the test difficulty?"
                         showCount
-                        name="Question_7_False_Answer_2"
+                        name="Difficulty"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
                         onChange={handleChange}
-                        value={testData.fAnswer}
+                        value={data.difficulty}
                     />
                     <Text style={styles.text}>
-                        False Answer 3
+                        Passing Grade (Please only single digit input! (i.e. 7 = 7/10 or 70%))
                     </Text>
                     <TextArea
-                        placeholder="What is third false answer?"
+                        placeholder="What is passing grade out of 10 questions? "
                         showCount
-                        name="Question_7_False_Answer_3"
+                        name="PassingGrade"
                         maxLength={512}
                         style={{ height: 100}}
                         autoSize={{ minRows: 2, maxRows: 2 }}
                         onChange={handleChange}
-                        value={testData.fAnswer}
+                        value={data.passingGrade}
                     />
+                    <Text style={styles.text}>
+                        SBT Mint Price (Please submit number in terms of Matic (i.e. 1 Matic, min=0.0001, max=1000))
+                    </Text>
+                    <br/>
+                    <TextArea
+                        placeholder="What is the price to mint an SBT for passing your test? "
+                        name="Price"
+                        showCount
+                        maxLength={512}
+                        style={{ height: 100}}
+                        autoSize={{ minRows: 2, maxRows: 2 }}
+                        onChange={handleChange}
+                        value={data.price}
+                    />
+                    <br/>
                     <Button
                         style={styles.nextButton}
                         type="primary"
@@ -140,17 +155,10 @@ const QuestionForm7 = (props) => {
                     >
                         Next Question
                     </Button>
-                    <Button
-                        style={styles.backButton}
-                        type="primary"
-                        onClick={back}
-                    >
-                        Previous Question
-                    </Button>
                 </Card>
             </main>
-        </div>
+        </form>
     )
 }
 
-export default QuestionForm7
+export default TestInfo

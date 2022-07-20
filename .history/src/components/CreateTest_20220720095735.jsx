@@ -101,7 +101,7 @@ const CreateTest = () => {
         case 2:
             return (
                 <QuestionForm1
-                    testData={formData}
+                    data={formData}
                     handleChange={handleChange}
                     next={next}
                     back={back}
@@ -110,7 +110,7 @@ const CreateTest = () => {
         case 3:
             return (
                 <QuestionForm2
-                    testData={formData}
+                    data={formData}
                     handleChange={handleChange}
                     next={next}
                     back={back}
@@ -119,7 +119,7 @@ const CreateTest = () => {
         case 4:
             return (
                 <QuestionForm3
-                    testData={formData}
+                    data={formData}
                     handleChange={handleChange}
                     next={next}
                     back={back}
@@ -128,7 +128,7 @@ const CreateTest = () => {
         case 5:
             return (
                 <QuestionForm4
-                    testData={formData}
+                    data={formData}
                     handleChange={handleChange}
                     next={next}
                     back={back}
@@ -137,7 +137,7 @@ const CreateTest = () => {
         case 6:
             return (
             <QuestionForm5
-                testData={formData}
+                data={formData}
                 handleChange={handleChange}
                 next={next}
                 back={back}
@@ -146,7 +146,7 @@ const CreateTest = () => {
         case 7:
             return (
             <QuestionForm6
-                testData={formData}
+                data={formData}
                 handleChange={handleChange}
                 next={next}
                 back={back}
@@ -155,7 +155,7 @@ const CreateTest = () => {
         case 8:
             return (
             <QuestionForm7
-                testData={formData}
+                data={formData}
                 handleChange={handleChange}
                 next={next}
                 back={back}
@@ -164,7 +164,7 @@ const CreateTest = () => {
         case 9:
             return (
             <QuestionForm8
-                testData={formData}
+                data={formData}
                 handleChange={handleChange}
                 next={next}
                 back={back}
@@ -173,7 +173,7 @@ const CreateTest = () => {
         case 10:
             return (
             <QuestionForm9
-                testData={formData}
+                data={formData}
                 handleChange={handleChange}
                 next={next}
                 back={back}
@@ -182,14 +182,14 @@ const CreateTest = () => {
         case 11:
             return (
             <QuestionForm10
-                testData={formData}
+                data={formData}
                 handleChange={handleChange}
                 next={next}
                 back={back}
             />
         );
         default:
-        return <SubmitTest testData={formData} back={back} />
+        return <SubmitTest data={formData} back={back} />
     };  
 }
 
