@@ -18,6 +18,7 @@ import {
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
 import "./style.css";
+import MenuItems from "./components/MenuItems";
 import UploadContent from "./components/UploadContent";
 import Content from "./components/Content";
 import Tests from "./components/Tests";
@@ -27,6 +28,7 @@ import ProfileSettings from "./components/ProfileSettings";
 import Test from "./components/Test";
 import EducatorMenuItems from "./components/EducatorMenuItems";
 import StudentMenuItems from "./components/StudentMenuItems";
+import Login from "./components/Login";
 import { ConnectButton } from "web3uikit";
 import useWindowDimensions from './util/useWindowDimensions';
 
@@ -123,50 +125,6 @@ const App = ({ isServerInfo }) => {
   const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] = useState(false);
   const user = moralis.User.current();
 
-  // Register student smart contract call
-  const registerStudent = async () => {
-    if (isAuthenticated) {
-        notification.info({
-          message: "Address registered as student!",
-          description: "Your address has been registered as a student!"
-        })  
-    }
-
-    let studentAddressTo = user.attributes.accounts[0];
-
-    const studentParams = {
-        to: studentAddressTo,
-    }
-
-    async function callAddStudent(){
-        const _Result = await Moralis.Cloud.run("registerStudent", studentParams)
-        console.log(_Result)
-    }
-    callAddStudent();
-  }
-
-  // Register educator smart contract call
-  const registerEducator = async () => {
-    if (isAuthenticated) {
-      notification.info({
-        message: "Address registered as educator!",
-        description: "Your address has been registered as a educator!"
-      })  
-    }
-
-    let educatorAddressTo = user.attributes.accounts[0];
-
-    const educatorParams = {
-      to: educatorAddressTo,
-    }
-
-    async function callAddEducator(){
-      const _Result = await Moralis.Cloud.run("registerEducator", educatorParams)
-      console.log(_Result)
-    }
-    callAddEducator();
-  }
-
   useEffect(() => {
     const connectorId = window.localStorage.getItem("connectorId");
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
@@ -221,49 +179,57 @@ const App = ({ isServerInfo }) => {
       </Router>
     </Layout>
   ) : (
-    <>
-    {isAuthenticated ? (
-      <div style={styles.container}>
-        <main style={styles.main}>
-          <Card
-            style={!isMobile ? styles.card : styles.mobileCard}
-            title={"Are you here to learn or teach?"}
-          >
-            <Button
-                style={styles.educatorButton}
-                type="primary"
-                loading={isEducatorRegisteringInProgress}
-                onClick={async () => {
-                  setIsEducatorRegisteringInProgress(true);
-                  await registerEducator();
-                }}
-            >
-            Register as Educator!
-            </Button>
-            <Button
-                style={styles.studentButton}
-                type="primary"
-                loading={isStudentRegisteringInProgress}
-                onClick={async () => {
-                  setIsStudentRegisteringInProgress(true);
-                  await registerStudent();
-                }}
-            >
-            Register as Student!
-            </Button> 
-          </Card>
-          </main>
-      </div>
-      ) : (
-          <>
-          <Layout>
-            <h1>Welcome to NFTeach!</h1>
-            <ConnectButton />
-          </Layout>
-          </>
-        )}
-      </>
+    <div className="loginPage">
+      <Login />
+    </div>
     )}
+    {/* {dummy == 0 ? (
+      <Layout style={{ height: "100vh", overflow: "auto" }}>
+        <Router>
+          <Header style={styles.header}>
+            <MenuItems /> 
+            <EducatorMenuItems />
+            <StudentMenuItems />
+            <div style={styles.headerRight}>
+              <Chains />
+              <NativeBalance />
+              <Account />
+            </div>
+          </Header>
+
+          <div style={styles.content}>
+            <Switch>
+              <Route exact path='/uploadcontent'>
+                <UploadContent isServerInfo={isServerInfo} />
+              </Route>
+              <Route exact path='/content'>
+                <Content isServerInfo={isServerInfo} />
+              </Route>
+              <Route exact path='/createtest'>
+                <CreateTest isServerInfo={isServerInfo} />
+              </Route>
+              <Route exact path='/tests'>
+                <Tests isServerInfo={isServerInfo} />
+              </Route>
+              <Route exact path="/test">
+                <Test isServerInfo={isServerInfo} />
+              </Route>
+              <Route exact path="/profile">
+                <Profile isServerInfo={isServerInfo} />
+              </Route>
+              <Route exact path='/profilesettings'>
+                <ProfileSettings isServerInfo={isServerInfo} />
+              </Route>
+            </Switch>
+            <Redirect to="/content" />
+          </div>
+        </Router>
+      </Layout>
+    ) : (
+      <div className="loginPage">
+        <Login />
+      </div>
+    )} */}
     </>
   );
 };
