@@ -168,6 +168,7 @@ contract SBT is ERC1155, Ownable {
         );
         tests[_tokenId].nbCompleted += 1;
         students[_student].classCompleted += 1;
+        students[_student].allowedMint[_tokenId] = true;
 
         emit ValidateTest(_tokenId, _student);
     }
