@@ -206,6 +206,31 @@ contract SBT is ERC1155, Ownable {
 
         emit Withdrawl(msg.sender, leftToPay);
     }
+
+    //returns the number of classes an educator has created
+    function nbClassesCreated(address _educator) public view returns(uint256) {
+        return(educators[_educator].classesCreated);
+    }
+
+    //returns the number of classes a student has completed
+    function nbClassesCompleted(address _student) public view returns(uint256) {
+        return(students[_student].classCompleted);
+    }
+
+    //returns the educator of a test
+    function getTestEducator(uint256 _tokenId) public view returns(address) {
+        return(tests[_tokenId].educator);
+    }
+
+    //returns the number of times a test has been completed
+    function nbTestCompletions(uint256 _tokenId) public view returns(uint256) {
+        return(tests[_tokenId].nbCompleted);
+    }
+
+    //returns whether a student is allowed to mint a token
+    function isAllowedMint(address _student, uint256 _tokenId) public view returns(bool) {
+        return(students[_student].allowedMint[_tokenId]);
+    }
 }
 
 //HackFs Metadata
