@@ -78,12 +78,20 @@ contract SBT is ERC1155, Ownable {
         educators[_newEducator].active = true;
     }
 
+    function isEducator(address _address) public view returns (bool) {
+        return (educators[_address].active);
+    }
+
     function addStudent(address _newStudent) public onlyOwner {
         require(
             students[_newStudent].active == false,
             "student already exists"
         );
         students[_newStudent].active = true;
+    }
+
+    function isStudent(address _address) public view returns (bool) {
+        return (students[_address].active);
     }
 
     //need to be an approved educator to create SBT
