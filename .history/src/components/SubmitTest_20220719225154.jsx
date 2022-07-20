@@ -364,7 +364,7 @@ const SubmitTest = (props) => {
             message: "Error",
             description: "Please try again and make sure you are using a valid educator wallet address"
         })
-        setIsUploadInProgress(false);
+        location.reload()
     }
 
 

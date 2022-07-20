@@ -2,19 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { 
     Card, 
     Button,
-    List,
-    Modal,
-    notification
+    List
 } from 'antd';
 import useWindowDimensions from '../util/useWindowDimensions';
 import { 
     useMoralis,
-    useMoralisFile,
     useWeb3ExecuteFunction
  } from 'react-moralis';
 import moralis from "moralis";
 import { CONTRACT_ADDRESS } from "./consts/vars";
-import { NFTEACH_CONTRACT_ABI } from "./consts/contractABIs";
+import { NFTTEACH_CONTRACT_ABI } from "./consts/contractABIs";
 
 moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
 moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
@@ -80,19 +77,10 @@ const SubmitTest = (props) => {
         isWeb3EnableLoading 
     } = useMoralis();
     const user = moralis.User.current();
-    const { error, saveFile } = useMoralisFile();
 
+    const [isTestSaving, setIsTestSaving] = useState(false);
     const [formattedData, setFormattedData] = useState({});
-    const [metadata, setMetadata] = useState(null);
-    const [isUploadInProgress, setIsUploadInProgress] = useState(false);
-
-    const {
-        dataFile,
-        error: executeContractError,
-        fetch: executeContractFunction,
-        isFetching,
-        isLoading,
-    } = useWeb3ExecuteFunction();
+    // console.log(user)
 
     useEffect(() => {
         if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
@@ -215,159 +203,40 @@ const SubmitTest = (props) => {
         ]
         setFormattedData(dataFormatted)
     },[])
-    // console.log(formattedData)
+    console.log(data)
 
-    useEffect(() => {
-        if (!isLoading && !isFetching && dataFile) {
-            setIsUploadInProgress(false);
+    // NEED TO ADD CONTRACT INTERACTION HERE AND THEN ADD THE SUCCESS MODAL AND MAKE IT WORK PROPERLY
 
-            Modal.success({
-                title: "Congrats! Your test has been created!",
-                content: (
-                    <div>
-                        <p>
-                            <b>Title:</b> {data.Name}
-                        </p>
-                        <p>
-                            <b>Category:</b> {data.Category}
-                        </p>
-                        <p>
-                            <b>Educator:</b> {data.Educator}
-                        </p>
-                        <p>
-                            <b>Difficulty:</b> {data.Difficulty}
-                        </p>
-                        <p>
-                            <b>PassingGrade:</b> {data.PassingGrade}
-                        </p>
-                    </div>
-                ),
-                onOk() {
-                    setFormattedData({});
-                }
-            });
-        }
-    }, [isFetching, isLoading]);
-
-    //ADD CHECK THAT EDUCATOR INPUTTED ALL REQUIRED FIELDS (NOT TOTALLY SURE HOW TO DO THIS YET)
-
-    useEffect(() => {
-        if (executeContractError && executeContractError.code === 4001) {
-            setIsUploadInProgress(false);
-            notification.error({
-                message: "NFT Mint Error",
-                description: executeContractError.message,
-            });
-        }
-    }, [executeContractError]);
-
-    const uploadTestToIpfsAndSetTokenMetadata = async () => {
-        // FIX THIS WHEN ADD CHECK ABOVE FOR PROPER INPUTS
-        // if(!isInputValid) {
-        //     window.alert("Not all fields filled in! Please fill in all fields and then re-submit.")
-        //     setIsNftMintInProcess(false);
-        //     return
-        // }
-
-        if (isAuthenticated) {
-            notification.info({
-                message: "Uploading in progress",
-                description: "Your test is being upload to IPFS and data stored on the smart contract. PLEASE DON'T REFRESH PAGE!"
-            })
-        
-            let link;
-            if (formattedData) {
-                const dataFile = formattedData;
-                const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(dataFile))});
-                link = await file.saveIPFS();
-            } else {
-                link = "No data"
-            }
-            // console.log(link._ipfs)
-            if (error) {
-                console.error("Error uploading test to IPFS");
-            }
-
-            const tokenMetadataObj = {
-                name: data.Name,
-                test: link,
-                attributes: [
-                    { 
-                        category: data.Category,
-                        educator: data.Educator,
-                        difficulty: data.Difficulty,
-                        passingGrade: data.PassingGrade
-                    }
-                ],
-            };
-
-            const tokenMetadata = await saveFile(
-                `${data.Name.replace(/\s/g, "")}.json`,
-                { base64: btoa(JSON.stringify(tokenMetadataObj)) },
-                {
-                    type: "application/json",
-                    saveIPFS: true,
-                }
-            )
-            
-            async function saveTest() {
-            
-                const Tests = moralis.Object.extend("Tests");
-        
-                const newTest = new Tests();
-        
-                newTest.set("testData", link._ipfs)
-                newTest.set("testName", data.Name)
-                newTest.set("educatorName", data.Educator)
-                newTest.set("testCategory", data.Category)
-                newTest.set("testDifficulty", data.Difficulty)
-                newTest.set("passingGrade", data.PassingGrade)
-                newTest.set("educatorAcc", user?.attributes.ethAddress)
-                newTest.set("educatorPfp", user?.attributes.pfp)
-                newTest.set("educatorUsername", user?.attributes.username)
-        
-                await newTest.save();   
-            }
-
-            executeContractFunction({
-                params: {
-                    abi: NFTEACH_CONTRACT_ABI,
-                    contractAddress: CONTRACT_ADDRESS,
-                    functionName: "createSBT",
-                    params: {
-                        _price: Moralis.Units.ETH(data.Price), 
-                        _testHash: tokenMetadata._ipfs,
-                    },
-                },
-                onSuccess: () => {
-                    saveTest();
-                },
-                onError: (error) => {
-                    // notification.error({
-                    //     message: error,
-                    //     // description: "Please try again and make sure you are using a valid educator wallet address"
-                    // })
-                    // location.reload()
-                }
-            });
+    async function saveTest() {
+        let link;
+        if (formattedData) {
+            const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(formattedData))});
+            link = await file.saveIPFS();
         } else {
-            setIsUploadInProgress(false);
-            notification.error({
-                message: "You need to have your wallet connected to create a test",
-                description: "In order to use this feature, you have to connect your wallet."
-            });
+            link = "No data"
         }
+        // console.log(link._ipfs)
+        if(!link._ipfs) return;
+
+        const Tests = moralis.Object.extend("Tests");
+
+        const newTest = new Tests();
+
+        newTest.set("testData", link._ipfs)
+        newTest.set("testName", data.Name)
+        newTest.set("educatorName", data.Educator)
+        newTest.set("testCategory", data.Category)
+        newTest.set("testDifficulty", data.Difficulty)
+        newTest.set("passingGrade", data.PassingGrade)
+        newTest.set("educatorAcc", user?.attributes.ethAddress)
+        newTest.set("educatorPfp", user?.attributes.pfp)
+        newTest.set("educatorUsername", user?.attributes.username)
+
+        await newTest.save();
+
+        
     }
-
-    if(error) {
-        notification.error({
-            message: "Error",
-            description: "Please try again and make sure you are using a valid educator wallet address"
-        })
-        setIsUploadInProgress(false);
-    }
-
-
+    
   return (
         <div style={styles.container}>
             <main style={styles.main}>
@@ -386,10 +255,10 @@ const SubmitTest = (props) => {
                     <Button
                         style={styles.submitButton}
                         type="primary"
-                        loading={isUploadInProgress}
+                        loading={isTestSaving}
                         onClick={async () => {
-                            setIsUploadInProgress(true);
-                            await uploadTestToIpfsAndSetTokenMetadata();
+                            setIsTestSaving(true);
+                            await saveTest();
                         }}
                     >
                         Submit Q&A's

@@ -14,7 +14,7 @@ import {
  } from 'react-moralis';
 import moralis from "moralis";
 import { CONTRACT_ADDRESS } from "./consts/vars";
-import { NFTEACH_CONTRACT_ABI } from "./consts/contractABIs";
+import { NFTTEACH_CONTRACT_ABI } from "./consts/contractABIs";
 
 moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
 moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
@@ -83,11 +83,10 @@ const SubmitTest = (props) => {
     const { error, saveFile } = useMoralisFile();
 
     const [formattedData, setFormattedData] = useState({});
-    const [metadata, setMetadata] = useState(null);
     const [isUploadInProgress, setIsUploadInProgress] = useState(false);
 
     const {
-        dataFile,
+        contractData,
         error: executeContractError,
         fetch: executeContractFunction,
         isFetching,
@@ -215,16 +214,17 @@ const SubmitTest = (props) => {
         ]
         setFormattedData(dataFormatted)
     },[])
-    // console.log(formattedData)
+    console.log(data)
 
     useEffect(() => {
-        if (!isLoading && !isFetching && dataFile) {
+        if (!isFetching && ! isLoading && contractData) {
             setIsUploadInProgress(false);
 
             Modal.success({
                 title: "Congrats! Your test has been created!",
                 content: (
                     <div>
+                        
                         <p>
                             <b>Title:</b> {data.Name}
                         </p>
@@ -242,9 +242,6 @@ const SubmitTest = (props) => {
                         </p>
                     </div>
                 ),
-                onOk() {
-                    setFormattedData({});
-                }
             });
         }
     }, [isFetching, isLoading]);
@@ -253,7 +250,7 @@ const SubmitTest = (props) => {
 
     useEffect(() => {
         if (executeContractError && executeContractError.code === 4001) {
-            setIsUploadInProgress(false);
+            setIsNftMintInProcess(false);
             notification.error({
                 message: "NFT Mint Error",
                 description: executeContractError.message,
@@ -277,8 +274,7 @@ const SubmitTest = (props) => {
         
             let link;
             if (formattedData) {
-                const dataFile = formattedData;
-                const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(dataFile))});
+                const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(formattedData))});
                 link = await file.saveIPFS();
             } else {
                 link = "No data"
@@ -309,7 +305,7 @@ const SubmitTest = (props) => {
                     saveIPFS: true,
                 }
             )
-            
+
             async function saveTest() {
             
                 const Tests = moralis.Object.extend("Tests");
@@ -331,11 +327,11 @@ const SubmitTest = (props) => {
 
             executeContractFunction({
                 params: {
-                    abi: NFTEACH_CONTRACT_ABI,
+                    abi: NFTTEACH_CONTRACT_ABI,
                     contractAddress: CONTRACT_ADDRESS,
                     functionName: "createSBT",
                     params: {
-                        _price: Moralis.Units.ETH(data.Price), 
+                        _price: Moralis.Units.ETH(1), //NEED TO CHANGE THIS TO THE INPUTTED PRICE THAT THE EDUCATOR DESIRES
                         _testHash: tokenMetadata._ipfs,
                     },
                 },
@@ -343,11 +339,7 @@ const SubmitTest = (props) => {
                     saveTest();
                 },
                 onError: (error) => {
-                    // notification.error({
-                    //     message: error,
-                    //     // description: "Please try again and make sure you are using a valid educator wallet address"
-                    // })
-                    // location.reload()
+                console.log("ERROR")
                 }
             });
         } else {
@@ -357,14 +349,6 @@ const SubmitTest = (props) => {
                 description: "In order to use this feature, you have to connect your wallet."
             });
         }
-    }
-
-    if(error) {
-        notification.error({
-            message: "Error",
-            description: "Please try again and make sure you are using a valid educator wallet address"
-        })
-        setIsUploadInProgress(false);
     }
 
 

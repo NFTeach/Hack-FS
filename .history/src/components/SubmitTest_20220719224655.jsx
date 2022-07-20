@@ -343,11 +343,7 @@ const SubmitTest = (props) => {
                     saveTest();
                 },
                 onError: (error) => {
-                    // notification.error({
-                    //     message: error,
-                    //     // description: "Please try again and make sure you are using a valid educator wallet address"
-                    // })
-                    // location.reload()
+                console.log("ERROR")
                 }
             });
         } else {
@@ -364,7 +360,6 @@ const SubmitTest = (props) => {
             message: "Error",
             description: "Please try again and make sure you are using a valid educator wallet address"
         })
-        setIsUploadInProgress(false);
     }
 
 

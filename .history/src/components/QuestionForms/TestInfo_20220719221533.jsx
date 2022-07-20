@@ -55,9 +55,9 @@ const TestInfo = (props) => {
 
     const { data, handleChange, next } = props;
 
-    // const numberChange = (value) => {
-    //     console.log('changed', value);
-    // }
+    const numberChange = (value) => {
+        console.log('changed', value);
+    }
     return (
         <form style={styles.container}>
             <main style={styles.main}>
@@ -137,12 +137,12 @@ const TestInfo = (props) => {
                         SBT Mint Price (Please submit number in terms of Matic (i.e. 1 Matic, min=0.0001, max=1000))
                     </Text>
                     <br/>
-                    <TextArea
-                        placeholder="What is the price to mint an SBT for passing your test? "
-                        name="Price"
-                        style={{ height: 100}}
-                        autoSize={{ minRows: 2, maxRows: 2 }}
-                        onChange={handleChange}
+                    <InputNumber
+                        name="Price" 
+                        min={0.0001}
+                        max={1000}
+                        defaultValue={1}
+                        onChange={numberChange}
                         value={data.price}
                     />
                     <br/>
