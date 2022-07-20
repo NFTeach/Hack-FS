@@ -119,6 +119,10 @@ contract SBT is ERC1155, Ownable {
         emit AddEducator(_newEducator);
     }
 
+    function isEducator(address _address) public view returns (bool) {
+        return (educators[_address].active);
+    }
+
     function addStudent(address _newStudent) public onlyOwner {
         require(
             students[_newStudent].active == false,
@@ -127,6 +131,10 @@ contract SBT is ERC1155, Ownable {
         students[_newStudent].active = true;
 
         emit AddStudent(_newStudent);
+    }
+
+    function isStudent(address _address) public view returns (bool) {
+        return (students[_address].active);
     }
 
     //need to be an approved educator to create SBT
