@@ -103,112 +103,112 @@ const SubmitTest = (props) => {
         const dataFormatted = [
             {
                 id: "0",
-                question: testData.Question_1,
-                answer: testData.Answer_1,
+                question: data.Question_1,
+                answer: data.Answer_1,
                 variants: [
-                    testData.Question_1_False_Answer_1, 
-                    testData.Question_1_False_Answer_2, 
-                    testData.Question_1_False_Answer_3, 
-                    testData.Answer_1
+                    data.Question_1_False_Answer_1, 
+                    data.Question_1_False_Answer_2, 
+                    data.Question_1_False_Answer_3, 
+                    data.Answer_1
                 ]
             },
             {
                 id: "1",
-                question: testData.Question_2,
-                answer: testData.Answer_2,
+                question: data.Question_2,
+                answer: data.Answer_2,
                 variants: [
-                    testData.Question_2_False_Answer_1,
-                    testData.Answer_2, 
-                    testData.Question_2_False_Answer_2, 
-                    testData.Question_2_False_Answer_3, 
+                    data.Question_2_False_Answer_1,
+                    data.Answer_2, 
+                    data.Question_2_False_Answer_2, 
+                    data.Question_2_False_Answer_3, 
                 ]
             },
             {
                 id: "2",
-                question: testData.Question_3,
-                answer: testData.Answer_3,
+                question: data.Question_3,
+                answer: data.Answer_3,
                 variants: [
-                    testData.Question_3_False_Answer_1,
-                    testData.Question_3_False_Answer_2,
-                    testData.Answer_3,  
-                    testData.Question_3_False_Answer_3, 
+                    data.Question_3_False_Answer_1,
+                    data.Question_3_False_Answer_2,
+                    data.Answer_3,  
+                    data.Question_3_False_Answer_3, 
                 ]
             },
             {
                 id: "3",
-                question: testData.Question_4,
-                answer: testData.Answer_4,
+                question: data.Question_4,
+                answer: data.Answer_4,
                 variants: [
-                    testData.Question_4_False_Answer_1,
-                    testData.Answer_4,
-                    testData.Question_4_False_Answer_2,
-                    testData.Question_4_False_Answer_3, 
+                    data.Question_4_False_Answer_1,
+                    data.Answer_4,
+                    data.Question_4_False_Answer_2,
+                    data.Question_4_False_Answer_3, 
                 ]
             },
             {
                 id: "4",
-                question: testData.Question_5,
-                answer: testData.Answer_5,
+                question: data.Question_5,
+                answer: data.Answer_5,
                 variants: [
-                    testData.Question_5_False_Answer_1,
-                    testData.Question_5_False_Answer_2,  
-                    testData.Question_5_False_Answer_3,
-                    testData.Answer_5, 
+                    data.Question_5_False_Answer_1,
+                    data.Question_5_False_Answer_2,  
+                    data.Question_5_False_Answer_3,
+                    data.Answer_5, 
                 ]
             },
             {
                 id: "5",
-                question: testData.Question_6,
-                answer: testData.Answer_6,
+                question: data.Question_6,
+                answer: data.Answer_6,
                 variants: [
-                    testData.Answer_6,
-                    testData.Question_6_False_Answer_1,
-                    testData.Question_6_False_Answer_2,
-                    testData.Question_6_False_Answer_3, 
+                    data.Answer_6,
+                    data.Question_6_False_Answer_1,
+                    data.Question_6_False_Answer_2,
+                    data.Question_6_False_Answer_3, 
                 ]
             },
             {
                 id: "6",
-                question: testData.Question_7,
-                answer: testData.Answer_7,
+                question: data.Question_7,
+                answer: data.Answer_7,
                 variants: [
-                    testData.Question_7_False_Answer_1,
-                    testData.Question_7_False_Answer_2,
-                    testData.Answer_7,  
-                    testData.Question_7_False_Answer_3, 
+                    data.Question_7_False_Answer_1,
+                    data.Question_7_False_Answer_2,
+                    data.Answer_7,  
+                    data.Question_7_False_Answer_3, 
                 ]
             },
             {
                 id: "7",
-                question: testData.Question_8,
-                answer: testData.Answer_8,
+                question: data.Question_8,
+                answer: data.Answer_8,
                 variants: [
-                    testData.Question_8_False_Answer_1,
-                    testData.Question_8_False_Answer_2,
-                    testData.Question_8_False_Answer_3,
-                    testData.Answer_8, 
+                    data.Question_8_False_Answer_1,
+                    data.Question_8_False_Answer_2,
+                    data.Question_8_False_Answer_3,
+                    data.Answer_8, 
                 ]
             },
             {
                 id: "8",
-                question: testData.Question_9,
-                answer: testData.Answer_9,
+                question: data.Question_9,
+                answer: data.Answer_9,
                 variants: [
-                    testData.Question_9_False_Answer_1,
-                    testData.Question_9_False_Answer_2,
-                    testData.Answer_9,  
-                    testData.Question_9_False_Answer_3, 
+                    data.Question_9_False_Answer_1,
+                    data.Question_9_False_Answer_2,
+                    data.Answer_9,  
+                    data.Question_9_False_Answer_3, 
                 ]
             },
             {
                 id: "9",
-                question: testData.Question_10,
-                answer: testData.Answer_10,
+                question: data.Question_10,
+                answer: data.Answer_10,
                 variants: [
-                    testData.Answer_10,
-                    testData.Question_10_False_Answer_1,
-                    testData.Question_10_False_Answer_2, 
-                    testData.Question_10_False_Answer_3, 
+                    data.Answer_10,
+                    data.Question_10_False_Answer_1,
+                    data.Question_10_False_Answer_2, 
+                    data.Question_10_False_Answer_3, 
                 ]
             },
         ]
@@ -225,19 +225,19 @@ const SubmitTest = (props) => {
                 content: (
                     <div>
                         <p>
-                            <b>Title:</b> {testData.Name}
+                            <b>Title:</b> {data.Name}
                         </p>
                         <p>
-                            <b>Category:</b> {testData.Category}
+                            <b>Category:</b> {data.Category}
                         </p>
                         <p>
-                            <b>Educator:</b> {testData.Educator}
+                            <b>Educator:</b> {data.Educator}
                         </p>
                         <p>
-                            <b>Difficulty:</b> {testData.Difficulty}
+                            <b>Difficulty:</b> {data.Difficulty}
                         </p>
                         <p>
-                            <b>PassingGrade:</b> {testData.PassingGrade}
+                            <b>PassingGrade:</b> {data.PassingGrade}
                         </p>
                     </div>
                 ),

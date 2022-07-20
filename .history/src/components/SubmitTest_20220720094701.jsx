@@ -225,19 +225,19 @@ const SubmitTest = (props) => {
                 content: (
                     <div>
                         <p>
-                            <b>Title:</b> {testData.Name}
+                            <b>Title:</b> {data.Name}
                         </p>
                         <p>
-                            <b>Category:</b> {testData.Category}
+                            <b>Category:</b> {data.Category}
                         </p>
                         <p>
-                            <b>Educator:</b> {testData.Educator}
+                            <b>Educator:</b> {data.Educator}
                         </p>
                         <p>
-                            <b>Difficulty:</b> {testData.Difficulty}
+                            <b>Difficulty:</b> {data.Difficulty}
                         </p>
                         <p>
-                            <b>PassingGrade:</b> {testData.PassingGrade}
+                            <b>PassingGrade:</b> {data.PassingGrade}
                         </p>
                     </div>
                 ),
