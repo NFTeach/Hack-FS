@@ -87,7 +87,7 @@ const SubmitTest = (props) => {
     const [isUploadInProgress, setIsUploadInProgress] = useState(false);
 
     const {
-        dataFile,
+        contractData,
         error: executeContractError,
         fetch: executeContractFunction,
         isFetching,
@@ -218,7 +218,7 @@ const SubmitTest = (props) => {
     // console.log(formattedData)
 
     useEffect(() => {
-        if (!isLoading && !isFetching && dataFile) {
+        if (!isLoading && !isFetching && metadata) {
             setIsUploadInProgress(false);
 
             Modal.success({
@@ -277,8 +277,7 @@ const SubmitTest = (props) => {
         
             let link;
             if (formattedData) {
-                const dataFile = formattedData;
-                const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(dataFile))});
+                const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(formattedData))});
                 link = await file.saveIPFS();
             } else {
                 link = "No data"
@@ -335,7 +334,7 @@ const SubmitTest = (props) => {
                     contractAddress: CONTRACT_ADDRESS,
                     functionName: "createSBT",
                     params: {
-                        _price: Moralis.Units.ETH(data.Price), 
+                        _price: Moralis.Units.ETH(0.001), //NEED TO CHANGE THIS TO THE INPUTTED PRICE THAT THE EDUCATOR DESIRES
                         _testHash: tokenMetadata._ipfs,
                     },
                 },
@@ -343,11 +342,7 @@ const SubmitTest = (props) => {
                     saveTest();
                 },
                 onError: (error) => {
-                    // notification.error({
-                    //     message: error,
-                    //     // description: "Please try again and make sure you are using a valid educator wallet address"
-                    // })
-                    // location.reload()
+                console.log("ERROR")
                 }
             });
         } else {
@@ -357,14 +352,6 @@ const SubmitTest = (props) => {
                 description: "In order to use this feature, you have to connect your wallet."
             });
         }
-    }
-
-    if(error) {
-        notification.error({
-            message: "Error",
-            description: "Please try again and make sure you are using a valid educator wallet address"
-        })
-        setIsUploadInProgress(false);
     }
 
 

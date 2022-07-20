@@ -83,11 +83,10 @@ const SubmitTest = (props) => {
     const { error, saveFile } = useMoralisFile();
 
     const [formattedData, setFormattedData] = useState({});
-    const [metadata, setMetadata] = useState(null);
     const [isUploadInProgress, setIsUploadInProgress] = useState(false);
 
     const {
-        dataFile,
+        file,
         error: executeContractError,
         fetch: executeContractFunction,
         isFetching,
@@ -215,10 +214,10 @@ const SubmitTest = (props) => {
         ]
         setFormattedData(dataFormatted)
     },[])
-    // console.log(formattedData)
+    console.log(data)
 
     useEffect(() => {
-        if (!isLoading && !isFetching && dataFile) {
+        if (!isLoading && !isFetching && file) {
             setIsUploadInProgress(false);
 
             Modal.success({
@@ -277,8 +276,7 @@ const SubmitTest = (props) => {
         
             let link;
             if (formattedData) {
-                const dataFile = formattedData;
-                const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(dataFile))});
+                const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(formattedData))});
                 link = await file.saveIPFS();
             } else {
                 link = "No data"
@@ -309,7 +307,7 @@ const SubmitTest = (props) => {
                     saveIPFS: true,
                 }
             )
-            
+
             async function saveTest() {
             
                 const Tests = moralis.Object.extend("Tests");
@@ -335,7 +333,7 @@ const SubmitTest = (props) => {
                     contractAddress: CONTRACT_ADDRESS,
                     functionName: "createSBT",
                     params: {
-                        _price: Moralis.Units.ETH(data.Price), 
+                        _price: Moralis.Units.ETH(0.001), //NEED TO CHANGE THIS TO THE INPUTTED PRICE THAT THE EDUCATOR DESIRES
                         _testHash: tokenMetadata._ipfs,
                     },
                 },
@@ -343,11 +341,7 @@ const SubmitTest = (props) => {
                     saveTest();
                 },
                 onError: (error) => {
-                    // notification.error({
-                    //     message: error,
-                    //     // description: "Please try again and make sure you are using a valid educator wallet address"
-                    // })
-                    // location.reload()
+                console.log("ERROR")
                 }
             });
         } else {
@@ -357,14 +351,6 @@ const SubmitTest = (props) => {
                 description: "In order to use this feature, you have to connect your wallet."
             });
         }
-    }
-
-    if(error) {
-        notification.error({
-            message: "Error",
-            description: "Please try again and make sure you are using a valid educator wallet address"
-        })
-        setIsUploadInProgress(false);
     }
 
 
