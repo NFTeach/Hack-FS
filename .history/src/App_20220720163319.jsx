@@ -134,7 +134,6 @@ const App = ({ isServerInfo }) => {
   const [isStudentRegisteringInProgress, setIsStudentRegisteringInProgress] = useState(false);
   const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] = useState(false);
   const user = moralis.User.current();
-  console.log(user)
 
   // Register student smart contract call
   const registerStudent = async () => {
@@ -236,37 +235,33 @@ const App = ({ isServerInfo }) => {
   ) : (
     <>
     {isAuthenticated ? (
-      <Layout style={{ height: "100vh", overflow: "auto" }}>
-        <div style={styles.content}>
-          <Card
-          style={!isMobile ? styles.registerCard : styles.mobileCard}
-          title={"Are you here to learn or teach?"}
-          >
-          <Button
-              style={styles.educatorButton}
-              type="primary"
-              loading={isEducatorRegisteringInProgress}
-              onClick={async () => {
-                setIsEducatorRegisteringInProgress(true);
-                await registerEducator();
-              }}
-          >
-          Register as Educator!
-          </Button>
-          <Button
-              style={styles.studentButton}
-              type="primary"
-              loading={isStudentRegisteringInProgress}
-              onClick={async () => {
-                setIsStudentRegisteringInProgress(true);
-                await registerStudent();
-              }}
-          >
-          Register as Student!
-          </Button> 
-        </Card>
-      </div>
-      </Layout>
+      <Card
+        style={!isMobile ? styles.registerCard : styles.mobileCard}
+        title={"Are you here to learn or teach?"}
+      >
+        <Button
+            style={styles.educatorButton}
+            type="primary"
+            loading={isEducatorRegisteringInProgress}
+            onClick={async () => {
+              setIsEducatorRegisteringInProgress(true);
+              await registerEducator();
+            }}
+        >
+        Register as Educator!
+        </Button>
+        <Button
+            style={styles.studentButton}
+            type="primary"
+            loading={isStudentRegisteringInProgress}
+            onClick={async () => {
+              setIsStudentRegisteringInProgress(true);
+              await registerStudent();
+            }}
+        >
+        Register as Student!
+        </Button> 
+      </Card>
       ) : (
           <>
           <Layout style={{ height: "100vh", overflow: "auto" }}>

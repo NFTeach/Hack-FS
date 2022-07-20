@@ -134,7 +134,6 @@ const App = ({ isServerInfo }) => {
   const [isStudentRegisteringInProgress, setIsStudentRegisteringInProgress] = useState(false);
   const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] = useState(false);
   const user = moralis.User.current();
-  console.log(user)
 
   // Register student smart contract call
   const registerStudent = async () => {
