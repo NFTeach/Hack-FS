@@ -11,8 +11,7 @@ import {
 import useWindowDimensions from '../util/useWindowDimensions';
 import {
     useMoralis,
-    useWeb3ExecuteFunction,
-    useMoralisWeb3Api
+    useWeb3ExecuteFunction
 } from "react-moralis";
 import moralis from "moralis";
 import { CONTRACT_ADDRESS } from './consts/vars';
@@ -74,7 +73,6 @@ const Test = () => {
         isWeb3EnableLoading 
     } = useMoralis();
     const user = moralis.User.current();
-    const Web3Api = useMoralisWeb3Api();
     // console.log(user.attributes.accounts[0])
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -102,7 +100,7 @@ const Test = () => {
     const { testData } = location.state;
     const ipfsUrl = testData.e.attributes.testData;
     const ipfsHash = ipfsUrl.slice(34);
-    // console.log(testData.e.attributes)
+    console.log(testData.e.attributes.passingGrade)
     
     useEffect(() => {
         async function fetchTestData() {
@@ -144,7 +142,9 @@ const Test = () => {
                     </div>
                 ),
                 onOk() {
-                    mintSBTtoValidatedStudent();
+                    // NEED TO TRIGGER THE MINT OF THE TOKEN HERE!
+                    // setFormattedData({});
+                    // window.location.reload();
                 }
             });
         }
@@ -164,13 +164,12 @@ const Test = () => {
 
         if (isAuthenticated) {
             notification.info({
-                message: "Validating address",
-                description: "Your address is being validated to allow you to mint your SBT. PLEASE DON'T REFRESH PAGE!"
+                message: "Uploading in progress",
+                description: "Your test is being upload to IPFS and data stored on the smart contract. PLEASE DON'T REFRESH PAGE!"
             })
         
 
-            // ADD STATS IN FUNC BELOW THAT COULD BE DISPLAY ON THE STUDENT DASHBOARD HERE 
-            // (MAYBE, MIGHT BE ABLE TO DO THIS WITH ONLY EVENTS)
+            // ADD STATS IN FUNC BELOW THAT COULD BE DISPLAY ON THE STUDENT DASHBOARD HERE
             // async function saveTestResults() {
 
             // }
@@ -182,7 +181,7 @@ const Test = () => {
                     functionName: "validateStudentTest",
                     params: {
                         _student: user.attributes.accounts[0], 
-                        _tokenId: JSON.stringify(testData.e.attributes.tokenId),
+                        _tokenId: testData.e.attributes.tokenId,
                     },
                 },
                 onSuccess: () => {
@@ -202,28 +201,6 @@ const Test = () => {
                 description: "In order to use this feature, you have to connect your wallet."
             });
         }
-    }
-
-    const mintSBTtoValidatedStudent = async () => {
-
-        if(isAuthenticated) {
-            notification.info({
-                message: "Minting SBT",
-                description: "Your SBT is being minted to your address. PLEASE DON'T REFRESH PAGE!"
-            })
-        }
-
-        executeContractFunction({
-            params: {
-                abi: NFTEACH_CONTRACT_ABI,
-                contractAddress: CONTRACT_ADDRESS,
-                functionName: "mintSBT",
-                params: {
-                    _tokenId: JSON.stringify(testData.e.attributes.tokenId)
-                },
-                msgValue: Moralis.Units.ETH(testData.e.attributes.testPrice)
-            }
-        })
     }
             
     const checkAnswer = (variant) => {
@@ -254,7 +231,7 @@ const Test = () => {
     setScore(0);
     };
 
-    console.log(data)
+    console.log(score)
 
     if(finish) {
         return (
@@ -278,7 +255,7 @@ const Test = () => {
                                 await validateStudentPassTest();
                             }}
                         >
-                            Congrats you passed! Click me!
+                            Congrats! Collect SBT!
                         </Button> 
                         ) : (
                         <Button
