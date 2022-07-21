@@ -166,6 +166,10 @@ contract SBT is ERC1155, Ownable {
             balanceOf(_student, _tokenId) == 0,
             "student already has this SBT"
         );
+        require(
+            students[_student].allowedMint[_tokenId] == false,
+            "student already allowed to mint"
+        );
         tests[_tokenId].nbCompleted += 1;
         students[_student].classCompleted += 1;
         students[_student].allowedMint[_tokenId] = true;
