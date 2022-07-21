@@ -123,7 +123,7 @@ function Chains() {
           style={{ ...styles.button, ...styles.item }}
         >
           <span style={{ marginLeft: "5px" }}>{selected?.value}</span>
-          <DownOutlined />
+          {/* <DownOutlined /> */}
         </Button>
       </Dropdown>
     </div>

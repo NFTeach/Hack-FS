@@ -110,7 +110,6 @@ Moralis.Cloud.define("validateStudentTest", async request => {
     
     //assign the parameters you will pass to this cloud function
     let To = request.params.to;
-    let Id = request.params.id;
     
     const tx = {
     //Gas station wallet to initiate transaction from
@@ -124,7 +123,7 @@ Moralis.Cloud.define("validateStudentTest", async request => {
     // this encodes the ABI of the method and the arguements
     // Change faucetFunction to whatever function you want to call, replace (To) with your
     //parameters (To, From, Amount.
-    data: myContract.methods.validateStudentTest(To, Id).encodeABI()
+    data: myContract.methods.validateStudentTest(To).encodeABI()
     }
     const signPromise = web3.eth.accounts.signTransaction(tx, _private)
     

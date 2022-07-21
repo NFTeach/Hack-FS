@@ -85,7 +85,7 @@ const Test = () => {
     const [finish, setFinish] = useState(false);
     const [clickAnswer, setClickAnswer] = useState(false);
     const [Data, setData] = useState(dummyData);
-    const [isMintingInProgress, setIsMintingInProgress] = useState(false);
+    const [isValidatingInProgress, setIsValidatingInProgress] = useState(false);
 
     const {
         data,
@@ -122,7 +122,7 @@ const Test = () => {
 
     useEffect(() => {
         if (!isLoading && !isFetching && data) {
-            setIsMintingInProgress(false);
+            setIsValidatingInProgress(false);
 
             Modal.success({
                 title: "Congrats! You have been validated, click OK button below to mint SBT",
@@ -146,7 +146,7 @@ const Test = () => {
                     </div>
                 ),
                 onOk() {
-                    window.location.reload();
+                    mintSBTtoValidatedStudent();
                 }
             });
         }
@@ -154,7 +154,7 @@ const Test = () => {
 
     useEffect(() => {
         if (executeContractError && executeContractError.code === 4001) {
-            setIsMintingInProgress(false);
+            setIsValidatingInProgress(false);
             notification.error({
                 message: "Contract Error",
                 description: executeContractError.message,
@@ -162,70 +162,48 @@ const Test = () => {
         }
     }, [executeContractError]);
 
-    // onlyOwner validate student cloud smart contract call
-    const allowValidation = async () => {
+    const validateStudentPassTest = async () => {
 
-        notification.info({
-            message: "Validating address on blockchain",
-            description: "THIS COULD TAKE UP TO 5 MINS. GO GRAB A CUP OF COFFEE AND COME BACK. PLEASE DON'T REFRESH PAGE!"
-        })
-
-        let studentAccount = user.attributes.accounts[0];
-        let tokenId = JSON.stringify(testData.e.attributes.tokenId);
-
-        const studentParams = {
-            to: studentAccount,
-            id: tokenId
-        }
-
-        async function callValidateStudent() {
-            const _Result = await Moralis.Cloud.run("validateStudentTest", studentParams)
-            console.log(_Result)
-        }
-        callValidateStudent();
-    }
-
-    // const validateStudentPassTest = async () => {
-
-    //     if (isAuthenticated) {
-    //         notification.info({
-    //             message: "Validating address",
-    //             description: "Your address is being validated to allow you to mint your SBT. PLEASE DON'T REFRESH PAGE!"
-    //         })
+        if (isAuthenticated) {
+            notification.info({
+                message: "Validating address",
+                description: "Your address is being validated to allow you to mint your SBT. PLEASE DON'T REFRESH PAGE!"
+            })
         
-    //         // ADD STATS IN FUNC BELOW THAT COULD BE DISPLAY ON THE STUDENT DASHBOARD HERE 
-    //         // (MAYBE, MIGHT BE ABLE TO DO THIS WITH ONLY EVENTS)
-    //         // async function saveTestResults() {
 
-    //         // }
+            // ADD STATS IN FUNC BELOW THAT COULD BE DISPLAY ON THE STUDENT DASHBOARD HERE 
+            // (MAYBE, MIGHT BE ABLE TO DO THIS WITH ONLY EVENTS)
+            // async function saveTestResults() {
 
-    //         executeContractFunction({
-    //             params: {
-    //                 abi: NFTEACH_CONTRACT_ABI,
-    //                 contractAddress: CONTRACT_ADDRESS,
-    //                 functionName: "validateStudentTest",
-    //                 params: {
-    //                     _student: user.attributes.accounts[0], 
-    //                     _tokenId: JSON.stringify(testData.e.attributes.tokenId),
-    //                 },
-    //             },
-        //         onSuccess: () => {
-        //             //saveTestResults()
-        //         },
-        //         onError: () => {
-        //             notification.error({
-        //                 message: "Error has occured. Pleas try again!",
-        //             })
-        //         }
-        //     });
-        // } else {
-        //     setIsValidatingInProgress(false);
-        //     notification.error({
-        //         message: "You need to have your wallet connected to submit test",
-        //         description: "In order to use this feature, you have to connect your wallet."
-        //     });
-        // }
-    // }
+            // }
+
+            executeContractFunction({
+                params: {
+                    abi: NFTEACH_CONTRACT_ABI,
+                    contractAddress: CONTRACT_ADDRESS,
+                    functionName: "validateStudentTest",
+                    params: {
+                        _student: user.attributes.accounts[0], 
+                        _tokenId: JSON.stringify(testData.e.attributes.tokenId),
+                    },
+                },
+                onSuccess: () => {
+
+                },
+                onError: () => {
+                    notification.error({
+                        message: "Error has occured. Pleas try again!",
+                    })
+                }
+            });
+        } else {
+            setIsValidatingInProgress(false);
+            notification.error({
+                message: "You need to have your wallet connected to submit test",
+                description: "In order to use this feature, you have to connect your wallet."
+            });
+        }
+    }
 
     const mintSBTtoValidatedStudent = async () => {
 
@@ -234,40 +212,26 @@ const Test = () => {
                 message: "Minting SBT",
                 description: "Your SBT is being minted to your address. PLEASE DON'T REFRESH PAGE!"
             })
-        
-
-            // const fetchTransaction = async () => {
-            //     const options = {
-            //         chain: "goerli",
-            //         transaction_hash: data.hash
-            //     }
-            // }
-
-            executeContractFunction({
-                params: {
-                    abi: NFTEACH_CONTRACT_ABI,
-                    contractAddress: CONTRACT_ADDRESS,
-                    functionName: "mintSBT",
-                    params: {
-                        _tokenId: JSON.stringify(testData.e.attributes.tokenId)
-                    },
-                    msgValue: Moralis.Units.ETH(testData.e.attributes.testPrice)
-                },
-                onSuccess: () => {
-                },
-                onError: (error) => {
-                    notification.error({
-                        message: error,
-                    })
-                }
-            })
-        } else {
-            setIsMintingInProgress(false);
-            notification.error({
-                message: "You need to have your wallet connected to create a test",
-                description: "In order to use this feature, you have to connect your wallet."
-            });
         }
+
+        const fetchTransaction = async () => {
+            const options = {
+                chain: "goerli",
+                transaction_hash: data.hash
+            }
+        }
+
+        executeContractFunction({
+            params: {
+                abi: NFTEACH_CONTRACT_ABI,
+                contractAddress: CONTRACT_ADDRESS,
+                functionName: "mintSBT",
+                params: {
+                    _tokenId: JSON.stringify(testData.e.attributes.tokenId)
+                },
+                msgValue: Moralis.Units.ETH(testData.e.attributes.testPrice)
+            }
+        })
     }
 
     if(error) {
@@ -275,7 +239,7 @@ const Test = () => {
             message: "Error",
             description: "Please try again and make sure you haven't already validated and minted this SBT"
         })
-        setIsMintingInProgress(false);
+        setIsValidatingInProgress(false);
     }
             
     const checkAnswer = (variant) => {
@@ -324,14 +288,13 @@ const Test = () => {
                         <Button 
                             style={styles.button}
                             type="primary"
-                            loading={isMintingInProgress}
+                            loading={isValidatingInProgress}
                             onClick={async () => {
-                                setIsMintingInProgress(true);
-                                await allowValidation();
-                                setTimeout(mintSBTtoValidatedStudent, 300000)
+                                setIsValidatingInProgress(true);
+                                await validateStudentPassTest();
                             }}
                         >
-                            You Passed! Click here to mint SBT!
+                            You Passed! Click here to Validate address!
                         </Button> 
                         ) : (
                         <Button
@@ -339,7 +302,7 @@ const Test = () => {
                             type="primary"
                             onClick={() => startOver()}
                         >
-                            You didn't pass. Start Over?
+                            Start Over
                         </Button>
                         )}
                     </Card> 
