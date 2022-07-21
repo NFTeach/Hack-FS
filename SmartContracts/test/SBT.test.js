@@ -41,12 +41,12 @@ describe('SBT Test', function () {
         expect(await sbt.isStudent(testStudent.address)).to.equal(true);
 
         // Should revert due to student already existing
-        await expect(sbt.addStudent(testStudent.address)).to.be.revertedWith("student already exists");
+        await expect(sbt.addStudent(testStudent.address)).to.be.revertedWith("Student already exists");
     });
 
     it('should create a new test as educator', async function () {
         // Should revert due to not being an educator
-        await expect(sbt.connect(testAttacker).createSBT(mintPrice, uri)).to.be.revertedWith("You are not an educator");
+        await expect(sbt.connect(testAttacker).createSBT(mintPrice, uri)).to.be.revertedWith("Not an educator");
         
         // Should succeed as educator
         await sbt.connect(testEducator).createSBT(mintPrice, uri);
@@ -64,7 +64,7 @@ describe('SBT Test', function () {
         await expect(sbt.connect(testAttacker).validateStudentTest(testStudent.address, 0)).to.be.revertedWith("Ownable: caller is not the owner");
         
         // Should revert due to the token not existing
-        await expect(sbt.validateStudentTest(testStudent.address, 394587)).to.be.revertedWith("This token doesn't exists");
+        await expect(sbt.validateStudentTest(testStudent.address, 394587)).to.be.revertedWith("Token doesn't exist");
 
         // Should succeed as owner
         await sbt.validateStudentTest(testStudent.address, 0);
@@ -73,7 +73,7 @@ describe('SBT Test', function () {
         expect(await sbt.isAllowedMint(testStudent.address, 0)).to.equal(true);
         
         // Should revert due to student already having been validated 
-        await expect(sbt.validateStudentTest(testStudent.address, 0)).to.be.revertedWith("student already allowed to mint"); // This needs to be added to smart contract
+        await expect(sbt.validateStudentTest(testStudent.address, 0)).to.be.revertedWith("Student already allowed to mint");
 
         // Student's classCompleted should increment
         expect(await sbt.nbClassesCompleted(testStudent.address)).to.equal(1);
@@ -83,15 +83,15 @@ describe('SBT Test', function () {
 
     it('should mint a new token as student', async function () {
         // Should revert due to not being a student
-        await expect(sbt.connect(testAttacker).mintSBT(0)).to.be.revertedWith("You are not a student")
+        await expect(sbt.connect(testAttacker).mintSBT(0)).to.be.revertedWith("Not a student")
 
         // create another student account which has not been validated
         await sbt.addStudent(testStudent2.address);
         // Should revert due to not being validated by owner
-        await expect(sbt.connect(testStudent2).mintSBT(0)).to.be.reverted; // no reason in contract
+        await expect(sbt.connect(testStudent2).mintSBT(0)).to.be.revertedWith("Student is not allowed to mint this token");
 
         // Should revert due to incorrect msg.value
-        await expect(sbt.connect(testStudent).mintSBT(0, { value: ethers.utils.parseEther('0.0001')})).to.be.reverted;
+        await expect(sbt.connect(testStudent).mintSBT(0, { value: ethers.utils.parseEther('0.0001')})).to.be.revertedWith("Incorrect amount");
 
         // Should succeed as validated student with correct msg.value
         await sbt.connect(testStudent).mintSBT(0, { value: mintPrice });
@@ -109,7 +109,7 @@ describe('SBT Test', function () {
         // Student should not be allowedMint
         expect(await sbt.isAllowedMint(testStudent.address, 0)).to.equal(false);
         // Student should not be able to mint another token
-        await expect(sbt.connect(testStudent).mintSBT(0, { value: mintPrice })).to.be.reverted; // no reason in contract
+        await expect(sbt.connect(testStudent).mintSBT(0, { value: mintPrice })).to.be.reverted;
 
     })
 
@@ -123,6 +123,6 @@ describe('SBT Test', function () {
         // Educator's balance should increase
 
         // Should revert due to not having any payout left to withdraw
-        await expect(sbt.connect(testEducator).withdrawCoursesPayoff()).to.be.revertedWith("No payout left to pay");
+        await expect(sbt.connect(testEducator).withdrawCoursesPayoff()).to.be.revertedWith("No funds left to withdraw");
     })
 });
