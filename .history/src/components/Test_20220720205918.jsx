@@ -4,9 +4,7 @@ import { dummyData } from "../util/testData";
 import { 
     Card, 
     Typography,  
-    Button,
-    Modal,
-    notification
+    Button
 } from 'antd';
 import useWindowDimensions from '../util/useWindowDimensions';
 import {
@@ -73,7 +71,6 @@ const Test = () => {
         isWeb3EnableLoading 
     } = useMoralis();
     const user = moralis.User.current();
-    // console.log(user.attributes.accounts[0])
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [myAnswer, setMyAnswer] = useState("");
@@ -100,7 +97,7 @@ const Test = () => {
     const { testData } = location.state;
     const ipfsUrl = testData.e.attributes.testData;
     const ipfsHash = ipfsUrl.slice(34);
-    console.log(testData.e.attributes.passingGrade)
+    console.log(testData.e.attributes)
     
     useEffect(() => {
         async function fetchTestData() {
@@ -125,84 +122,32 @@ const Test = () => {
                 content: (
                     <div>
                         <p>
-                            <b>Title:</b> {testData.e.attributes.testName}
+                            <b>Title:</b> {testData.Name}
                         </p>
                         <p>
-                            <b>Category:</b> {testData.e.attributes.testCategory}
+                            <b>Category:</b> {testData.Category}
                         </p>
                         <p>
-                            <b>Educator:</b> {testData.e.attributes.educatorName}
+                            <b>Educator:</b> {testData.Educator}
                         </p>
                         <p>
-                            <b>Difficulty:</b> {testData.e.attributes.testDifficulty}
+                            <b>Difficulty:</b> {testData.Difficulty}
                         </p>
                         <p>
-                            <b>PassingGrade:</b> {testData.e.attributes.passingGrade}
+                            <b>PassingGrade:</b> {testData.PassingGrade}
                         </p>
                     </div>
                 ),
                 onOk() {
-                    // NEED TO TRIGGER THE MINT OF THE TOKEN HERE!
-                    // setFormattedData({});
+                    setFormattedData({});
                     // window.location.reload();
                 }
             });
         }
     }, [isFetching, isLoading]);
-
-    useEffect(() => {
-        if (executeContractError && executeContractError.code === 4001) {
-            setIsValidatingInProgress(false);
-            notification.error({
-                message: "Contract Error",
-                description: executeContractError.message,
-            });
-        }
-    }, [executeContractError]);
-
-    const validateStudentPassTest = async () => {
-
-        if (isAuthenticated) {
-            notification.info({
-                message: "Uploading in progress",
-                description: "Your test is being upload to IPFS and data stored on the smart contract. PLEASE DON'T REFRESH PAGE!"
-            })
-        
-
-            // ADD STATS IN FUNC BELOW THAT COULD BE DISPLAY ON THE STUDENT DASHBOARD HERE
-            // async function saveTestResults() {
-
-            // }
-
-            executeContractFunction({
-                params: {
-                    abi: NFTEACH_CONTRACT_ABI,
-                    contractAddress: CONTRACT_ADDRESS,
-                    functionName: "validateStudentTest",
-                    params: {
-                        _student: user.attributes.accounts[0], 
-                        _tokenId: testData.e.attributes.tokenId,
-                    },
-                },
-                onSuccess: () => {
-                    // saveTestResults();
-                    window.alert("Success!");
-                },
-                onError: (error) => {
-                    notification.error({
-                        message: error,
-                    })
-                }
-            });
-        } else {
-            setIsValidatingInProgress(false);
-            notification.error({
-                message: "You need to have your wallet connected to submit test",
-                description: "In order to use this feature, you have to connect your wallet."
-            });
-        }
-    }
-            
+    
+    console.log(testData.e)
+    
     const checkAnswer = (variant) => {
         setMyAnswer(variant);
         setClickAnswer(true);
@@ -231,7 +176,7 @@ const Test = () => {
     setScore(0);
     };
 
-    console.log(score)
+    // NEED TO ADD CONTRACT INTERACTION HERE
 
     if(finish) {
         return (
@@ -245,15 +190,6 @@ const Test = () => {
                             {`Test over! Your Final Score is ${score}/${Data.length - 1}`}
                         </Text>
                         <br/>
-                        {JSON.stringify(score) >= testData.e.attributes.passingGrade ? (
-                        <Button 
-                            style={styles.button}
-                            type="primary"
-                            // onClick={TBD}
-                        >
-                            Congrats! Collect SBT!
-                        </Button> 
-                        ) : (
                         <Button
                             style={styles.button}
                             type="primary"
@@ -261,7 +197,14 @@ const Test = () => {
                         >
                             Start Over
                         </Button>
-                        )}
+                        {/* USE TERNARY OPERATOR CONDITIONAL ON PASSING TEST TO DISPLAY THESE BUTTONS? */}
+                        {/* <Button 
+                            style={styles.button}
+                            type="primary"
+                            // onClick={TBD}
+                        >
+                            Congrats! Collect SBT!
+                        </Button> */}
                     </Card> 
                 </main>
             </form>

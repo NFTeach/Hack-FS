@@ -5,7 +5,6 @@ import {
     Card, 
     Typography,  
     Button,
-    Modal,
     notification
 } from 'antd';
 import useWindowDimensions from '../util/useWindowDimensions';
@@ -73,7 +72,7 @@ const Test = () => {
         isWeb3EnableLoading 
     } = useMoralis();
     const user = moralis.User.current();
-    // console.log(user.attributes.accounts[0])
+    console.log(user)
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [myAnswer, setMyAnswer] = useState("");
@@ -100,7 +99,7 @@ const Test = () => {
     const { testData } = location.state;
     const ipfsUrl = testData.e.attributes.testData;
     const ipfsHash = ipfsUrl.slice(34);
-    console.log(testData.e.attributes.passingGrade)
+    console.log(testData.e.attributes)
     
     useEffect(() => {
         async function fetchTestData() {
@@ -152,7 +151,7 @@ const Test = () => {
 
     useEffect(() => {
         if (executeContractError && executeContractError.code === 4001) {
-            setIsValidatingInProgress(false);
+            setIsUploadInProgress(false);
             notification.error({
                 message: "Contract Error",
                 description: executeContractError.message,
@@ -167,42 +166,26 @@ const Test = () => {
                 message: "Uploading in progress",
                 description: "Your test is being upload to IPFS and data stored on the smart contract. PLEASE DON'T REFRESH PAGE!"
             })
-        
-
-            // ADD STATS IN FUNC BELOW THAT COULD BE DISPLAY ON THE STUDENT DASHBOARD HERE
-            // async function saveTestResults() {
-
-            // }
-
-            executeContractFunction({
-                params: {
-                    abi: NFTEACH_CONTRACT_ABI,
-                    contractAddress: CONTRACT_ADDRESS,
-                    functionName: "validateStudentTest",
-                    params: {
-                        _student: user.attributes.accounts[0], 
-                        _tokenId: testData.e.attributes.tokenId,
-                    },
-                },
-                onSuccess: () => {
-                    // saveTestResults();
-                    window.alert("Success!");
-                },
-                onError: (error) => {
-                    notification.error({
-                        message: error,
-                    })
-                }
-            });
-        } else {
-            setIsValidatingInProgress(false);
-            notification.error({
-                message: "You need to have your wallet connected to submit test",
-                description: "In order to use this feature, you have to connect your wallet."
-            });
         }
+
+        // ADD STATS IN FUNC BELOW THAT COULD BE DISPLAY ON THE STUDENT DASHBOARD HERE
+        // async function saveTestResults() {
+
+        // }
+
+        // executeContractFunction({
+        //     params: {
+        //         abi: NFTEACH_CONTRACT_ABI,
+        //         contractAddress: CONTRACT_ADDRESS,
+        //         functionName: "validateStudentTest",
+        //         params: {
+        //             _student: , 
+        //             _testHash: tokenMetadata._ipfs,
+        //         },
+        //     }
+        // })
     }
-            
+        
     const checkAnswer = (variant) => {
         setMyAnswer(variant);
         setClickAnswer(true);
@@ -231,8 +214,6 @@ const Test = () => {
     setScore(0);
     };
 
-    console.log(score)
-
     if(finish) {
         return (
             <form style={styles.container}>
@@ -245,15 +226,6 @@ const Test = () => {
                             {`Test over! Your Final Score is ${score}/${Data.length - 1}`}
                         </Text>
                         <br/>
-                        {JSON.stringify(score) >= testData.e.attributes.passingGrade ? (
-                        <Button 
-                            style={styles.button}
-                            type="primary"
-                            // onClick={TBD}
-                        >
-                            Congrats! Collect SBT!
-                        </Button> 
-                        ) : (
                         <Button
                             style={styles.button}
                             type="primary"
@@ -261,7 +233,14 @@ const Test = () => {
                         >
                             Start Over
                         </Button>
-                        )}
+                        {/* USE TERNARY OPERATOR CONDITIONAL ON PASSING TEST TO DISPLAY THESE BUTTONS? */}
+                        {/* <Button 
+                            style={styles.button}
+                            type="primary"
+                            // onClick={TBD}
+                        >
+                            Congrats! Collect SBT!
+                        </Button> */}
                     </Card> 
                 </main>
             </form>
