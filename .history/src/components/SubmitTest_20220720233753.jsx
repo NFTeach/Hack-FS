@@ -221,7 +221,7 @@ const SubmitTest = (props) => {
             setIsUploadInProgress(false);
 
             Modal.success({
-                title: "Congrats! Your test is being stored on smart contract and will be available soon for students!",
+                title: "Congrats! Your test has been created!",
                 content: (
                     <div>
                         <p>

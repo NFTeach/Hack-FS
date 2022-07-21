@@ -12,6 +12,7 @@ import useWindowDimensions from '../util/useWindowDimensions';
 import {
     useMoralis,
     useWeb3ExecuteFunction,
+    useMoralisWeb3Api,
     useMoralisFile
 } from "react-moralis";
 import moralis from "moralis";
@@ -74,6 +75,7 @@ const Test = () => {
         isWeb3EnableLoading 
     } = useMoralis();
     const user = moralis.User.current();
+    const Web3Api = useMoralisWeb3Api();
     const { error, saveFile } = useMoralisFile();
     // console.log(user.attributes.accounts[0])
 
@@ -123,7 +125,7 @@ const Test = () => {
             setIsMintingInProgress(false);
 
             Modal.success({
-                title: "Congrats! You have been validated, click OK button below to mint SBT!",
+                title: "Congrats! You have been validated, click OK button below to mint SBT",
                 content: (
                     <div>
                         <p>
@@ -162,12 +164,7 @@ const Test = () => {
 
     // onlyOwner validate student cloud smart contract call
     const allowValidation = async () => {
-
-        notification.info({
-            message: "Validating address on blockchain",
-            description: "THIS  WILL TAKE APPROX. 5 MINS. GO GRAB A CUP OF COFFEE AND COME BACK. PLEASE DON'T REFRESH PAGE!"
-        })
-
+        
         let studentAccount = user.attributes.accounts[0];
         let tokenId = JSON.stringify(testData.e.attributes.tokenId);
 
@@ -183,6 +180,48 @@ const Test = () => {
         callValidateStudent();
     }
 
+    // const validateStudentPassTest = async () => {
+
+    //     if (isAuthenticated) {
+    //         notification.info({
+    //             message: "Validating address",
+    //             description: "Your address is being validated to allow you to mint your SBT. PLEASE DON'T REFRESH PAGE!"
+    //         })
+        
+    //         // ADD STATS IN FUNC BELOW THAT COULD BE DISPLAY ON THE STUDENT DASHBOARD HERE 
+    //         // (MAYBE, MIGHT BE ABLE TO DO THIS WITH ONLY EVENTS)
+    //         // async function saveTestResults() {
+
+    //         // }
+
+    //         executeContractFunction({
+    //             params: {
+    //                 abi: NFTEACH_CONTRACT_ABI,
+    //                 contractAddress: CONTRACT_ADDRESS,
+    //                 functionName: "validateStudentTest",
+    //                 params: {
+    //                     _student: user.attributes.accounts[0], 
+    //                     _tokenId: JSON.stringify(testData.e.attributes.tokenId),
+    //                 },
+    //             },
+        //         onSuccess: () => {
+        //             //saveTestResults()
+        //         },
+        //         onError: () => {
+        //             notification.error({
+        //                 message: "Error has occured. Pleas try again!",
+        //             })
+        //         }
+        //     });
+        // } else {
+        //     setIsValidatingInProgress(false);
+        //     notification.error({
+        //         message: "You need to have your wallet connected to submit test",
+        //         description: "In order to use this feature, you have to connect your wallet."
+        //     });
+        // }
+    // }
+
     const mintSBTtoValidatedStudent = async () => {
 
         if(isAuthenticated) {
@@ -191,6 +230,14 @@ const Test = () => {
                 description: "Your SBT is being minted to your address. PLEASE DON'T REFRESH PAGE!"
             })
         
+
+            // const fetchTransaction = async () => {
+            //     const options = {
+            //         chain: "goerli",
+            //         transaction_hash: data.hash
+            //     }
+            // }
+
             executeContractFunction({
                 params: {
                     abi: NFTEACH_CONTRACT_ABI,
@@ -276,7 +323,7 @@ const Test = () => {
                             onClick={async () => {
                                 setIsMintingInProgress(true);
                                 await allowValidation();
-                                setTimeout(mintSBTtoValidatedStudent, 300000)
+                                setInterval(await mintSBTtoValidatedStudent(), 100000)
                             }}
                         >
                             You Passed! Click here to mint SBT!
@@ -287,7 +334,7 @@ const Test = () => {
                             type="primary"
                             onClick={() => startOver()}
                         >
-                            You didn't pass. Start Over?
+                            Start Over
                         </Button>
                         )}
                     </Card> 
