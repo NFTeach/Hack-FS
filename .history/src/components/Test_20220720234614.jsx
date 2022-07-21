@@ -11,8 +11,7 @@ import {
 import useWindowDimensions from '../util/useWindowDimensions';
 import {
     useMoralis,
-    useWeb3ExecuteFunction,
-    useMoralisWeb3Api
+    useWeb3ExecuteFunction
 } from "react-moralis";
 import moralis from "moralis";
 import { CONTRACT_ADDRESS } from './consts/vars';
@@ -74,7 +73,6 @@ const Test = () => {
         isWeb3EnableLoading 
     } = useMoralis();
     const user = moralis.User.current();
-    const Web3Api = useMoralisWeb3Api();
     // console.log(user.attributes.accounts[0])
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -254,7 +252,7 @@ const Test = () => {
     setScore(0);
     };
 
-    console.log(data)
+    // console.log(score)
 
     if(finish) {
         return (

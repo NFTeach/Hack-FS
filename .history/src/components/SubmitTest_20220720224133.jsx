@@ -315,7 +315,7 @@ const SubmitTest = (props) => {
                 const Tests = moralis.Object.extend("Tests");
                 const query = new Moralis.Query(Tests);
                 const results = await query.find()
-                const tokenId = (results.length + 1) - 1;
+                const tokenId = results.length + 1;
         
                 const newTest = new Tests();
                 
@@ -326,7 +326,6 @@ const SubmitTest = (props) => {
                 newTest.set("testCategory", testData.Category)
                 newTest.set("testDifficulty", testData.Difficulty)
                 newTest.set("passingGrade", testData.PassingGrade)
-                newTest.set("testPrice", testData.Price)
                 newTest.set("educatorAcc", user?.attributes.ethAddress)
                 newTest.set("educatorPfp", user?.attributes.pfp)
                 newTest.set("educatorUsername", user?.attributes.username)

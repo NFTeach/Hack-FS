@@ -11,8 +11,7 @@ import {
 import useWindowDimensions from '../util/useWindowDimensions';
 import {
     useMoralis,
-    useWeb3ExecuteFunction,
-    useMoralisWeb3Api
+    useWeb3ExecuteFunction
 } from "react-moralis";
 import moralis from "moralis";
 import { CONTRACT_ADDRESS } from './consts/vars';
@@ -74,7 +73,6 @@ const Test = () => {
         isWeb3EnableLoading 
     } = useMoralis();
     const user = moralis.User.current();
-    const Web3Api = useMoralisWeb3Api();
     // console.log(user.attributes.accounts[0])
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -102,7 +100,7 @@ const Test = () => {
     const { testData } = location.state;
     const ipfsUrl = testData.e.attributes.testData;
     const ipfsHash = ipfsUrl.slice(34);
-    // console.log(testData.e.attributes)
+    console.log(testData.e.attributes)
     
     useEffect(() => {
         async function fetchTestData() {
@@ -144,7 +142,7 @@ const Test = () => {
                     </div>
                 ),
                 onOk() {
-                    mintSBTtoValidatedStudent();
+                    
                 }
             });
         }
@@ -204,27 +202,27 @@ const Test = () => {
         }
     }
 
-    const mintSBTtoValidatedStudent = async () => {
+    // const mintSBTtoValidatedStudent = async () => {
 
-        if(isAuthenticated) {
-            notification.info({
-                message: "Minting SBT",
-                description: "Your SBT is being minted to your address. PLEASE DON'T REFRESH PAGE!"
-            })
-        }
+    //     if(isAuthenticated) {
+    //         notification.info({
+    //             message: "Minting SBT",
+    //             description: "Your SBT is being minted to your address. PLEASE DON'T REFRESH PAGE!"
+    //         })
+    //     }
 
-        executeContractFunction({
-            params: {
-                abi: NFTEACH_CONTRACT_ABI,
-                contractAddress: CONTRACT_ADDRESS,
-                functionName: "mintSBT",
-                params: {
-                    _tokenId: JSON.stringify(testData.e.attributes.tokenId)
-                },
-                msgValue: Moralis.Units.ETH(testData.e.attributes.testPrice)
-            }
-        })
-    }
+    //     executeContractFunction({
+    //         params: {
+    //             abi: NFTEACH_CONTRACT_ABI,
+    //             contractAddress: CONTRACT_ADDRESS,
+    //             functionName: "mintSBT",
+    //             params: {
+    //                 _tokenId: JSON.stringify(testData.e.attributes.tokenId)
+    //             },
+    //             msgValue: 
+    //         }
+    //     })
+    // }
             
     const checkAnswer = (variant) => {
         setMyAnswer(variant);
@@ -254,7 +252,7 @@ const Test = () => {
     setScore(0);
     };
 
-    console.log(data)
+    console.log(score)
 
     if(finish) {
         return (
@@ -278,7 +276,7 @@ const Test = () => {
                                 await validateStudentPassTest();
                             }}
                         >
-                            Congrats you passed! Click me!
+                            Congrats! Collect SBT!
                         </Button> 
                         ) : (
                         <Button
