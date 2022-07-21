@@ -10,14 +10,13 @@ import {
   Upload,
 } from "antd";
 
-import React, { useState } from "react";
+import { useMoralis } from "react-moralis";
+import moralis from "moralis";
+
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 const { Option } = Select;
-
-const handleChange = (value) => {
-  console.log(`selected ${value}`);
-};
 
 const props = {
   name: "file",
@@ -42,15 +41,53 @@ const props = {
 const UploadContent = () => {
   const [form] = Form.useForm("vertical");
   const [requiredMark, setRequiredMarkType] = useState(null);
+  const [courseName, setCourseName] = useState(null);
+  const [courseSubject, setCourseSubject] = useState(null);
+  const [courseDifficulty, setCourseDifficulty] = useState(null);
+  const [coursePrerequisites, setCoursePrerequisites] = useState(null);
+  const [courseDescription, setCourseDescription] = useState(null);
+  const [courseLength, setCourseLength] = useState(null);
+  const [courseFile, setCourseFile] = useState(null);
 
   const onRequiredTypeChange = ({ requiredMarkValue }) => {
     setRequiredMarkType(requiredMarkValue);
   };
 
+  const {
+    Moralis,
+    isWeb3Enabled,
+    enableWeb3,
+    isAuthenticated,
+    isWeb3EnableLoading,
+  } = useMoralis();
+  const user = moralis.User.current();
+
+  useEffect(() => {
+    if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) enableWeb3();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isWeb3Enabled]);
+
+  async function saveCourse() {
+    const Course = moralis.Object.extend("Course");
+
+    const newCourse = new Course();
+
+    newCourse.set("courseName", courseName);
+    newCourse.set("courseSubject", courseSubject);
+    newCourse.set("courseDifficulty", courseDifficulty);
+    newCourse.set("coursePrerequisites", coursePrerequisites);
+    newCourse.set("courseDescription", courseDescription);
+    newCourse.set("courseLength", courseLength);
+    newCourse.set("courseFile", courseFile);
+
+    await newCourse.save();
+    console.log("Your course was saved");
+  }
+
   return (
     <Card
       form={form}
-      title='Upload Course Content'
+      title="Upload Course Content"
       style={{
         boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
         border: "1px solid #e7eaf3",
@@ -65,6 +102,11 @@ const UploadContent = () => {
       requiredMark={requiredMark}
     >
       <div>
+        <p>
+          The descriptions you write here will help students decide if your
+          course is the one for them
+        </p>
+        <p>Course Name</p>
         <Form.Item
           style={{
             width: "100%",
@@ -72,23 +114,59 @@ const UploadContent = () => {
             margin: "2px",
           }}
           required
-          tooltip='This is a required field'
+          tooltip="This is a required field"
         >
-          <Input placeholder='Full Name' />
+          <Input
+            onChange={(event) => setCourseName(event.target.value)}
+            placeholder="Course's name"
+          />
         </Form.Item>
       </div>
       <br />
-      <div
+      <p>Course Subject</p>
+      <Select
+        mode="multiple"
         style={{
-          display: "inline",
-          float: "left",
-          width: "45%",
+          width: "100%",
+          display: "inline-block",
         }}
+        placeholder="Select Course Category"
+        onChange={setCourseSubject}
+        optionLabelProp="label"
       >
-        <Form.Item required tooltip='This is a required field'>
-          <Input placeholder='Phone Number' />
-        </Form.Item>
-      </div>
+        <Option value="cryptocurrency" label="Cryptocurrency">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Cryptocurrency ">
+              💰{" "}
+            </span>
+            Cryptocurrency
+          </div>
+        </Option>
+        <Option value="chemistry" label="Chemistry">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Chemistry">
+              🧪{" "}
+            </span>
+            Chemistry
+          </div>
+        </Option>
+        <Option value="artificial intelligence" label="Artificial Intelligence">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Artificial Intelligence">
+              🤖{" "}
+            </span>
+            Artificial Intelligence
+          </div>
+        </Option>
+        <Option value="bitcoin" label="Bitcoin">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Bitcoin">
+              🪙{" "}
+            </span>
+            Bitcoin
+          </div>
+        </Option>
+      </Select>
       <div
         style={{
           display: "inline",
@@ -96,8 +174,14 @@ const UploadContent = () => {
           width: "50%",
         }}
       >
-        <Form.Item required tooltip='This is a required field'>
-          <Input placeholder='Email Address' />
+        <br />
+        <Form.Item required tooltip="This is a required field">
+          <p>Pre-requisites</p>
+
+          <Input
+            onChange={(event) => setCoursePrerequisites(event.target.value)}
+            placeholder="ex: Math101, Solidity202"
+          />
         </Form.Item>
       </div>
       <div
@@ -107,45 +191,36 @@ const UploadContent = () => {
           width: "45%",
         }}
       >
-        <Form.Item required tooltip='This is a required field'>
-          <Input placeholder='Course Name' />
-        </Form.Item>
-      </div>
-      <div
-        style={{
-          display: "inline",
-          float: "right",
-          width: "50%",
-        }}
-      >
+        <br />
+        <p>Course Difficulty</p>
         <Select
-          mode='multiple'
+          mode="multiple"
           style={{
             width: "100%",
           }}
-          placeholder='Select Course Difficulty'
-          onChange={handleChange}
-          optionLabelProp='label'
+          placeholder="Select Course Difficulty"
+          onChange={setCourseDifficulty}
+          optionLabelProp="label"
         >
-          <Option value='beginner' label='Beginner'>
-            <div className='demo-option-label-item'>
-              <span role='img' aria-label='Beginner '>
+          <Option value="beginner" label="Beginner">
+            <div className="demo-option-label-item">
+              <span role="img" aria-label="Beginner ">
                 👶{" "}
               </span>
               Beginner
             </div>
           </Option>
-          <Option value='intermediate' label='Intermediate'>
-            <div className='demo-option-label-item'>
-              <span role='img' aria-label='Intermediate'>
+          <Option value="intermediate" label="Intermediate">
+            <div className="demo-option-label-item">
+              <span role="img" aria-label="Intermediate">
                 👩‍🦱{" "}
               </span>
               Intermediate
             </div>
           </Option>
-          <Option value='expert' label='Expert'>
-            <div className='demo-option-label-item'>
-              <span role='img' aria-label='Expert'>
+          <Option value="expert" label="Expert">
+            <div className="demo-option-label-item">
+              <span role="img" aria-label="Expert">
                 👵{" "}
               </span>
               Expert
@@ -158,55 +233,55 @@ const UploadContent = () => {
       <br />
       <br />
       <br />
+      <br />
       <div style={{ display: "grid", width: "100%" }}>
-        <Form.Item required tooltip='This is a required field'>
-          <Input placeholder='Course Info' />
+        <Form.Item required tooltip="This is a required field">
+          <p>Course Description</p>
+          <Input
+            onChange={(event) => setCourseDescription(event.target.value)}
+            placeholder="ex: Math 101 is a course for students who need to improve their algebraic skills before taking a higher level course such ..."
+          />
         </Form.Item>
       </div>
-      <Select
-        mode='multiple'
+
+      <p>Course Length</p>
+      <Form.Item
         style={{
           width: "100%",
-          display: "inline-block",
+          display: "block",
+          margin: "2px",
         }}
-        placeholder='Select Course Category'
-        onChange={handleChange}
-        optionLabelProp='label'
+        required
+        tooltip="This is a required field"
       >
-        <Option value='cryptocurrency' label='Cryptocurrency'>
-          <div className='demo-option-label-item'>
-            <span role='img' aria-label='Cryptocurrency '>
-              💰{" "}
-            </span>
-            Cryptocurrency
-          </div>
-        </Option>
-        <Option value='chemistry' label='Chemistry'>
-          <div className='demo-option-label-item'>
-            <span role='img' aria-label='Chemistry'>
-              🧪{" "}
-            </span>
-            Chemistry
-          </div>
-        </Option>
-        <Option value='artificial intelligence' label='Artificial Intelligence'>
-          <div className='demo-option-label-item'>
-            <span role='img' aria-label='Artificial Intelligence'>
-              🤖{" "}
-            </span>
-            Artificial Intelligence
-          </div>
-        </Option>
-        <Option value='bitcoin' label='Bitcoin'>
-          <div className='demo-option-label-item'>
-            <span role='img' aria-label='Bitcoin'>
-              🪙{" "}
-            </span>
-            Bitcoin
-          </div>
-        </Option>
-      </Select>
-      <br />
+        <Input
+          onChange={(event) => setCourseLength(event.target.value)}
+          placeholder="ex: 3 weeks"
+        />
+      </Form.Item>
+
+      <div
+        style={{
+          textAlign: "left",
+          marginRight: "50",
+        }}
+      >
+        <Form.Item>
+          <br />
+          <p>Upload Course PDF</p>
+          <Upload
+            {...props}
+            onChange={(event) => setCourseFile(event.file)}
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload>
+          <br />
+        </Form.Item>
+      </div>
+
       <div
         style={{
           textAlign: "center",
@@ -215,14 +290,7 @@ const UploadContent = () => {
         }}
       >
         <Form.Item>
-          <br />
-          <Upload {...props}>
-            <Button size='large' icon={<UploadOutlined />}>
-              Click to Upload
-            </Button>
-          </Upload>
-          <br />
-          <Button type='primary' size='large'>
+          <Button type="primary" size="large" onClick={saveCourse}>
             Submit Course
           </Button>
         </Form.Item>
