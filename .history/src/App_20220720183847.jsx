@@ -134,8 +134,6 @@ const App = ({ isServerInfo }) => {
 
   const [isStudentRegisteringInProgress, setIsStudentRegisteringInProgress] = useState(false);
   const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] = useState(false);
-  // const [isStudentRegisterComplete, setIsStudentRegisterComplete] = useState(false);
-  // const [isEducatorRegisterComplete, setIsEducatorRegisterComplete] = useState(false);
   const user = moralis.User.current();
   console.log(user)
 
@@ -192,7 +190,7 @@ const App = ({ isServerInfo }) => {
 
   return (
     <>
-    {isAuthenticated && isStudentRegisteringInProgress == true || isEducatorRegisteringInProgress == true  ? (
+    {isAuthenticated && isStudentRegisteringInProgress == true || isEducatorRegisteringInProgress == true ? (
       <Layout style={{ height: "100vh", overflow: "auto" }}>
       <Router>
         <Header style={styles.header}>
@@ -235,7 +233,7 @@ const App = ({ isServerInfo }) => {
               <ProfileSettings isServerInfo={isServerInfo} />
             </Route>
           </Switch>
-          {/* <Redirect to="/content" /> */}
+          <Redirect to="/content" />
         </div>
       </Router>
     </Layout>
