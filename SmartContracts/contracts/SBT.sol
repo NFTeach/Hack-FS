@@ -235,6 +235,11 @@ contract SBT is ERC1155, Ownable {
     function isAllowedMint(address _student, uint256 _tokenId) public view returns(bool) {
         return(students[_student].allowedMint[_tokenId]);
     }
+
+    //returns the number of tokens a student has minted
+    function nbMinted(address _student) public view returns(uint8) {
+        return(students[_student].sbtMinted);
+    }
 }
 
 //HackFs Metadata
