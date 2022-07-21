@@ -100,7 +100,7 @@ const Test = () => {
     const { testData } = location.state;
     const ipfsUrl = testData.e.attributes.testData;
     const ipfsHash = ipfsUrl.slice(34);
-    console.log(testData.e.attributes.passingGrade)
+    console.log(testData.e.attributes)
     
     useEffect(() => {
         async function fetchTestData() {
@@ -190,7 +190,7 @@ const Test = () => {
                 },
                 onError: (error) => {
                     notification.error({
-                        message: error,
+                        message: "Contract error!",
                     })
                 }
             });
@@ -202,7 +202,15 @@ const Test = () => {
             });
         }
     }
-            
+    
+    if(error) {
+        notification.error({
+            message: "Error",
+            description: "Please try again and make sure you are using a valid student wallet address"
+        })
+        setIsValidatingInProgress(false);
+    }
+        
     const checkAnswer = (variant) => {
         setMyAnswer(variant);
         setClickAnswer(true);
@@ -231,8 +239,6 @@ const Test = () => {
     setScore(0);
     };
 
-    console.log(score)
-
     if(finish) {
         return (
             <form style={styles.container}>
@@ -245,15 +251,6 @@ const Test = () => {
                             {`Test over! Your Final Score is ${score}/${Data.length - 1}`}
                         </Text>
                         <br/>
-                        {JSON.stringify(score) >= testData.e.attributes.passingGrade ? (
-                        <Button 
-                            style={styles.button}
-                            type="primary"
-                            // onClick={TBD}
-                        >
-                            Congrats! Collect SBT!
-                        </Button> 
-                        ) : (
                         <Button
                             style={styles.button}
                             type="primary"
@@ -261,7 +258,14 @@ const Test = () => {
                         >
                             Start Over
                         </Button>
-                        )}
+                        {/* USE TERNARY OPERATOR CONDITIONAL ON PASSING TEST TO DISPLAY THESE BUTTONS? */}
+                        {/* <Button 
+                            style={styles.button}
+                            type="primary"
+                            // onClick={TBD}
+                        >
+                            Congrats! Collect SBT!
+                        </Button> */}
                     </Card> 
                 </main>
             </form>

@@ -245,7 +245,7 @@ const Test = () => {
                             {`Test over! Your Final Score is ${score}/${Data.length - 1}`}
                         </Text>
                         <br/>
-                        {JSON.stringify(score) >= testData.e.attributes.passingGrade ? (
+                        {JSON.stringify(score) >= testData.e.atrributes.passingGrade ? (
                         <Button 
                             style={styles.button}
                             type="primary"

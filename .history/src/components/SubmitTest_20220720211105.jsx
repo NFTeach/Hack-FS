@@ -349,6 +349,7 @@ const SubmitTest = (props) => {
                 onError: (error) => {
                     notification.error({
                         message: error,
+                        // description: "Please try again and make sure you are using a valid educator wallet address"
                     })
                 }
             });

@@ -127,7 +127,7 @@ const App = ({ isServerInfo }) => {
     isAuthenticated, 
     isWeb3EnableLoading 
   } = useMoralis();
-  const dummy = 0;
+  // const dummy = 1;
 
   const { width } = useWindowDimensions();
   const isMobile = width < 700;
@@ -235,6 +235,7 @@ const App = ({ isServerInfo }) => {
               <ProfileSettings isServerInfo={isServerInfo} />
             </Route>
           </Switch>
+          {/* <Redirect to="/content" /> */}
         </div>
       </Router>
     </Layout>
