@@ -1,11 +1,50 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts@4.7.0/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts@4.7.0/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SBT is ERC1155, Ownable {
     uint256 public counterIDs = 0;
+
+    /*//////////////////////////////////////////////////////////////
+                                Events
+    //////////////////////////////////////////////////////////////*/
+
+    /** @notice emitted when a new educator is added
+      * @param educator address of the new educator
+      */
+    event AddEducator(address educator);
+
+    /** @notice emitted when a new student is added
+      * @param student address of the new student
+      */
+    event AddStudent(address student);
+
+    /** @notice emited when new test is created
+      * @param tokenId Id of the new test and corresponding token
+      * @param educator address of the educator who creates the test
+      * @param mintPrice price of minting the SBT after test completion
+      */
+    event CreateTest(uint256 tokenId, address educator, uint256 mintPrice);
+
+    /** @notice emited when an educator validates a students completion of a test
+      * @param tokenId id of the test and corresponding token
+      * @param student address of the student which completed the test
+      */
+    event ValidateTest(uint256 tokenId, address student);
+
+    /** @notice emitted when SBT is minted by a student
+      * @param tokenId Id of the test and corresponding token
+      * @param student address of the student which completed the test
+      */
+    event MintSBT(uint256 tokenId, address student);
+
+    /** @notice emitted when an educator withdraws their payoff
+      * @param educator address of the withdrawing educator
+      * @param amount total amount of payoff withdrawn by educator
+      */
+    event Withdrawl(address educator, uint256 amount);
 
     /*//////////////////////////////////////////////////////////////
                                Structures
@@ -76,6 +115,12 @@ contract SBT is ERC1155, Ownable {
             "Educator already exists"
         );
         educators[_newEducator].active = true;
+
+        emit AddEducator(_newEducator);
+    }
+
+    function isEducator(address _address) public view returns (bool) {
+        return (educators[_address].active);
     }
 
     function addStudent(address _newStudent) public onlyOwner {
@@ -84,6 +129,12 @@ contract SBT is ERC1155, Ownable {
             "student already exists"
         );
         students[_newStudent].active = true;
+
+        emit AddStudent(_newStudent);
+    }
+
+    function isStudent(address _address) public view returns (bool) {
+        return (students[_address].active);
     }
 
     //need to be an approved educator to create SBT
@@ -94,6 +145,9 @@ contract SBT is ERC1155, Ownable {
         //declares test
         tests[counterIDs] = Test(msg.sender, _testHash, 0, _price, 0);
         educators[msg.sender].classesCreated += 1;
+
+        emit CreateTest(counterIDs, msg.sender, _price);
+
         counterIDs += 1;
     }
 
@@ -114,6 +168,9 @@ contract SBT is ERC1155, Ownable {
         );
         tests[_tokenId].nbCompleted += 1;
         students[_student].classCompleted += 1;
+        students[_student].allowedMint[_tokenId] = true;
+
+        emit ValidateTest(_tokenId, _student);
     }
 
     //function to be called by student once test is passed and owner approved
@@ -132,6 +189,8 @@ contract SBT is ERC1155, Ownable {
         students[msg.sender].allowedMint[_tokenId] == false;
         students[msg.sender].sbtMinted += 1;
         _mint(msg.sender, _tokenId, 1, "");
+
+        emit MintSBT(_tokenId, msg.sender);
     }
 
     function withdrawCoursesPayoff() public {
@@ -144,6 +203,33 @@ contract SBT is ERC1155, Ownable {
             ""
         );
         require(success);
+
+        emit Withdrawl(msg.sender, leftToPay);
+    }
+
+    //returns the number of classes an educator has created
+    function nbClassesCreated(address _educator) public view returns(uint256) {
+        return(educators[_educator].classesCreated);
+    }
+
+    //returns the number of classes a student has completed
+    function nbClassesCompleted(address _student) public view returns(uint256) {
+        return(students[_student].classCompleted);
+    }
+
+    //returns the educator of a test
+    function getTestEducator(uint256 _tokenId) public view returns(address) {
+        return(tests[_tokenId].educator);
+    }
+
+    //returns the number of times a test has been completed
+    function nbTestCompletions(uint256 _tokenId) public view returns(uint256) {
+        return(tests[_tokenId].nbCompleted);
+    }
+
+    //returns whether a student is allowed to mint a token
+    function isAllowedMint(address _student, uint256 _tokenId) public view returns(bool) {
+        return(students[_student].allowedMint[_tokenId]);
     }
 }
 
