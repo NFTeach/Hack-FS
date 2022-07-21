@@ -243,7 +243,7 @@ const SubmitTest = (props) => {
                 ),
                 onOk() {
                     setFormattedData({});
-                    // window.location.reload();
+                    window.location.reload();
                 }
             });
         }
@@ -255,7 +255,7 @@ const SubmitTest = (props) => {
         if (executeContractError && executeContractError.code === 4001) {
             setIsUploadInProgress(false);
             notification.error({
-                message: "Contract Error",
+                message: "NFT Mint Error",
                 description: executeContractError.message,
             });
         }
@@ -349,6 +349,7 @@ const SubmitTest = (props) => {
                 onError: (error) => {
                     notification.error({
                         message: error,
+                        // description: "Please try again and make sure you are using a valid educator wallet address"
                     })
                 }
             });

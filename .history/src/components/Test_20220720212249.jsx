@@ -100,7 +100,7 @@ const Test = () => {
     const { testData } = location.state;
     const ipfsUrl = testData.e.attributes.testData;
     const ipfsHash = ipfsUrl.slice(34);
-    console.log(testData.e.attributes.passingGrade)
+    console.log(testData.e.attributes)
     
     useEffect(() => {
         async function fetchTestData() {
@@ -231,8 +231,6 @@ const Test = () => {
     setScore(0);
     };
 
-    console.log(score)
-
     if(finish) {
         return (
             <form style={styles.container}>
@@ -245,15 +243,6 @@ const Test = () => {
                             {`Test over! Your Final Score is ${score}/${Data.length - 1}`}
                         </Text>
                         <br/>
-                        {JSON.stringify(score) >= testData.e.attributes.passingGrade ? (
-                        <Button 
-                            style={styles.button}
-                            type="primary"
-                            // onClick={TBD}
-                        >
-                            Congrats! Collect SBT!
-                        </Button> 
-                        ) : (
                         <Button
                             style={styles.button}
                             type="primary"
@@ -261,7 +250,14 @@ const Test = () => {
                         >
                             Start Over
                         </Button>
-                        )}
+                        {/* USE TERNARY OPERATOR CONDITIONAL ON PASSING TEST TO DISPLAY THESE BUTTONS? */}
+                        {/* <Button 
+                            style={styles.button}
+                            type="primary"
+                            // onClick={TBD}
+                        >
+                            Congrats! Collect SBT!
+                        </Button> */}
                     </Card> 
                 </main>
             </form>
