@@ -44,8 +44,8 @@ const EducatorMenuItems = () => {
       <Menu.Item key="/edudash">
         <NavLink to="/edudash">😀 Educator Profile</NavLink>
       </Menu.Item>
-      <Redirect to="/uploadcontent" />
     </Menu>
+    <Redirect to="/uploadcontent" />
     </>
   )
 }

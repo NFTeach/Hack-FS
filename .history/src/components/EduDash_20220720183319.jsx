@@ -191,7 +191,7 @@ const EduDash = () => {
         >
           <div id='table' style={{}}>
             <Table
-              size='medium'
+              size='large'
               dataSource={data}
               columns={columns}
               style={{
@@ -210,9 +210,7 @@ const EduDash = () => {
             background: "white",
           }}
         >
-        <Card>
           <Profile />
-        </Card>
         </div>
       </div>
     </div>

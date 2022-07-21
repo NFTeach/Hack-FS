@@ -20,10 +20,10 @@ const styles = {
     },
 };
 
-const EducatorMenuItems = () => {
+const StudentMenuItems = () => {
   return (
     <>
-    <Menu
+      <Menu
       theme="light"
       mode="horizontal"
       style={{
@@ -35,19 +35,19 @@ const EducatorMenuItems = () => {
       }}
       defaultSelectedKeys={["/uploadcontent"]}
     >
-      <Menu.Item key="/uploadcontent">
-        <NavLink to="/uploadcontent">⬆️ Upload Content</NavLink>
-      </Menu.Item>
-      <Menu.Item key="/createtest">
-        <NavLink to="/createtest">🧠 Create Test</NavLink>
-      </Menu.Item>
-      <Menu.Item key="/edudash">
-        <NavLink to="/edudash">😀 Educator Profile</NavLink>
-      </Menu.Item>
-      <Redirect to="/uploadcontent" />
-    </Menu>
+      <Menu.Item key="/content">
+          <NavLink to="/content">📚 Content</NavLink>
+        </Menu.Item>
+        <Menu.Item key="/tests">
+          <NavLink to="/tests">📝 Tests</NavLink>
+        </Menu.Item>
+        <Menu.Item key="/studash">
+          <NavLink to="/studash">😀 Student Profile</NavLink>
+        </Menu.Item>
+      </Menu>
+    <Redirect to="/content" />
     </>
   )
 }
 
-export default EducatorMenuItems
+export default StudentMenuItems
