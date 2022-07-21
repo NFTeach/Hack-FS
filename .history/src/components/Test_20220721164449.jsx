@@ -164,12 +164,7 @@ const Test = () => {
 
     // onlyOwner validate student cloud smart contract call
     const allowValidation = async () => {
-
-        notification.info({
-            message: "Validating address on blockchain",
-            description: "THIS COULD TAKE UP TO 5 MINS. GO GRAB A CUP OF COFFEE AND COME BACK. PLEASE DON'T REFRESH PAGE!"
-        })
-
+        
         let studentAccount = user.attributes.accounts[0];
         let tokenId = JSON.stringify(testData.e.attributes.tokenId);
 
