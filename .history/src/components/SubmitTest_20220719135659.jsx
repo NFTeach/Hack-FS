@@ -1,0 +1,188 @@
+import React, { useEffect, useState } from 'react';
+import { 
+    Card, 
+    Button,
+    List
+} from 'antd';
+import useWindowDimensions from '../util/useWindowDimensions';
+import { useMoralis } from 'react-moralis';
+import moralis from "moralis";
+
+moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
+moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
+
+const SubmitTest = (props) => {
+    const styles = {
+        title: {
+            fontSize: "20px",
+            fontWeight: "700",
+        },
+        card: {
+            boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
+            border: "1px solid #e7eaf3",
+            borderRadius: "0.5rem",
+            width: "50%",
+        },
+        mobileCard: {
+            boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
+            border: "1px solid #e7eaf3",
+            borderRadius: "0.5rem",
+            width: "100%",
+        },
+        container: {
+            padding: "0 2rem",
+        },
+        main: {
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100vw",
+        },
+        backButton: {
+            float: "left",
+            marginTop: "10px",
+        },
+        submitButton: {
+            float: "right",
+            marginTop: "10px",
+        },
+    };
+
+    const { width } = useWindowDimensions();
+    const isMobile = width < 700;
+
+    const { data, back } = props;
+    const listItems = Object.entries(data).map(([key, value]) => (
+        <List>
+            <List.Item key={key}>
+                <List.Item.Meta
+                title={key} 
+                description={value} />
+            </List.Item>
+        </List>
+    ));
+    
+    const { 
+        Moralis,
+        isWeb3Enabled,
+        enableWeb3,
+        isAuthenticated,
+        isWeb3EnableLoading 
+    } = useMoralis();
+    const user = moralis.User.current();
+
+    const [isTestSaving, setIsTestSaving] = useState(false);
+    const [formattedData, setFormattedData] = useState({});
+    // console.log(user)
+
+    useEffect(() => {
+        if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
+            enableWeb3();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAuthenticated, isWeb3Enabled]);
+
+    useEffect(() => {
+        const dataFormatted = [
+            {
+                id: "0",
+                question: data.Question_1,
+                answer: data.Answer_1,
+                variants: [
+                    data.Question_1_False_Answer_1, 
+                    data.Question_1_False_Answer_2, 
+                    data.Question_1_False_Answer_3, 
+                    data.Answer_1
+                ]
+            },
+            {
+                id: "1",
+                question: data.Question_2,
+                answer: data.Answer_2,
+                variants: [
+                    data.Question_2_False_Answer_1,
+                    data.Answer_2, 
+                    data.Question_2_False_Answer_2, 
+                    data.Question_2_False_Answer_3, 
+                ]
+            },
+            {
+                id: "2",
+                question: data.Question_3,
+                answer: data.Answer_3,
+                variants: [
+                    data.Question_3_False_Answer_1,
+                    data.Question_3_False_Answer_2,
+                    data.Answer_3,  
+                    data.Question_3_False_Answer_3, 
+                ]
+            },
+            // FINISH REST OF THE ID'S
+        ]
+        setFormattedData(dataFormatted)
+    },[])
+    console.log(formattedData)
+
+    async function saveTest() {
+        let link;
+        if (formattedData) {
+            const file = new Moralis.File("file.json", {base64: btoa(JSON.stringify(formattedData))});
+            link = await file.saveIPFS();
+        } else {
+            link = "No data"
+        }
+        // console.log(link._ipfs)
+        if(!link._ipfs) return;
+
+        const Tests = moralis.Object.extend("Tests");
+
+        const newTest = new Tests();
+
+        newTest.set("testData", link._ipfs)
+        newTest.set("testName", data.Name)
+        newTest.set("educatorName", data.Educator)
+        newTest.set("testCategory", data.Category)
+        newTest.set("testDifficulty", data.Difficulty)
+        newTest.set("educatorAcc", user?.attributes.ethAddress)
+        newTest.set("educatorPfp", user?.attributes.pfp)
+        newTest.set("educatorUsername", user?.attributes.username)
+
+        await newTest.save();
+
+        // NEED TO ADD CONTRACT INTERACTION HERE
+    }
+    
+  return (
+        <div style={styles.container}>
+            <main style={styles.main}>
+                <Card
+                    style={!isMobile ? styles.card : styles.mobileCard}
+                    title={"Create Multiple Choice Test (10 Questions)"}
+                >
+                    <ul>{listItems}</ul>
+                    <Button
+                        style={styles.backButton}
+                        type="primary"
+                        onClick={back}
+                    >
+                        Previous Question
+                    </Button>
+                    <Button
+                        style={styles.submitButton}
+                        type="primary"
+                        loading={isTestSaving}
+                        onClick={async () => {
+                            setIsTestSaving(true);
+                            await saveTest();
+                        }}
+                    >
+                        Submit Q&A's
+                    </Button> 
+                </Card>
+            </main>
+        </div>
+    )
+}
+
+export default SubmitTest
