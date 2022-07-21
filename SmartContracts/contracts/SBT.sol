@@ -186,7 +186,7 @@ contract SBT is ERC1155, Ownable {
         educators[tests[_tokenId].educator].lifetimePayout += tests[_tokenId]
             .price;
         //Prevents student from minting twice
-        students[msg.sender].allowedMint[_tokenId] == false;
+        students[msg.sender].allowedMint[_tokenId] = false;
         students[msg.sender].sbtMinted += 1;
         _mint(msg.sender, _tokenId, 1, "");
 
