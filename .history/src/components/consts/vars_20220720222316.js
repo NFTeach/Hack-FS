@@ -1,0 +1,2 @@
+// Contract address Rinkeby
+export const CONTRACT_ADDRESS = "0xC229472BC622751aF4b804d67C769e5F486FE4FE"; 
