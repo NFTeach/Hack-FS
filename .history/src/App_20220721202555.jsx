@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect
 } from "react-router-dom";
 import Account from "./components/Account/Account";
 import Chains from "./components/Chains/Chains";
@@ -126,15 +127,17 @@ const App = ({ isServerInfo }) => {
     isAuthenticated, 
     isWeb3EnableLoading 
   } = useMoralis();
+  const dummy = 0;
 
   const { width } = useWindowDimensions();
   const isMobile = width < 700;
 
   const [isStudentRegisteringInProgress, setIsStudentRegisteringInProgress] = useState(false);
   const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] = useState(false);
-  const [isUserEducator, setIsUserEducator] = useState(false);
-  const [isUserStudent, setIsUserStudent] = useState(false);
+  const [educators, setEducators] = useState({});
+  const [students, setStudents] = useState({});
   const user = moralis.User.current();
+  console.log(user)
 
   // Register student smart contract call
   const registerStudent = async () => {
@@ -145,14 +148,6 @@ const App = ({ isServerInfo }) => {
         })  
     }
 
-    if (isUserEducator == true) {
-      notification.error({
-        message: "Address registered as educator!",
-        description: "Please use another address if you want to be a student!"
-      })
-      return;
-    }
-
     let studentAddressTo = user.attributes.accounts[0];
 
     const studentParams = {
@@ -160,8 +155,8 @@ const App = ({ isServerInfo }) => {
     }
 
     async function callAddStudent(){
-      const _Result = await Moralis.Cloud.run("registerStudent", studentParams)
-      // console.log(_Result)
+        const _Result = await Moralis.Cloud.run("registerStudent", studentParams)
+        console.log(_Result)
     }
     callAddStudent();
   }
@@ -175,14 +170,6 @@ const App = ({ isServerInfo }) => {
       })  
     }
 
-    if (isUserStudent== true) {
-      notification.error({
-        message: "Address registered as student!",
-        description: "Please use another address if you want to be a educator!"
-      })
-      return;
-    }
-
     let educatorAddressTo = user.attributes.accounts[0];
 
     const educatorParams = {
@@ -191,43 +178,37 @@ const App = ({ isServerInfo }) => {
 
     async function callAddEducator(){
       const _Result = await Moralis.Cloud.run("registerEducator", educatorParams)
-      // console.log(_Result)
+      console.log(_Result)
     }
     callAddEducator();
   }
 
   useEffect(() => {
-    async function getIsUserEducator() {
+    async function getEducators() {
         try {
             const Educators = Moralis.Object.extend("Educators");
             const query = new Moralis.Query(Educators);
-            query.equalTo("educator", user.attributes.accounts[0])
-            const educatorResults = await query.find();
-            if (educatorResults.length != 0) {
-              setIsUserEducator(true);
-            }
+            const results = await query.find();
+            setEducators(results);
         } catch(error) {
             console.log(error)
         }
     }
-    getIsUserEducator();
+    getEducators();
   }, []);
 
   useEffect(() => {
-    async function getIsUserStudent() {
+    async function getStudents() {
         try {
             const Students = Moralis.Object.extend("Students");
             const query = new Moralis.Query(Students);
-            query.equalTo("student", user.attributes.accounts[0])
-            const studentResults = await query.find();
-            if (studentResults.length != 0) {
-              setIsUserStudent(true);
-            }
+            const results = await query.find();
+            setStudents(results);
         } catch(error) {
             console.log(error)
         }
     }
-    getIsUserStudent();
+    getStudents();
   }, []);
 
   useEffect(() => {
@@ -237,19 +218,16 @@ const App = ({ isServerInfo }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  // console.log(educators)
-  // console.log(students)
-  // console.log(user)
-  console.log(isUserEducator)
-  // console.log(isUserStudent)
+  console.log(educators)
+  console.log(students)
 
   return (
-    <> 
-    {isAuthenticated && isUserEducator || isUserStudent || isStudentRegisteringInProgress || isEducatorRegisteringInProgress  ? (
+    <>
+    {isAuthenticated && isStudentRegisteringInProgress == true || isEducatorRegisteringInProgress == true  ? (
       <Layout style={{ height: "100vh", overflow: "auto" }}>
       <Router>
-        <Header style={styles.header}> 
-          {isStudentRegisteringInProgress || isUserStudent ? (
+        <Header style={styles.header}>
+          {isStudentRegisteringInProgress ? (
             <StudentMenuItems />
           ) : (
             <EducatorMenuItems />

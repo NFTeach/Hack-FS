@@ -145,14 +145,6 @@ const App = ({ isServerInfo }) => {
         })  
     }
 
-    if (isUserEducator == true) {
-      notification.error({
-        message: "Address registered as educator!",
-        description: "Please use another address if you want to be a student!"
-      })
-      return;
-    }
-
     let studentAddressTo = user.attributes.accounts[0];
 
     const studentParams = {
@@ -160,8 +152,8 @@ const App = ({ isServerInfo }) => {
     }
 
     async function callAddStudent(){
-      const _Result = await Moralis.Cloud.run("registerStudent", studentParams)
-      // console.log(_Result)
+        const _Result = await Moralis.Cloud.run("registerStudent", studentParams)
+        // console.log(_Result)
     }
     callAddStudent();
   }
@@ -173,14 +165,6 @@ const App = ({ isServerInfo }) => {
         message: "Address registered as educator!",
         description: "Your address is being registered as a educator!"
       })  
-    }
-
-    if (isUserStudent== true) {
-      notification.error({
-        message: "Address registered as student!",
-        description: "Please use another address if you want to be a educator!"
-      })
-      return;
     }
 
     let educatorAddressTo = user.attributes.accounts[0];
@@ -240,11 +224,44 @@ const App = ({ isServerInfo }) => {
   // console.log(educators)
   // console.log(students)
   // console.log(user)
-  console.log(isUserEducator)
+  // console.log(isUserEducator)
   // console.log(isUserStudent)
 
   return (
-    <> 
+    <>
+    {isUserStudent && isUserEducator ? (
+      <Layout style={{ height: "100vh", overflow: "auto" }}>
+      <div style={styles.content}>
+        <Card
+        style={!isMobile ? styles.registerCard : styles.mobileCard}
+        title={"Are you here to learn or teach?"}
+        >
+        <Button
+            style={styles.educatorButton}
+            type="primary"
+            loading={isEducatorRegisteringInProgress}
+            onClick={async () => {
+              setIsEducatorRegisteringInProgress(true);
+            }}
+        >
+        Educator access 
+        </Button>
+        <Button
+            style={styles.studentButton}
+            type="primary"
+            loading={isStudentRegisteringInProgress}
+            onClick={async () => {
+              setIsStudentRegisteringInProgress(true);
+            }}
+        >
+        Student access 
+        </Button> 
+      </Card>
+    </div>
+    </Layout>
+    ) : (
+      <StudentMenuItems />
+    )}  
     {isAuthenticated && isUserEducator || isUserStudent || isStudentRegisteringInProgress || isEducatorRegisteringInProgress  ? (
       <Layout style={{ height: "100vh", overflow: "auto" }}>
       <Router>
