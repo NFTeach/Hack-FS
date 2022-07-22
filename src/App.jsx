@@ -17,7 +17,8 @@ import UploadContent from "./components/UploadContent";
 import Content from "./components/Content";
 import Tests from "./components/Tests";
 import CreateTest from "./components/CreateTest";
-import Profile from "./components/Profile";
+import EduDash from "./components/EduDash";
+import StuDash from "./components/StuDash";
 import ProfileSettings from "./components/ProfileSettings";
 import Test from "./components/Test";
 import EducatorMenuItems from "./components/EducatorMenuItems";
@@ -124,25 +125,27 @@ const App = ({ isServerInfo }) => {
     isAuthenticated,
     isWeb3EnableLoading,
   } = useMoralis();
-  // const dummy = 1;
+  const dummy = 0;
 
   const { width } = useWindowDimensions();
   const isMobile = width < 700;
 
-  const [isStudentRegisteringInProgress, setIsStudentRegisteringInProgress] =
-    useState(false);
-  const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] =
-    useState(false);
+
+  const [isStudentRegisteringInProgress, setIsStudentRegisteringInProgress] = useState(false);
+  const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] = useState(false);
+  // const [isStudentRegisterComplete, setIsStudentRegisterComplete] = useState(false);
+  // const [isEducatorRegisterComplete, setIsEducatorRegisterComplete] = useState(false);
   const user = moralis.User.current();
   console.log(user);
 
   // Register student smart contract call
   const registerStudent = async () => {
     if (isAuthenticated) {
-      notification.info({
-        message: "Address registered as student!",
-        description: "Your address has been registered as a student!",
-      });
+
+        notification.info({
+          message: "Address registered as student!",
+          description: "Your address is being registered as a student!"
+        })  
     }
 
     let studentAddressTo = user.attributes.accounts[0];
@@ -163,8 +166,9 @@ const App = ({ isServerInfo }) => {
     if (isAuthenticated) {
       notification.info({
         message: "Address registered as educator!",
-        description: "Your address has been registered as a educator!",
-      });
+
+        description: "Your address is being registered as a educator!"
+      })  
     }
 
     let educatorAddressTo = user.attributes.accounts[0];
@@ -192,23 +196,90 @@ const App = ({ isServerInfo }) => {
 
   return (
     <>
-      {(isAuthenticated && isStudentRegisteringInProgress == true) ||
-      isEducatorRegisteringInProgress == true ? (
-        <Layout style={{ height: "100vh", overflow: "auto" }}>
-          <Router>
-            <Header style={styles.header}>
-              {isStudentRegisteringInProgress ? (
-                <StudentMenuItems />
-              ) : (
-                <EducatorMenuItems />
-              )}
-              <div style={styles.headerRight}>
-                <Chains />
-                <NativeBalance />
-                <Account />
-              </div>
-            </Header>
 
+    {isAuthenticated && isStudentRegisteringInProgress == true || isEducatorRegisteringInProgress == true  ? (
+      <Layout style={{ height: "100vh", overflow: "auto" }}>
+      <Router>
+        <Header style={styles.header}>
+          {isStudentRegisteringInProgress ? (
+            <StudentMenuItems />
+          ) : (
+            <EducatorMenuItems />
+          )}
+          <div style={styles.headerRight}>
+            <Chains />
+            <NativeBalance />
+            <Account />
+          </div>
+        </Header>
+
+        <div style={styles.content}>
+          <Switch>
+            <Route exact path='/uploadcontent'>
+              <UploadContent isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path='/content'>
+              <Content isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path='/createtest'>
+              <CreateTest isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path='/tests'>
+              <Tests isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path="/test">
+              <Test isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path="/edudash">
+              <EduDash isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path="/studash">
+              <StuDash isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path='/profilesettings'>
+              <ProfileSettings isServerInfo={isServerInfo} />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </Layout>
+  ) : (
+    <>
+    {isAuthenticated ? (
+      <Layout style={{ height: "100vh", overflow: "auto" }}>
+        <div style={styles.content}>
+          <Card
+          style={!isMobile ? styles.registerCard : styles.mobileCard}
+          title={"Are you here to learn or teach?"}
+          >
+          <Button
+              style={styles.educatorButton}
+              type="primary"
+              loading={isEducatorRegisteringInProgress}
+              onClick={async () => {
+                setIsEducatorRegisteringInProgress(true);
+                await registerEducator();
+              }}
+          >
+          Register as Educator!
+          </Button>
+          <Button
+              style={styles.studentButton}
+              type="primary"
+              loading={isStudentRegisteringInProgress}
+              onClick={async () => {
+                setIsStudentRegisteringInProgress(true);
+                await registerStudent();
+              }}
+          >
+          Register as Student!
+          </Button> 
+        </Card>
+      </div>
+      </Layout>
+      ) : (
+          <>
+          <Layout style={{ height: "100vh", overflow: "auto" }}>
             <div style={styles.content}>
               <Switch>
                 <Route exact path='/uploadcontent'>
