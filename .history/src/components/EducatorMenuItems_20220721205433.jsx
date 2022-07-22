@@ -33,17 +33,18 @@ const EducatorMenuItems = () => {
         width: "100%",
         justifyContent: "center",
       }}
+      defaultSelectedKeys={["/uploadcontent"]}
     >
-      <Menu.Item key="/edudash">
-        <NavLink to="/edudash">😀 Educator Profile</NavLink>
-      </Menu.Item>
       <Menu.Item key="/uploadcontent">
         <NavLink to="/uploadcontent">⬆️ Upload Content</NavLink>
       </Menu.Item>
       <Menu.Item key="/createtest">
         <NavLink to="/createtest">🧠 Create Test</NavLink>
       </Menu.Item>
-      <Redirect to="/edudash" />
+      <Menu.Item key="/edudash">
+        <NavLink to="/edudash">😀 Educator Profile</NavLink>
+      </Menu.Item>
+      {/* <Redirect to="/uploadcontent" /> */}
     </Menu>
     </>
   )
