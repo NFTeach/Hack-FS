@@ -240,7 +240,7 @@ const App = ({ isServerInfo }) => {
   // console.log(educators)
   // console.log(students)
   // console.log(user)
-  console.log(isUserEducator)
+  // console.log(isUserEducator)
   // console.log(isUserStudent)
 
   return (

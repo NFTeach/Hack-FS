@@ -145,14 +145,6 @@ const App = ({ isServerInfo }) => {
         })  
     }
 
-    if (isUserEducator == true) {
-      notification.error({
-        message: "Address registered as educator!",
-        description: "Please use another address if you want to be a student!"
-      })
-      return;
-    }
-
     let studentAddressTo = user.attributes.accounts[0];
 
     const studentParams = {
@@ -160,8 +152,8 @@ const App = ({ isServerInfo }) => {
     }
 
     async function callAddStudent(){
-      const _Result = await Moralis.Cloud.run("registerStudent", studentParams)
-      // console.log(_Result)
+        const _Result = await Moralis.Cloud.run("registerStudent", studentParams)
+        // console.log(_Result)
     }
     callAddStudent();
   }
@@ -173,14 +165,6 @@ const App = ({ isServerInfo }) => {
         message: "Address registered as educator!",
         description: "Your address is being registered as a educator!"
       })  
-    }
-
-    if (isUserStudent== true) {
-      notification.error({
-        message: "Address registered as student!",
-        description: "Please use another address if you want to be a educator!"
-      })
-      return;
     }
 
     let educatorAddressTo = user.attributes.accounts[0];
@@ -202,8 +186,9 @@ const App = ({ isServerInfo }) => {
             const Educators = Moralis.Object.extend("Educators");
             const query = new Moralis.Query(Educators);
             query.equalTo("educator", user.attributes.accounts[0])
-            const educatorResults = await query.find();
-            if (educatorResults.length != 0) {
+            const results = await query.find();
+
+            if (results.length != 0) {
               setIsUserEducator(true);
             }
         } catch(error) {
@@ -213,22 +198,25 @@ const App = ({ isServerInfo }) => {
     getIsUserEducator();
   }, []);
 
+  // useEffect(() => {
+  //   async function getStudents() {
+  //       try {
+  //           const Students = Moralis.Object.extend("Students");
+  //           const query = new Moralis.Query(Students);
+  //           const results = await query.find();
+  //           setStudents(results);
+  //       } catch(error) {
+  //           console.log(error)
+  //       }
+  //   }
+  //   getStudents();
+  // }, []);
+
   useEffect(() => {
-    async function getIsUserStudent() {
-        try {
-            const Students = Moralis.Object.extend("Students");
-            const query = new Moralis.Query(Students);
-            query.equalTo("student", user.attributes.accounts[0])
-            const studentResults = await query.find();
-            if (studentResults.length != 0) {
-              setIsUserStudent(true);
-            }
-        } catch(error) {
-            console.log(error)
-        }
+    async function isEducatorOrStudent() {
+
     }
-    getIsUserStudent();
-  }, []);
+  })
 
   useEffect(() => {
     const connectorId = window.localStorage.getItem("connectorId");
@@ -241,15 +229,14 @@ const App = ({ isServerInfo }) => {
   // console.log(students)
   // console.log(user)
   console.log(isUserEducator)
-  // console.log(isUserStudent)
 
   return (
-    <> 
-    {isAuthenticated && isUserEducator || isUserStudent || isStudentRegisteringInProgress || isEducatorRegisteringInProgress  ? (
+    <>
+    {isAuthenticated && isStudentRegisteringInProgress == true || isEducatorRegisteringInProgress == true ? (
       <Layout style={{ height: "100vh", overflow: "auto" }}>
       <Router>
-        <Header style={styles.header}> 
-          {isStudentRegisteringInProgress || isUserStudent ? (
+        <Header style={styles.header}>
+          {isStudentRegisteringInProgress ? (
             <StudentMenuItems />
           ) : (
             <EducatorMenuItems />
