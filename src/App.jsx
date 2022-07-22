@@ -19,6 +19,7 @@ import EducatorMenuItems from "./components/EducatorMenuItems";
 import StudentMenuItems from "./components/StudentMenuItems";
 import { ConnectButton } from "web3uikit";
 import useWindowDimensions from "./util/useWindowDimensions";
+import StudentContent from "./components/Content";
 
 let appId = process.env.REACT_APP_MORALIS_APPLICATION_ID;
 let serverUrl = process.env.REACT_APP_MORALIS_SERVER_URL;
@@ -268,7 +269,7 @@ const App = ({ isServerInfo }) => {
                   <UploadContent isServerInfo={isServerInfo} />
                 </Route>
                 <Route exact path="/content">
-                  <Content isServerInfo={isServerInfo} />
+                  <StudentContent isServerInfo={isServerInfo} />
                 </Route>
                 <Route exact path="/createtest">
                   <CreateTest isServerInfo={isServerInfo} />
