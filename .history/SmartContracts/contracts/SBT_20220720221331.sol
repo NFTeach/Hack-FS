@@ -285,5 +285,5 @@ contract SBT is ERC1155, Ownable {
 
 /* 
  *  HackFs Metadata
- *  https://gateway.moralisipfs.com/ipfs/
+ *  https://gateway.pinata.cloud/ipfs/QmPho6v62jctLRGsZv2A8pyRGM4KCDvqDjKJbJm3sp4VUA
  */

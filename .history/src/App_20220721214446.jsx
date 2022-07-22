@@ -8,7 +8,12 @@ import {
 } from "react-router-dom";
 import Account from "./components/Account/Account";
 import Chains from "./components/Chains/Chains";
-import { Layout, Card, Button, notification } from "antd";
+import { 
+  Layout,
+  Card,
+  Button,
+  notification
+} from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
 import "./style.css";
@@ -23,14 +28,13 @@ import Test from "./components/Test";
 import EducatorMenuItems from "./components/EducatorMenuItems";
 import StudentMenuItems from "./components/StudentMenuItems";
 import { ConnectButton } from "web3uikit";
-import useWindowDimensions from "./util/useWindowDimensions";
-import { Url } from "url";
+import useWindowDimensions from './util/useWindowDimensions';
 
-let appId = process.env.REACT_APP_MORALIS_APPLICATION_ID;
-let serverUrl = process.env.REACT_APP_MORALIS_SERVER_URL;
+let appId=process.env.REACT_APP_MORALIS_APPLICATION_ID;
+let serverUrl=process.env.REACT_APP_MORALIS_SERVER_URL;
 moralis.initialize(appId);
 moralis.serverURL = serverUrl;
-Moralis.start({ serverUrl, appId });
+Moralis.start({serverUrl, appId})
 
 const { Header } = Layout;
 
@@ -39,7 +43,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     fontFamily: "Roboto, sans-serif",
-    color: "#21bf96",
+    color: "#041836",
     marginTop: "130px",
     padding: "10px",
   },
@@ -76,7 +80,7 @@ const styles = {
     width: "17%",
     alignItems: "center",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   registerCard: {
     boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
@@ -85,7 +89,7 @@ const styles = {
     width: "30%",
     alignItems: "center",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   mobileCard: {
     boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
@@ -115,19 +119,16 @@ const styles = {
 };
 
 const App = ({ isServerInfo }) => {
-  const { Header, Footer, Sider, Content } = Layout;
-
   const {
-    Moralis,
-    isWeb3Enabled,
-    enableWeb3,
-    isAuthenticated,
-    isWeb3EnableLoading,
+    Moralis, 
+    isWeb3Enabled, 
+    enableWeb3, 
+    isAuthenticated, 
+    isWeb3EnableLoading 
   } = useMoralis();
 
   const { width } = useWindowDimensions();
   const isMobile = width < 700;
-
 
   const [isStudentRegisteringInProgress, setIsStudentRegisteringInProgress] = useState(false);
   const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] = useState(false);
@@ -138,7 +139,6 @@ const App = ({ isServerInfo }) => {
   // Register student smart contract call
   const registerStudent = async () => {
     if (isAuthenticated) {
-
         notification.info({
           message: "Address registered as student!",
           description: "Your address is being registered as a student!"
@@ -156,22 +156,21 @@ const App = ({ isServerInfo }) => {
     let studentAddressTo = user.attributes.accounts[0];
 
     const studentParams = {
-      to: studentAddressTo,
-    };
+        to: studentAddressTo,
+    }
 
     async function callAddStudent(){
       const _Result = await Moralis.Cloud.run("registerStudent", studentParams)
       // console.log(_Result)
     }
     callAddStudent();
-  };
+  }
 
   // Register educator smart contract call
   const registerEducator = async () => {
     if (isAuthenticated) {
       notification.info({
         message: "Address registered as educator!",
-
         description: "Your address is being registered as a educator!"
       })  
     }
@@ -188,14 +187,14 @@ const App = ({ isServerInfo }) => {
 
     const educatorParams = {
       to: educatorAddressTo,
-    };
+    }
 
     async function callAddEducator(){
       const _Result = await Moralis.Cloud.run("registerEducator", educatorParams)
       // console.log(_Result)
     }
     callAddEducator();
-  };
+  }
 
   useEffect(() => {
     async function getIsUserEducator() {
@@ -242,7 +241,7 @@ const App = ({ isServerInfo }) => {
   // console.log(students)
   // console.log(user)
   console.log(isUserEducator)
-  // console.log(isUserStudent)
+  console.log(isUserStudent)
 
   return (
     <> 
@@ -330,181 +329,18 @@ const App = ({ isServerInfo }) => {
           <>
           <Layout style={{ height: "100vh", overflow: "auto" }}>
             <div style={styles.content}>
-              <Switch>
-                <Route exact path='/uploadcontent'>
-                  <UploadContent isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path='/content'>
-                  <Content isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path='/createtest'>
-                  <CreateTest isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path='/tests'>
-                  <Tests isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path='/test'>
-                  <Test isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path='/profile'>
-                  <Profile isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path='/profilesettings'>
-                  <ProfileSettings isServerInfo={isServerInfo} />
-                </Route>
-              </Switch>
-              <Redirect to='/content' />
-            </div>
-          </Router>
-        </Layout>
-      ) : (
-        <>
-          {isAuthenticated ? (
-            <Layout style={{ height: "100vh", overflow: "auto" }}>
-              <div style={styles.content}>
-                <Card
-                  style={!isMobile ? styles.registerCard : styles.mobileCard}
-                  title={"Are you here to learn or teach?"}
-                >
-                  <Button
-                    style={styles.educatorButton}
-                    type='primary'
-                    loading={isEducatorRegisteringInProgress}
-                    onClick={async () => {
-                      setIsEducatorRegisteringInProgress(true);
-                      await registerEducator();
-                    }}
-                  >
-                    Register as Educator!
-                  </Button>
-                  <Button
-                    style={styles.studentButton}
-                    type='primary'
-                    loading={isStudentRegisteringInProgress}
-                    onClick={async () => {
-                      setIsStudentRegisteringInProgress(true);
-                      await registerStudent();
-                    }}
-                  >
-                    Register as Student!
-                  </Button>
-                </Card>
-              </div>
-            </Layout>
-          ) : (
-            <>
-              <Layout
-                style={{
-                  display: "flex",
-                  height: "100vh",
-                  width: "auto",
-                  color: "white",
-                }}
+              <Card
+                style={!isMobile ? styles.card : styles.mobileCard}
+                title={"Welcome to NFTeach!😀"}
               >
-                <Layout
-                  style={{
-                    background: "white",
-                    backgroundImage:
-                      "Url(https://images.unsplash.com/photo-1656998019066-002f27bbe342?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80)",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                >
-                  <Content
-                    style={{
-                      alignItems: "flex-start",
-                      justifyContent: "flex-start",
-                      display: "flex",
-                      marginTop: "250px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-start",
-                        justifyContent: "flex-start",
-                      }}
-                    >
-                      <div
-                        id='container'
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "flex-start",
-                          justifyContent: "flex-start",
-                          marginBottom: "25px",
-                        }}
-                      >
-                        <div
-                          id='title container'
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "flex-start",
-                            justifyContent: "flex-start",
-                            marginLeft: "45px",
-                          }}
-                        >
-                          <h2
-                            style={{
-                              fontWeight: "bold",
-                              fontSize: "53px",
-                              margin: "0",
-                            }}
-                          >
-                            👋🏼 Welcome to
-                            <span style={{ color: "#21bf96" }}>
-                              {" "}
-                              NFTeach
-                            </span>{" "}
-                          </h2>
-
-                          <h3
-                            style={{
-                              fontWeight: "bolder",
-                              fontSize: "25px",
-                              marginTop: "10px",
-                            }}
-                          >
-                            An education platform utilizing the power of NFTs
-                          </h3>
-                        </div>
-                      </div>
-                      <div
-                        id='connect container'
-                        style={{
-                          display: "flex",
-                          marginLeft: "25px",
-                        }}
-                      >
-                        <div
-                          style={{
-                            marginTop: "10px",
-                            float: "right",
-                          }}
-                        >
-                          <ConnectButton />
-                        </div>
-                        <h3
-                          style={{
-                            fontWeight: "normal",
-                            fontSize: "35px",
-                            float: "left",
-                          }}
-                        >
-                          to get started
-                        </h3>
-                      </div>
-                    </div>
-                  </Content>
-                </Layout>
-              </Layout>
-            </>
-          )}
-        </>
-      )}
+                <ConnectButton />
+              </Card>
+            </div>
+          </Layout>
+          </>
+        )}
+      </>
+    )}
     </>
   );
 };

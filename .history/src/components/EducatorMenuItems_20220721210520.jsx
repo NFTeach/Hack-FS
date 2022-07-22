@@ -33,6 +33,7 @@ const EducatorMenuItems = () => {
         width: "100%",
         justifyContent: "center",
       }}
+      defaultSelectedKeys={["/edudash"]}
     >
       <Menu.Item key="/edudash">
         <NavLink to="/edudash">😀 Educator Profile</NavLink>
