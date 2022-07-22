@@ -197,6 +197,7 @@ const App = ({ isServerInfo }) => {
     getEducators();
   }, []);
 
+  // MAKE THIS STUDENT BELOW
   useEffect(() => {
     async function getStudents() {
         try {
