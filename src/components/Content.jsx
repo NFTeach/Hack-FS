@@ -4,6 +4,8 @@ import { defaultImgs } from "../images/defaultImgs";
 import { useMoralis } from "react-moralis";
 import moralis from "moralis";
 import "../css/Course.css";
+import { Card, Popover } from "antd";
+import { QuestionOutlined, CheckSquareOutlined } from "@ant-design/icons";
 
 moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
 moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
@@ -11,6 +13,8 @@ moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
 const displayCourseDetails = () => {
   console.log("here");
 };
+
+const { Meta } = Card;
 
 const Content = () => {
   const { Moralis } = useMoralis();
@@ -33,29 +37,60 @@ const Content = () => {
   }, []);
 
   return (
-    <div className="courseContentPage">
+    <div className='courseContentPage'>
       {courseArr
         .map((e) => {
           console.log(e);
           return (
             <div>
-              <div className="courseCard">
-                <div className="courseName">{e.attributes.courseName}</div>
-                <div className="courseDescription">
-                  Course Description:
-                  <br />
-                  {e.attributes.courseDescription}
-                </div>
-                <div className="courseDifficulty">
-                  Course Difficulty: {e.attributes.courseDifficulty[0]}
-                </div>
-                <button
-                  className="courseCardButton"
-                  onClick={displayCourseDetails}
-                >
-                  See Course Details
-                </button>
-              </div>
+              <Card
+                className='courseCard'
+                cover={
+                  <img
+                    alt='example'
+                    src='https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'
+                  />
+                }
+                actions={[
+                  <Popover
+                    content={
+                      <div>
+                        <p>
+                          Course Difficulty:
+                          <br />
+                          {e.attributes.courseDifficulty[0]}
+                        </p>
+                        <p>
+                          Course Description:
+                          <br />
+                          {e.attributes.courseDescription}
+                        </p>
+                      </div>
+                    }
+                  >
+                    <QuestionOutlined />
+                  </Popover>,
+                  <Popover
+                    content={
+                      <div>
+                        <p>Check Eligibility</p>
+                      </div>
+                    }
+                  >
+                    <CheckSquareOutlined
+                      onClick={{
+                        pathname: "/test",
+                        state: { testData: { e } },
+                      }}
+                    />
+                  </Popover>,
+                ]}
+              >
+                <Meta
+                  title={`Course Name: ${e.attributes.courseName}`}
+                  description={"By:"}
+                />
+              </Card>
             </div>
           );
         })
