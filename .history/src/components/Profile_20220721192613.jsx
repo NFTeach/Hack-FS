@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { defaultImgs } from "../images/defaultImgs";
 import moralis from "moralis";
 import "../css/Profile.css";
+import { Button } from 'antd';
 
 moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
 moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
@@ -37,7 +38,11 @@ const Profile = () => {
                 <div className="profileBio">
                     {user?.attributes.bio}
                 </div>
+                
             </div>
+            <Button>
+                    Hello world!
+                </Button>
         </div>
       </div>
     </>
