@@ -54,98 +54,86 @@ const QuestionForm3 = (props) => {
   const { testData, handleChange, next, back } = props;
   return (
     <div style={styles.container}>
-
-            <main style={styles.main}>
-                <Card
-                    style={!isMobile ? styles.card : styles.mobileCard}
-                    title={"Create Multiple Choice Test (10 Questions)"}
-                >
-                    <Text style={styles.title}>Question 3</Text>
-                    <br/>
-                    <br/>
-                    <Text style={styles.text}>
-                        Question  
-                    </Text>
-                    <TextArea
-                        placeholder="What is the question?"
-                        showCount
-                        name="Question_3"
-                        maxLength={512}
-                        style={{ height: 100}}
-                        autoSize={{ minRows: 2, maxRows: 2 }}
-                        onChange={handleChange}
-                        value={testData.question}
-                    />
-                    <Text style={styles.text}>
-                        Answer 
-                    </Text>
-                    <TextArea
-                        placeholder="What is correct answer?"
-                        showCount
-                        name="Answer_3"
-                        maxLength={512}
-                        style={{ height: 100}}
-                        autoSize={{ minRows: 2, maxRows: 2 }}
-                        onChange={handleChange}
-                        value={testData.answer}
-                    />
-                    <Text style={styles.text}>
-                        False Answer 1
-                    </Text>
-                    <TextArea
-                        placeholder="What is first false answer?"
-                        showCount
-                        name="Question_3_False_Answer_1"
-                        maxLength={512}
-                        style={{ height: 100}}
-                        autoSize={{ minRows: 2, maxRows: 2 }}
-                        onChange={handleChange}
-                        value={testData.fAnswer}
-                    />
-                    <Text style={styles.text}>
-                        False Answer 2
-                    </Text>
-                    <TextArea
-                        placeholder="What is second false answer?"
-                        showCount
-                        name="Question_3_False_Answer_2"
-                        maxLength={512}
-                        style={{ height: 100}}
-                        autoSize={{ minRows: 2, maxRows: 2 }}
-                        onChange={handleChange}
-                        value={testData.fAnswer}
-                    />
-                    <Text style={styles.text}>
-                        False Answer 3
-                    </Text>
-                    <TextArea
-                        placeholder="What is third false answer?"
-                        showCount
-                        name="Question_3_False_Answer_3"
-                        maxLength={512}
-                        style={{ height: 100}}
-                        autoSize={{ minRows: 2, maxRows: 2 }}
-                        onChange={handleChange}
-                        value={testData.fAnswer}
-                    />
-                    <Button
-                        style={styles.nextButton}
-                        type="primary"
-                        onClick={next}
-                    >
-                        Next Question
-                    </Button>
-                    <Button
-                        style={styles.backButton}
-                        type="primary"
-                        onClick={back}
-                    >
-                        Previous Question
-                    </Button>
-                </Card>
-            </main>
-        </div>
-  )
-}
+      <main style={styles.main}>
+        <Card
+          headStyle={{
+            background: "#21bf96",
+            color: "white",
+            alignItems: "center",
+            justifyContent: "center",
+            display: "flex",
+          }}
+          style={!isMobile ? styles.card : styles.mobileCard}
+          title={"Create Multiple Choice Test (10 Questions)"}
+        >
+          <Text style={styles.title}>Question 3</Text>
+          <br />
+          <br />
+          <Text style={styles.text}>Question</Text>
+          <TextArea
+            placeholder='What is the question?'
+            showCount
+            name='Question_3'
+            maxLength={512}
+            style={{ height: 100 }}
+            autoSize={{ minRows: 2, maxRows: 2 }}
+            onChange={handleChange}
+            value={testData.question}
+          />
+          <Text style={styles.text}>Answer</Text>
+          <TextArea
+            placeholder='What is correct answer?'
+            showCount
+            name='Answer_3'
+            maxLength={512}
+            style={{ height: 100 }}
+            autoSize={{ minRows: 2, maxRows: 2 }}
+            onChange={handleChange}
+            value={testData.answer}
+          />
+          <Text style={styles.text}>False Answer 1</Text>
+          <TextArea
+            placeholder='What is first false answer?'
+            showCount
+            name='Question_3_False_Answer_1'
+            maxLength={512}
+            style={{ height: 100 }}
+            autoSize={{ minRows: 2, maxRows: 2 }}
+            onChange={handleChange}
+            value={testData.fAnswer}
+          />
+          <Text style={styles.text}>False Answer 2</Text>
+          <TextArea
+            placeholder='What is second false answer?'
+            showCount
+            name='Question_3_False_Answer_2'
+            maxLength={512}
+            style={{ height: 100 }}
+            autoSize={{ minRows: 2, maxRows: 2 }}
+            onChange={handleChange}
+            value={testData.fAnswer}
+          />
+          <Text style={styles.text}>False Answer 3</Text>
+          <TextArea
+            placeholder='What is third false answer?'
+            showCount
+            name='Question_3_False_Answer_3'
+            maxLength={512}
+            style={{ height: 100 }}
+            autoSize={{ minRows: 2, maxRows: 2 }}
+            onChange={handleChange}
+            value={testData.fAnswer}
+          />
+          <Button style={styles.nextButton} type='primary' onClick={next}>
+            Next Question
+          </Button>
+          <Button style={styles.backButton} type='primary' onClick={back}>
+            Previous Question
+          </Button>
+        </Card>
+      </main>
+    </div>
+  );
+};
 
 export default QuestionForm3;
