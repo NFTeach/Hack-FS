@@ -51,19 +51,9 @@ const EduDash = () => {
   const [coursesPublished, setCoursesPublished] = useState({});
 
   useEffect(() => {
-    async function getTestsPublished() {
-      try {
-        const Tests = Moralis.Object.extend("Tests");
-        const query = new Moralis.Query(Tests);
-        query.equalTo("educatorAcc", user.attributes.accounts[0]);
-        const educatorTests = await query.find();
-        setCoursesPublished(educatorTests.length);
-      } catch(error) {
-        console.log(error)
-      }
-    }
-    getTestsPublished(); 
-  }, [])
+    async function get 
+  })
+
 
   return (
     <div>
@@ -99,7 +89,7 @@ const EduDash = () => {
           title='Tests Published '
           size='large'
         >
-          <p>{`${coursesPublished}`}</p>
+          <p>7 Courses</p>
         </Card>
         <Card
           headStyle={{
@@ -125,7 +115,7 @@ const EduDash = () => {
           title='Active Students'
           size='large'
         >
-          <p>Coming soon!</p>
+          <p>5,335</p>
         </Card>
         <Card
           headStyle={{
@@ -152,7 +142,7 @@ const EduDash = () => {
           title='Total Students'
           size='large'
         >
-          <p>Coming soon!</p>
+          <p>7642</p>
         </Card>
         <Card
           headStyle={{
@@ -202,7 +192,7 @@ const EduDash = () => {
             alignItems: "center",
             margin: "5px",
           }}
-          title='Educator withdrawal available (ETH):'
+          title='Crypto Revenue (ETH):'
           size='large'
         >
           <h1>7.20</h1>
