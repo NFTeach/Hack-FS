@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { defaultImgs } from "../images/defaultImgs";
 import { useMoralis } from "react-moralis";
 import moralis from "moralis";
-import "../css/Tests.css";
 import "../css/Profile.css";
-import { Avatar, Card, Popover } from "antd";
+import "../css/Course.css";
+import { Avatar, Card, Popover, Button } from "antd";
 import {
   ContainerOutlined,
   QuestionOutlined,
@@ -17,49 +17,6 @@ moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
 const { Meta } = Card;
 
 const TestCatalog = () => {
-  const styles = {
-    title: {
-      fontSize: "20px",
-      fontWeight: "700",
-    },
-    card: {
-      boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
-      border: "1px solid #e7eaf3",
-      borderRadius: "0.5rem",
-      width: "50%",
-      background: "white",
-    },
-    mobileCard: {
-      boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
-      border: "1px solid #e7eaf3",
-      borderRadius: "0.5rem",
-      width: "100%",
-    },
-    container: {
-      padding: "0 2rem",
-    },
-    main: {
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      width: "100vw",
-    },
-    nextButton: {
-      float: "right",
-      marginTop: "10px",
-    },
-    backButton: {
-      float: "left",
-      marginTop: "10px",
-    },
-    text: {
-      fontSize: "14px",
-      alignSelf: "center",
-    },
-  };
-
   const { Moralis } = useMoralis();
   const [testArr, setTestArr] = useState([]);
 
@@ -115,57 +72,49 @@ const TestCatalog = () => {
           // console.log(e.id)
           return (
             <>
-              <form style={styles.container}>
-                <main style={styles.main}>
-                  <div style={styles.wrapper}>
-                    <div className='feedTests'>
-                      <div className='completeTest'>
-                        <Card
-                          style={{
-                            width: "500px",
-                          }}
-                          cover={
-                            <img
-                              alt='example'
-                              src='https://images.unsplash.com/photo-1656998019066-002f27bbe342?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80'
-                            />
+              <div className='courseContentPage'>
+                <div>
+                  <Card
+                    className='courseCard'
+                    cover={
+                      <img
+                        alt='example'
+                        src='https://images.unsplash.com/photo-1520004434532-668416a08753?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'
+                      />
+                    }
+                    actions={[
+                      <Popover content={content}>
+                        <QuestionOutlined />
+                      </Popover>,
+                      <Button
+                        onClick={{
+                          pathname: "/test",
+                          state: { testData: { e } },
+                        }}
+                      >
+                        <ContainerOutlined />
+                      </Button>,
+                      <Popover content={who}>
+                        <EllipsisOutlined />
+                      </Popover>,
+                    ]}
+                  >
+                    <Meta
+                      avatar={
+                        <Avatar
+                          src={
+                            e.attributes.educatorPfp
+                              ? e.attributes.educatorPfp
+                              : defaultImgs[0]
                           }
-                          actions={[
-                            <Popover content={content}>
-                              <QuestionOutlined />
-                            </Popover>,
-                            <Popover content={takeTest}>
-                              <ContainerOutlined
-                                onClick={{
-                                  pathname: "/test",
-                                  state: { testData: { e } },
-                                }}
-                              />
-                            </Popover>,
-                            <Popover content={who}>
-                              <EllipsisOutlined />
-                            </Popover>,
-                          ]}
-                        >
-                          <Meta
-                            avatar={
-                              <Avatar
-                                src={
-                                  e.attributes.educatorPfp
-                                    ? e.attributes.educatorPfp
-                                    : defaultImgs[0]
-                                }
-                              />
-                            }
-                            title={`Test Name: ${e.attributes.testName}`}
-                            description={`By: ${e.attributes.educatorName}`}
-                          />
-                        </Card>
-                      </div>
-                    </div>
-                  </div>
-                </main>
-              </form>
+                        />
+                      }
+                      title={`Test Name: ${e.attributes.testName}`}
+                      description={`By: ${e.attributes.educatorName}`}
+                    />
+                  </Card>
+                </div>
+              </div>
             </>
           );
         })
