@@ -202,7 +202,7 @@ const EduDash = () => {
             alignItems: "center",
             margin: "5px",
           }}
-          title='Educator withdrawal available (ETH):'
+          title='Crypto Revenue (ETH):'
           size='large'
         >
           <h1>7.20</h1>
