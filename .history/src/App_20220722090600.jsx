@@ -200,7 +200,7 @@ const App = ({ isServerInfo }) => {
         try {
             const Educators = Moralis.Object.extend("Educators");
             const query = new Moralis.Query(Educators);
-            query.equalTo("educator", user.attributes.accounts[0]);
+            query.equalTo("educator", user.attributes.accounts[0])
             const educatorResults = await query.find();
             if (educatorResults.length != 0) {
               setIsUserEducator(true);
