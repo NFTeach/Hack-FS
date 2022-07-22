@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import moralis, { Moralis } from "moralis";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 import Account from "./components/Account/Account";
 import Chains from "./components/Chains/Chains";
 import { Layout, Card, Button, notification } from "antd";
@@ -19,7 +23,6 @@ import EducatorMenuItems from "./components/EducatorMenuItems";
 import StudentMenuItems from "./components/StudentMenuItems";
 import { ConnectButton } from "web3uikit";
 import useWindowDimensions from "./util/useWindowDimensions";
-import StudentContent from "./components/Content";
 
 let appId = process.env.REACT_APP_MORALIS_APPLICATION_ID;
 let serverUrl = process.env.REACT_APP_MORALIS_SERVER_URL;
@@ -123,10 +126,9 @@ const App = ({ isServerInfo }) => {
   const { width } = useWindowDimensions();
   const isMobile = width < 700;
 
-  const [isStudentRegisteringInProgress, setIsStudentRegisteringInProgress] =
-    useState(false);
-  const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] =
-    useState(false);
+
+  const [isStudentRegisteringInProgress, setIsStudentRegisteringInProgress] = useState(false);
+  const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] = useState(false);
   const [isUserEducator, setIsUserEducator] = useState(false);
   const [isUserStudent, setIsUserStudent] = useState(false);
   const user = moralis.User.current();
@@ -134,17 +136,18 @@ const App = ({ isServerInfo }) => {
   // Register student smart contract call
   const registerStudent = async () => {
     if (isAuthenticated) {
-      notification.info({
-        message: "Address registered as student!",
-        description: "Your address is being registered as a student!",
-      });
+
+        notification.info({
+          message: "Address registered as student!",
+          description: "Your address is being registered as a student!"
+        })  
     }
 
     if (isUserEducator == true) {
       notification.error({
         message: "Address registered as educator!",
-        description: "Please use another address if you want to be a student!",
-      });
+        description: "Please use another address if you want to be a student!"
+      })
       return;
     }
 
@@ -154,8 +157,8 @@ const App = ({ isServerInfo }) => {
       to: studentAddressTo,
     };
 
-    async function callAddStudent() {
-      const _Result = await Moralis.Cloud.run("registerStudent", studentParams);
+    async function callAddStudent(){
+      const _Result = await Moralis.Cloud.run("registerStudent", studentParams)
       // console.log(_Result)
     }
     callAddStudent();
@@ -167,15 +170,15 @@ const App = ({ isServerInfo }) => {
       notification.info({
         message: "Address registered as educator!",
 
-        description: "Your address is being registered as a educator!",
-      });
+        description: "Your address is being registered as a educator!"
+      })  
     }
 
-    if (isUserStudent == true) {
+    if (isUserStudent== true) {
       notification.error({
         message: "Address registered as student!",
-        description: "Please use another address if you want to be a educator!",
-      });
+        description: "Please use another address if you want to be a educator!"
+      })
       return;
     }
 
@@ -185,11 +188,8 @@ const App = ({ isServerInfo }) => {
       to: educatorAddressTo,
     };
 
-    async function callAddEducator() {
-      const _Result = await Moralis.Cloud.run(
-        "registerEducator",
-        educatorParams
-      );
+    async function callAddEducator(){
+      const _Result = await Moralis.Cloud.run("registerEducator", educatorParams)
       // console.log(_Result)
     }
     callAddEducator();
@@ -200,31 +200,31 @@ const App = ({ isServerInfo }) => {
         try {
             const Educators = Moralis.Object.extend("Educators");
             const query = new Moralis.Query(Educators);
-            query.equalTo("educator", user.attributes.accounts[0]);
+            query.equalTo("educator", user.attributes.accounts[0])
             const educatorResults = await query.find();
             if (educatorResults.length != 0) {
               setIsUserEducator(true);
             }
-          } catch (error) {
-            console.log(error);
-          }
+        } catch(error) {
+            console.log(error)
         }
-        getIsUserEducator();
-      }, []);
+    }
+    getIsUserEducator();
+  }, []);
 
   useEffect(() => {
     async function getIsUserStudent() {
-      try {
-        const Students = Moralis.Object.extend("Students");
-        const query = new Moralis.Query(Students);
-        query.equalTo("student", user.attributes.accounts[0]);
-        const studentResults = await query.find();
-        if (studentResults.length != 0) {
-          setIsUserStudent(true);
+        try {
+            const Students = Moralis.Object.extend("Students");
+            const query = new Moralis.Query(Students);
+            query.equalTo("student", user.attributes.accounts[0])
+            const studentResults = await query.find();
+            if (studentResults.length != 0) {
+              setIsUserStudent(true);
+            }
+        } catch(error) {
+            console.log(error)
         }
-      } catch (error) {
-        console.log(error);
-      }
     }
     getIsUserStudent();
   }, []);
@@ -243,56 +243,53 @@ const App = ({ isServerInfo }) => {
   // console.log(isUserStudent)
 
   return (
-    <>
-      {(isAuthenticated && isUserEducator) ||
-      isUserStudent ||
-      isStudentRegisteringInProgress ||
-      isEducatorRegisteringInProgress ? (
-        <Layout style={{ height: "100vh", overflow: "auto" }}>
-          <Router>
-            <Header style={styles.header}>
-              {isStudentRegisteringInProgress || isUserStudent ? (
-                <StudentMenuItems />
-              ) : (
-                <EducatorMenuItems />
-              )}
-              <div style={styles.headerRight}>
-                <Chains />
-                <NativeBalance />
-                <Account />
-              </div>
-            </Header>
+    <> 
+    {isAuthenticated && isUserEducator || isUserStudent || isStudentRegisteringInProgress || isEducatorRegisteringInProgress  ? (
+      <Layout style={{ height: "100vh", overflow: "auto" }}>
+      <Router>
+        <Header style={styles.header}> 
+          {isStudentRegisteringInProgress || isUserStudent ? (
+            <StudentMenuItems />
+          ) : (
+            <EducatorMenuItems />
+          )}
+          <div style={styles.headerRight}>
+            <Chains />
+            <NativeBalance />
+            <Account />
+          </div>
+        </Header>
 
-            <div style={styles.content}>
-              <Switch>
-                <Route exact path="/uploadcontent">
-                  <UploadContent isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path="/content">
-                  <StudentContent isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path="/createtest">
-                  <CreateTest isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path="/tests">
-                  <Tests isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path="/test">
-                  <Test isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path="/edudash">
-                  <EduDash isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path="/studash">
-                  <StuDash isServerInfo={isServerInfo} />
-                </Route>
-                <Route exact path="/profilesettings">
-                  <ProfileSettings isServerInfo={isServerInfo} />
-                </Route>
-              </Switch>
-            </div>
-          </Router>
-        </Layout>
+        <div style={styles.content}>
+          <Switch>
+            <Route exact path='/uploadcontent'>
+              <UploadContent isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path='/content'>
+              <Content isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path='/createtest'>
+              <CreateTest isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path='/tests'>
+              <Tests isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path="/test">
+              <Test isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path="/edudash">
+              <EduDash isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path="/studash">
+              <StuDash isServerInfo={isServerInfo} />
+            </Route>
+            <Route exact path='/profilesettings'>
+              <ProfileSettings isServerInfo={isServerInfo} />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </Layout>
       ) : (
         <>
           {isAuthenticated ? (
@@ -304,7 +301,7 @@ const App = ({ isServerInfo }) => {
                 >
                   <Button
                     style={styles.educatorButton}
-                    type="primary"
+                    type='primary'
                     loading={isEducatorRegisteringInProgress}
                     onClick={async () => {
                       setIsEducatorRegisteringInProgress(true);
@@ -315,7 +312,7 @@ const App = ({ isServerInfo }) => {
                   </Button>
                   <Button
                     style={styles.studentButton}
-                    type="primary"
+                    type='primary'
                     loading={isStudentRegisteringInProgress}
                     onClick={async () => {
                       setIsStudentRegisteringInProgress(true);
@@ -364,7 +361,7 @@ const App = ({ isServerInfo }) => {
                       }}
                     >
                       <div
-                        id="container"
+                        id='container'
                         style={{
                           display: "flex",
                           flexDirection: "column",
@@ -374,7 +371,7 @@ const App = ({ isServerInfo }) => {
                         }}
                       >
                         <div
-                          id="title container"
+                          id='title container'
                           style={{
                             display: "flex",
                             flexDirection: "column",
@@ -409,7 +406,7 @@ const App = ({ isServerInfo }) => {
                         </div>
                       </div>
                       <div
-                        id="connect container"
+                        id='connect container'
                         style={{
                           display: "flex",
                           marginLeft: "25px",
