@@ -13,6 +13,7 @@ import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
 import "./style.css";
 import UploadContent from "./components/UploadContent";
+import Content from "./components/Content";
 import Tests from "./components/Tests";
 import CreateTest from "./components/CreateTest";
 import EduDash from "./components/EduDash";
@@ -23,6 +24,7 @@ import EducatorMenuItems from "./components/EducatorMenuItems";
 import StudentMenuItems from "./components/StudentMenuItems";
 import { ConnectButton } from "web3uikit";
 import useWindowDimensions from "./util/useWindowDimensions";
+import { Url } from "url";
 
 let appId = process.env.REACT_APP_MORALIS_APPLICATION_ID;
 let serverUrl = process.env.REACT_APP_MORALIS_SERVER_URL;
