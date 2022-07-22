@@ -20,10 +20,10 @@ const styles = {
     },
 };
 
-const EducatorMenuItems = () => {
+const StudentMenuItems = () => {
   return (
     <>
-    <Menu
+      <Menu
       theme="light"
       mode="horizontal"
       style={{
@@ -34,19 +34,19 @@ const EducatorMenuItems = () => {
         justifyContent: "center",
       }}
     >
-      <Menu.Item key="/edudash">
-        <NavLink to="/edudash">😀 Educator Profile</NavLink>
+      <Menu.Item key="/studash">
+        <NavLink to="/studash">😀 Student Profile</NavLink>
       </Menu.Item>
-      <Menu.Item key="/uploadcontent">
-        <NavLink to="/uploadcontent">⬆️ Upload Content</NavLink>
+      <Menu.Item key="/content">
+        <NavLink to="/content">📚 Content</NavLink>
       </Menu.Item>
-      <Menu.Item key="/createtest">
-        <NavLink to="/createtest">🧠 Create Test</NavLink>
-      </Menu.Item>
-      <Redirect to="/edudash" />
-    </Menu>
+      <Menu.Item key="/tests">
+        <NavLink to="/tests">📝 Tests</NavLink>
+      </Menu.Item>   
+      <Redirect to="/content" />
+      </Menu>
     </>
   )
 }
 
-export default EducatorMenuItems
+export default StudentMenuItems

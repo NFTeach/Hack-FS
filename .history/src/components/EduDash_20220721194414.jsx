@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { React } from "react";
 import EduProfile from "./EduProfile";
 import {
   CheckCircleOutlined,
@@ -6,15 +6,8 @@ import {
   StarOutlined,
   BorderOutlined,
 } from "@ant-design/icons";
-import { Card, Table } from "antd";
-import moralis from "moralis";
-import { 
-  useMoralis,
-  useMoralisFile,
-} from 'react-moralis';
 
-moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
-moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
+import { Card, Table } from "antd";
 
 const columns = [
   {
@@ -38,33 +31,6 @@ for (let i = 0; i < 46; i++) {
 }
 
 const EduDash = () => {
-
-  const { 
-    Moralis,
-    isWeb3Enabled,
-    enableWeb3,
-    isAuthenticated,
-    isWeb3EnableLoading 
-  } = useMoralis();
-  const user = moralis.User.current();
-
-  const [coursesPublished, setCoursesPublished] = useState({});
-
-  useEffect(() => {
-    async function getTestsPublished() {
-      try {
-        const Tests = Moralis.Object.extend("Tests");
-        const query = new Moralis.Query(Tests);
-        query.equalTo("educatorAcc", user.attributes.accounts[0]);
-        const educatorTests = await query.find();
-        setCoursesPublished(educatorTests.length);
-      } catch(error) {
-        console.log(error)
-      }
-    }
-    getTestsPublished(); 
-  }, [])
-
   return (
     <div>
       <div
@@ -96,10 +62,10 @@ const EduDash = () => {
             border: "1px solid #e7eaf3",
             margin: "5px",
           }}
-          title='Tests Published '
+          title='Courses Published '
           size='large'
         >
-          <p>{`${coursesPublished}`}</p>
+          <p>7 Courses Taken</p>
         </Card>
         <Card
           headStyle={{
@@ -125,7 +91,7 @@ const EduDash = () => {
           title='Active Students'
           size='large'
         >
-          <p>Coming soon!</p>
+          <p>5,335</p>
         </Card>
         <Card
           headStyle={{
@@ -152,7 +118,7 @@ const EduDash = () => {
           title='Total Students'
           size='large'
         >
-          <p>Coming soon!</p>
+          <p>7642</p>
         </Card>
         <Card
           headStyle={{
@@ -202,7 +168,7 @@ const EduDash = () => {
             alignItems: "center",
             margin: "5px",
           }}
-          title='Educator withdrawal available (ETH):'
+          title='Crypto Revenue (ETH):'
           size='large'
         >
           <h1>7.20</h1>

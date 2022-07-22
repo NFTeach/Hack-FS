@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import StuProfile from "./StuProfile";
+import Profile from "./Profile";
 import {
   CheckCircleOutlined,
   AreaChartOutlined,
@@ -237,7 +237,7 @@ const StuDash = () => {
               background: "white",
             }}
           >
-            <StuProfile />
+            <Profile />
           </div>
         </div>
       </div>

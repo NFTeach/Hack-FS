@@ -5,11 +5,12 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title NFTeach
- * @author olivierdem & sraylr
- * @notice Allows Educators to upload course/test content for students to view, and a token for students to mint upon completion.
- */
+  * @title NFTeach
+  * @author olivierdem & sraylr
+  * @notice Allows Educators to upload course/test content for students to view, and a token for students to mint upon completion.
+  */
 contract SBT is ERC1155, Ownable {
+
     // Incrementing tokenId
     uint256 public counterIDs = 0;
 
@@ -18,44 +19,44 @@ contract SBT is ERC1155, Ownable {
     //////////////////////////////////////////////////////////////*/
 
     /**
-     * @notice emitted when a new educator is added
-     * @param educator address of the new educator
-     */
+      * @notice emitted when a new educator is added
+      * @param educator address of the new educator
+      */
     event AddEducator(address educator);
 
     /**
-     * @notice emitted when a new student is added
-     * @param student address of the new student
-     */
+      * @notice emitted when a new student is added
+      * @param student address of the new student
+      */
     event AddStudent(address student);
 
     /**
-     * @notice emited when new test is created
-     * @param tokenId Id of the new test and corresponding token
-     * @param educator address of the educator who creates the test
-     * @param mintPrice price of minting the SBT after test completion
-     */
+      * @notice emited when new test is created
+      * @param tokenId Id of the new test and corresponding token
+      * @param educator address of the educator who creates the test
+      * @param mintPrice price of minting the SBT after test completion
+      */
     event CreateTest(uint256 tokenId, address educator, uint256 mintPrice);
 
     /**
-     * @notice emited when an educator validates a students completion of a test
-     * @param tokenId id of the test and corresponding token
-     * @param student address of the student which completed the test
-     */
+      * @notice emited when an educator validates a students completion of a test
+      * @param tokenId id of the test and corresponding token
+      * @param student address of the student which completed the test
+      */
     event ValidateTest(uint256 tokenId, address student);
 
     /**
-     * @notice emitted when SBT is minted by a student
-     * @param tokenId Id of the test and corresponding token
-     * @param student address of the student which completed the test
-     */
+      * @notice emitted when SBT is minted by a student
+      * @param tokenId Id of the test and corresponding token
+      * @param student address of the student which completed the test
+      */
     event MintSBT(uint256 tokenId, address student);
 
     /**
-     * @notice emitted when an educator withdraws their payoff
-     * @param educator address of the withdrawing educator
-     * @param amount total amount of payoff withdrawn by educator
-     */
+      * @notice emitted when an educator withdraws their payoff
+      * @param educator address of the withdrawing educator
+      * @param amount total amount of payoff withdrawn by educator
+      */
     event Withdrawl(address educator, uint256 amount);
 
     /*//////////////////////////////////////////////////////////////
@@ -66,12 +67,12 @@ contract SBT is ERC1155, Ownable {
     //price to mint SBT, number of students that passed the test.
 
     /**
-     * @dev Test struct to represent the test associated with each SBT
-     * @param educator address of the educator which created the test
-     * @param lifetimePayout total amount of funds collected from students minting tokens
-     * @param price price to mint SBT after completion of associated test; set by educator
-     * @param nbCompleted the number of students who have completed the test
-     */
+      * @dev Test struct to represent the test associated with each SBT
+      * @param educator address of the educator which created the test
+      * @param lifetimePayout total amount of funds collected from students minting tokens
+      * @param price price to mint SBT after completion of associated test; set by educator
+      * @param nbCompleted the number of students who have completed the test
+      */
     struct Test {
         address educator;
         string hash;
@@ -81,11 +82,11 @@ contract SBT is ERC1155, Ownable {
     }
 
     /**
-     * @dev Student struct to keep track of each student's information
-     * @param classCompleted the number of classes the student has completed
-     * @param sbtMinted the number of SBTs the student has minted
-     * @param allowedMint mapping to track which SBTs the student can mint
-     */
+      * @dev Student struct to keep track of each student's information
+      * @param classCompleted the number of classes the student has completed
+      * @param sbtMinted the number of SBTs the student has minted
+      * @param allowedMint mapping to track which SBTs the student can mint
+      */
     struct Student {
         uint8 classCompleted;
         uint8 sbtMinted;
@@ -94,10 +95,10 @@ contract SBT is ERC1155, Ownable {
     }
 
     /**
-     * @dev Educator struct to keep track of each educator's information
-     * @param lifetimePayout the total amount of funds the educator has accumulated
-     * @param classesCreated the number of classes the educator has created
-     */
+      * @dev Educator struct to keep track of each educator's information
+      * @param lifetimePayout the total amount of funds the educator has accumulated
+      * @param classesCreated the number of classes the educator has created
+      */
     struct Educator {
         uint256 lifetimePayout;
         uint256 classesCreated;
@@ -148,13 +149,10 @@ contract SBT is ERC1155, Ownable {
     }
 
     /**
-     * @dev Called whenever a new educator is created
-     */
+      * @dev Called whenever a new educator is created
+      */
     function addEducator(address _newEducator) public onlyOwner {
-        require(
-            educators[_newEducator].active == false,
-            "Educator already exists"
-        );
+        require(educators[_newEducator].active == false, "Educator already exists");
 
         educators[_newEducator].active = true;
 
@@ -162,13 +160,10 @@ contract SBT is ERC1155, Ownable {
     }
 
     /**
-     * @dev Called whenever a new student is created
-     */
+      * @dev Called whenever a new student is created
+      */
     function addStudent(address _newStudent) public onlyOwner {
-        require(
-            students[_newStudent].active == false,
-            "Student already exists"
-        );
+        require(students[_newStudent].active == false, "Student already exists");
 
         students[_newStudent].active = true;
 
@@ -176,13 +171,10 @@ contract SBT is ERC1155, Ownable {
     }
 
     /**
-     * @dev Called whenever a new test and corresponding token are created
-     * @param _price educator set price to mintSBT after test completion
-     */
-    function createSBT(uint256 _price, string memory _testHash)
-        external
-        onlyEducator
-    {
+      * @dev Called whenever a new test and corresponding token are created
+      * @param _price educator set price to mintSBT after test completion
+      */
+    function createSBT(uint256 _price, string memory _testHash) external onlyEducator {
         tests[counterIDs] = Test(msg.sender, _testHash, 0, _price, 0);
         educators[msg.sender].classesCreated += 1;
 
@@ -191,23 +183,13 @@ contract SBT is ERC1155, Ownable {
         counterIDs += 1;
     }
 
-    /**
-     * @dev Called whenever a student completes a test, validated by owner
-     */
-    function validateStudentTest(address _student, uint256 _tokenId)
-        public
-        payable
-        onlyOwner
-    {
+    /** 
+      * @dev Called whenever a student completes a test, validated by owner
+      */
+    function validateStudentTest(address _student, uint256 _tokenId) public payable onlyOwner {
         require(tests[_tokenId].educator != address(0), "Token doesn't exist");
-        require(
-            balanceOf(_student, _tokenId) == 0,
-            "Student already has this token"
-        );
-        require(
-            students[_student].allowedMint[_tokenId] == false,
-            "Student already allowed to mint"
-        );
+        require(balanceOf(_student, _tokenId) == 0, "Student already has this token");
+        require(students[_student].allowedMint[_tokenId] == false, "Student already allowed to mint");
 
         // Increment the number of times the test has been completed
         tests[_tokenId].nbCompleted += 1;
@@ -220,24 +202,17 @@ contract SBT is ERC1155, Ownable {
     }
 
     /**
-     * @dev Called whenever a student mints a token after completion of the corresponding test
-     */
+      * @dev Called whenever a student mints a token after completion of the corresponding test
+      */
     function mintSBT(uint256 _tokenId) public payable onlyStudent {
         // Student must have permission to mint the token
-        require(
-            students[msg.sender].allowedMint[_tokenId] == true,
-            "Student is not allowed to mint this token"
-        );
-        require(
-            msg.value == tests[_tokenId].price || tests[_tokenId].price == 0,
-            "Incorrect amount"
-        );
-
+        require(students[msg.sender].allowedMint[_tokenId] == true, "Student is not allowed to mint this token");
+        require(msg.value == tests[_tokenId].price || tests[_tokenId].price == 0, "Incorrect amount");
+        
         // Track how much is owed to the educator
         payout[tests[_tokenId].educator] += tests[_tokenId].price;
         // Track the total funds an educator has accumulated from token mints
-        educators[tests[_tokenId].educator].lifetimePayout += tests[_tokenId]
-            .price;
+        educators[tests[_tokenId].educator].lifetimePayout += tests[_tokenId].price;
 
         // Prevent students from minting twice
         students[msg.sender].allowedMint[_tokenId] = false;
@@ -249,17 +224,15 @@ contract SBT is ERC1155, Ownable {
     }
 
     /**
-     * @dev Called whenever an educator withdraws the funds accumulated from token mints
-     */
+      * @dev Called whenever an educator withdraws the funds accumulated from token mints
+      */
     function withdrawCoursesPayoff() public onlyEducator {
         require(payout[msg.sender] > 0, "No funds left to withdraw");
         uint256 leftToPay = payout[msg.sender];
         educators[msg.sender].lifetimePayout += leftToPay;
         payout[msg.sender] = 0;
 
-        (bool success, ) = address(payable(msg.sender)).call{value: leftToPay}(
-            ""
-        );
+        (bool success, ) = address(payable(msg.sender)).call{value: leftToPay}("");
         require(success, "Call failed");
 
         emit Withdrawl(msg.sender, leftToPay);
@@ -271,7 +244,7 @@ contract SBT is ERC1155, Ownable {
 
     /// @return whether an address is an educator
     function isEducator(address _address) public view returns (bool) {
-        return (educators[_address].active);
+    return (educators[_address].active);
     }
 
     /// @return whether an address is a student
@@ -280,53 +253,37 @@ contract SBT is ERC1155, Ownable {
     }
 
     /// @return the number of classes an educator has created
-    function nbClassesCreated(address _educator) public view returns (uint256) {
-        return (educators[_educator].classesCreated);
+    function nbClassesCreated(address _educator) public view returns(uint256) {
+        return(educators[_educator].classesCreated);
     }
 
     /// @return the number of classes a student has completed
-    function nbClassesCompleted(address _student)
-        public
-        view
-        returns (uint256)
-    {
-        return (students[_student].classCompleted);
+    function nbClassesCompleted(address _student) public view returns(uint256) {
+        return(students[_student].classCompleted);
     }
 
     /// @return the educator of a test
-    function getTestEducator(uint256 _tokenId) public view returns (address) {
-        return (tests[_tokenId].educator);
-    }
-
-    function getEducatorCurrentPayout(address _educator)
-        public
-        view
-        returns (uint256)
-    {
-        return (payout[_educator]);
+    function getTestEducator(uint256 _tokenId) public view returns(address) {
+        return(tests[_tokenId].educator);
     }
 
     /// @return the number of times a test has been completed
-    function nbTestCompletions(uint256 _tokenId) public view returns (uint256) {
-        return (tests[_tokenId].nbCompleted);
+    function nbTestCompletions(uint256 _tokenId) public view returns(uint256) {
+        return(tests[_tokenId].nbCompleted);
     }
 
     /// @return whether a student is allowed to mint a token
-    function isAllowedMint(address _student, uint256 _tokenId)
-        public
-        view
-        returns (bool)
-    {
-        return (students[_student].allowedMint[_tokenId]);
+    function isAllowedMint(address _student, uint256 _tokenId) public view returns(bool) {
+        return(students[_student].allowedMint[_tokenId]);
     }
 
     /// @return the number of tokens a student has minted
-    function nbMinted(address _student) public view returns (uint8) {
-        return (students[_student].sbtMinted);
+    function nbMinted(address _student) public view returns(uint8) {
+        return(students[_student].sbtMinted);
     }
 }
 
-/*
+/* 
  *  HackFs Metadata
  *  https://gateway.moralisipfs.com/ipfs/
  */
