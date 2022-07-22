@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Account from "./components/Account/Account";
 import Chains from "./components/Chains/Chains";
 import { Layout, Card, Button, notification } from "antd";
+import { CoffeeOutlined, LaptopOutlined } from "@ant-design/icons";
+
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
 import "./style.css";
@@ -101,10 +103,12 @@ const styles = {
   studentButton: {
     float: "right",
     marginTop: "10px",
+    fontSize: "1em",
   },
   educatorButton: {
     float: "left",
     marginTop: "10px",
+    fontSize: "1em",
   },
 };
 
@@ -126,6 +130,7 @@ const App = ({ isServerInfo }) => {
     useState(false);
   const [isEducatorRegisteringInProgress, setIsEducatorRegisteringInProgress] =
     useState(false);
+
   const [isUserEducator, setIsUserEducator] = useState(false);
   const [isUserStudent, setIsUserStudent] = useState(false);
   const user = moralis.User.current();
@@ -137,6 +142,7 @@ const App = ({ isServerInfo }) => {
         message: "Address registered as student!",
         description: "Your address is being registered as a student!",
       });
+
     }
 
     if (isUserEducator == true) {
@@ -168,6 +174,7 @@ const App = ({ isServerInfo }) => {
 
         description: "Your address is being registered as a educator!",
       });
+
     }
 
     if (isUserStudent == true) {
@@ -243,7 +250,8 @@ const App = ({ isServerInfo }) => {
 
   return (
     <>
-      {(isAuthenticated && isUserEducator) ||
+
+      {isAuthenticated && isUserEducator ||
       isUserStudent ||
       isStudentRegisteringInProgress ||
       isEducatorRegisteringInProgress ? (
@@ -279,6 +287,7 @@ const App = ({ isServerInfo }) => {
                 <Route exact path="/test">
                   <Test isServerInfo={isServerInfo} />
                 </Route>
+
                 <Route exact path="/edudash">
                   <EduDash isServerInfo={isServerInfo} />
                 </Route>
@@ -295,35 +304,117 @@ const App = ({ isServerInfo }) => {
       ) : (
         <>
           {isAuthenticated ? (
-            <Layout style={{ height: "100vh", overflow: "auto" }}>
-              <div style={styles.content}>
-                <Card
-                  style={!isMobile ? styles.registerCard : styles.mobileCard}
-                  title={"Are you a Educator or Student?"}
-                >
-                  <Button
-                    style={styles.educatorButton}
-                    type="primary"
-                    loading={isEducatorRegisteringInProgress}
-                    onClick={async () => {
-                      setIsEducatorRegisteringInProgress(true);
-                      await registerEducator();
-                    }}
-                  >
-                    Educator!
-                  </Button>
-                  <Button
-                    style={styles.studentButton}
-                    type="primary"
-                    loading={isStudentRegisteringInProgress}
-                    onClick={async () => {
-                      setIsStudentRegisteringInProgress(true);
-                      await registerStudent();
-                    }}
-                  >
-                    Student!
-                  </Button>
-                </Card>
+            <Layout>
+              <div
+                id='background image'
+                style={{
+                  height: "100%",
+                  backgroundImage:
+                    "Url(https://images.unsplash.com/photo-1656998019066-002f27bbe342?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80)",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  zIndex: "1",
+                  position: "fixed",
+                  left: "0",
+                  right: "0",
+                  webkitFilter: "blur(5px)",
+                  filter: "blur(5px)",
+                }}
+              >
+                {" "}
+              </div>
+
+              <div
+                id='column container'
+                style={{
+                  zIndex: "2",
+                  marginLeft: "15px",
+                  marginTop: "75px",
+                }}
+              >
+                <div style={styles.content}>
+                  <div>
+                    <div id='title container'>
+                      <h2
+                        style={{
+                          fontWeight: "normal",
+                          fontSize: "65px",
+                          marginRight: "5em",
+                        }}
+                      >
+                        Pick a role to start using
+                        <span style={{ color: "#21bf96" }}> NFTeach</span>
+                      </h2>
+                    </div>
+                    <div
+                      id='buttons'
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Card
+                        bodyStyle={{
+                          fontSize: "2em",
+                          borderRadius: "0.5rem",
+                        }}
+                        style={{
+                          borderRadius: "0.5rem",
+                          backgroundColor: "rgba(0, 139, 139, 0.9)",
+                          color: "#fff",
+                          width: "15%",
+                          marginRight: "5px",
+                        }}
+                      >
+                        <Card.Grid
+                          style={{
+                            width: "100%",
+                            fontWeight: "normal",
+                            textAlign: "center",
+                            borderRadius: "0.5rem",
+                          }}
+                          loading={isStudentRegisteringInProgress}
+                          onClick={async () => {
+                            setIsStudentRegisteringInProgress(true);
+                            await registerStudent();
+                          }}
+                        >
+                          Student
+                        </Card.Grid>
+                      </Card>
+                      <Card
+                        bodyStyle={{
+                          fontSize: "2em",
+                          borderRadius: "0.5rem",
+                        }}
+                        style={{
+                          borderRadius: "0.5rem",
+                          backgroundColor: "rgba(0, 139, 139, 0.9)",
+                          color: "#fff",
+                          width: "15%",
+                        }}
+                      >
+                        <Card.Grid
+                          style={{
+                            fontWeight: "normal",
+                            width: "100%",
+                            textAlign: "center",
+                            borderRadius: "0.5rem",
+                          }}
+                          loading={isEducatorRegisteringInProgress}
+                          onClick={async () => {
+                            setIsEducatorRegisteringInProgress(true);
+                            await registerEducator();
+                          }}
+                        >
+                          Teacher
+                        </Card.Grid>
+                      </Card>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </Layout>
           ) : (
