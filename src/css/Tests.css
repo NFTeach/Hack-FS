@@ -1,97 +1,59 @@
 .page {
-    display: flex;
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 .mainWindow {
-    width: 1000px;
-    color: white
+  width: 1000px;
+  color: white;
 }
 
-.testContent{
-    display: flex;
-    justify-content: start;
-    flex-direction: column;
-    gap:10px;
-    color: gray;
+.testContent {
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  gap: 10px;
+  color: gray;
 }
 
 .rightBar {
-    top: 0px;
-    width: calc((100vw - 800px) * 0.55);
-    border-left: 1px solid rgb(255, 255, 255);
-    color: black;
-    height: 100vh;
+  top: 0px;
+  width: calc((100vw - 800px) * 0.55);
+  border-left: 1px solid rgb(255, 255, 255);
+  color: black;
+  height: 100vh;
 }
 
 .feedTests {
-    max-width: 100%;
-    border-bottom: 1px solid rgb(63, 63, 63);
-    padding: 20px;
-    color: white;
-    justify-content: space-between;
-    display: flex;
-}
-
-.completeTest {
-    display: flex;
-    justify-content: start;
-    flex-direction: column;
-    gap:10px;
-    width:89%;
-    gap:10px;
-}
-
-.accWhen {
-    font-size: 15px;
-    font-weight: 400;
-    color: gray;
-}
-
-.testName{
-    display: flex;
-    align-items: center;
-    gap:10px;
-    font-size: 15px;
-    font-weight: 600;
-    color: gray;
-}
-
-.testCategory {
-    font-size: 15px;
-    font-weight: 400;
-    color: gray;
-}
-
-.testDifficulty {
-    font-size: 15px;
-    font-weight: 400;
-    color: gray;
+  max-width: 100%;
+  padding: 20px;
+  color: white;
+  justify-content: space-between;
+  display: flex;
 }
 
 .educatorName {
-    font-size: 15px;
-    font-weight: 400;
-    color: gray;
+  font-size: 15px;
+  font-weight: 400;
+  color: gray;
 }
 
 .interactions {
-    margin-top: 10px;
-    display: flex;
-    justify-content: start;
-    gap: 150px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: start;
+  gap: 150px;
 }
 
 .interactionLink {
-    color:#3f3f3f;
-    display: flex;
-    justify-content: start;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 1000px;
+  color: #3f3f3f;
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 1000px;
 }
 
 .interactionLink:hover {
-    cursor:pointer;
-    background-color: #1da0f20b;
+  cursor: pointer;
+  background-color: #1da0f20b;
 }
