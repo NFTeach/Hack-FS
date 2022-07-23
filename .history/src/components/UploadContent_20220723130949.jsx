@@ -86,7 +86,7 @@ const UploadContent = () => {
         for(let i = 0; i < tests.length; i++) {
           preReqTests.push({
             key: i,
-            testName: tests[i].attributes.testName,
+            name: tests[i].attributes.testName,
             tokenId: tests[i].attributes.tokenId
           })
           // tokenIds.push(JSON.stringify(tests[i].attributes.tokenId))
@@ -228,25 +228,20 @@ const UploadContent = () => {
         }}
       >
         <br />
-        <Form.List name="testPrerequisties">
-          {testPrerequisites.map(({ key, name, tokenId}) => {
-            return(
-              <Form.Item required tooltip="This is a required field" key={key} name={name}>
-              {/* <p>Test Pre-requisites</p> */}
-              <Select
-                  defaultValue={{
-                    value: 'None',
-                    label:'None'
-                  }}
-                  onChange={handleChange}
-                >
-                  <Select.Option key={tokenId} value={name}>{name}</Select.Option>
-                </Select> 
-              </Form.Item>
-            );
-          })}  
-        </Form.List>
-        
+        <Form.Item required tooltip="This is a required field">
+        <p>Test Pre-requisites</p>
+
+          <Select
+            defaultValue={{
+              value: 'None',
+              label:'None'
+            }}
+            onChange={handleChange}
+          >
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+          </Select>
+        </Form.Item>
         {/* <Form.List name="tesPrerequisites">
           {testPrerequisites.map(({key, name, tokenId}) => {
             return (
