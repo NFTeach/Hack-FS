@@ -1,6 +1,7 @@
 import React from "react";
 import TestCatalog from "./TestCatalog";
 import "../css/Tests.css";
+import RightTestBar from "./RightTestBar";
 
 const Tests = () => {
   return (

@@ -232,7 +232,7 @@ const UploadContent = () => {
           {testPrerequisites.map(({ key, name, tokenId}) => {
             return(
               <Form.Item required tooltip="This is a required field" key={key} name={name}>
-              <p>Test Pre-requisites</p>
+              {/* <p>Test Pre-requisites</p> */}
               <Select
                   defaultValue={{
                     value: 'None',
