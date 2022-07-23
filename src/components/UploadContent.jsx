@@ -68,23 +68,22 @@ const UploadContent = () => {
   }, [isAuthenticated, isWeb3Enabled]);
 
   async function saveCourse() {
-    console.log(user);
-    // const courseCreator = user.get("ethAddress");
-    // const Course = moralis.Object.extend("Course");
+    const courseCreator = user.get("ethAddress");
+    const Course = moralis.Object.extend("Course");
 
-    // const newCourse = new Course();
+    const newCourse = new Course();
 
-    // newCourse.set("courseName", courseName);
-    // newCourse.set("courseSubject", courseSubject);
-    // newCourse.set("courseDifficulty", courseDifficulty);
-    // newCourse.set("coursePrerequisites", coursePrerequisites);
-    // newCourse.set("courseDescription", courseDescription);
-    // newCourse.set("courseLength", courseLength);
-    // newCourse.set("courseFile", courseFile);
-    // newCourse.set("courseCreator", courseCreator);
+    newCourse.set("courseName", courseName);
+    newCourse.set("courseSubject", courseSubject);
+    newCourse.set("courseDifficulty", courseDifficulty);
+    newCourse.set("coursePrerequisites", coursePrerequisites);
+    newCourse.set("courseDescription", courseDescription);
+    newCourse.set("courseLength", courseLength);
+    newCourse.set("courseFile", courseFile);
+    newCourse.set("courseCreator", courseCreator);
 
-    // await newCourse.save();
-    // console.log("Your course was saved");
+    await newCourse.save();
+    console.log("Your course was saved");
   }
 
   return (
