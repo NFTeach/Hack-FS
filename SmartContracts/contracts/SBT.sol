@@ -196,7 +196,6 @@ contract SBT is ERC1155, Ownable {
      */
     function validateStudentTest(address _student, uint256 _tokenId)
         public
-        payable
         onlyOwner
     {
         require(tests[_tokenId].educator != address(0), "Token doesn't exist");
@@ -235,9 +234,6 @@ contract SBT is ERC1155, Ownable {
 
         // Track how much is owed to the educator
         payout[tests[_tokenId].educator] += tests[_tokenId].price;
-        // Track the total funds an educator has accumulated from token mints
-        educators[tests[_tokenId].educator].lifetimePayout += tests[_tokenId]
-            .price;
 
         // Prevent students from minting twice
         students[msg.sender].allowedMint[_tokenId] = false;
