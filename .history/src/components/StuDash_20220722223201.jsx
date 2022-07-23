@@ -26,8 +26,6 @@ const StuDash = () => {
   const user = moralis.User.current();
 
   const [registeredEducators, setRegisteredEducators] = useState("0");
-  const [userTestsPassed, setUserTestsPassed] = useState("0");
-  const [userSbts, setUserSbts] = useState("0");
 
   useEffect(() => {
     async function getRegisteredEducators() {
@@ -42,36 +40,6 @@ const StuDash = () => {
     }
     getRegisteredEducators();
   },[])
-
-  useEffect(() => {
-    async function getUserTestsPassed() {
-      try {
-        const ValidatedTests = Moralis.Object.extend("ValidateTest");
-        const validateTestsQuery = new Moralis.Query(ValidatedTests);
-        validateTestsQuery.equalTo("student", user.attributes.accounts[0]);
-        const validatedTests = await validateTestsQuery.find();
-        setUserTestsPassed(validatedTests.length)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUserTestsPassed();
-  },[])
-
-  useEffect(() => {
-    async function getUserSbts() {
-      try {
-        const MintSBT = Moralis.Object.extend("MintSBT");
-        const mintSbtQuery = new Moralis.Query(MintSBT);
-        mintSbtQuery.equalTo("student", user.attributes.accounts[0]);
-        const mintSBT = await mintSbtQuery.find();
-        setUserSbts(mintSBT.length); 
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUserSbts();
-  }, [])
 
   return (
     <div>
@@ -144,7 +112,7 @@ const StuDash = () => {
             size='large'
           >
             <p>
-            {`${userTestsPassed}`} <CheckCircleOutlined />
+              3 Tests Passed <CheckCircleOutlined />
             </p>
           </Card>
 
@@ -168,10 +136,9 @@ const StuDash = () => {
               alignItems: "center",
               margin: "5px",
             }}
-            title='SBTs Received'
+            title='SBTs Receieved'
             size='large'
           >
-            <p>{`${userSbts}`}</p>
             {/* <Progress percent={75} /> */}
 
           </Card>
@@ -294,8 +261,8 @@ const StuDash = () => {
           </div>
           <div
             style={{
-              borderRadius: "0rem",
-              width: "100%",
+              borderRadius: "0.5rem",
+              width: "70%",
               margin: "5px",
               background: "white",
             }}

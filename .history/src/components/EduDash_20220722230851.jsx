@@ -19,26 +19,26 @@ import { NFTEACH_CONTRACT_ABI } from './consts/contractABIs';
 moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
 moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
 
-// const columns = [
-//   {
-//     title: "Student Name",
-//     dataIndex: "name",
-//   },
+const columns = [
+  {
+    title: "Student Name",
+    dataIndex: "name",
+  },
 
-//   {
-//     title: "Course",
-//     dataIndex: "course",
-//   },
-// ];
-// const tableData = [];
+  {
+    title: "Course",
+    dataIndex: "course",
+  },
+];
+const tableData = [];
 
-// for (let i = 0; i < 10; i++) {
-//   tableData.push({
-//     key: i,
-//     name: `Vitalik Buterin ${i}`,
-//     course: `Cryptocurrency ${i}`,
-//   });
-// }
+for (let i = 0; i < 10; i++) {
+  tableData.push({
+    key: i,
+    name: `Vitalik Buterin ${i}`,
+    course: `Cryptocurrency ${i}`,
+  });
+}
 // console.log(tableData)
 
 const EduDash = () => {
@@ -324,10 +324,10 @@ const EduDash = () => {
         style={{
           display: "flex",
           width: "100%",
-          margin: "0px",
+          margin: "5px",
         }}
       >
-        {/* <div
+        <div
           id='left section'
           style={{
             width: "100%",
@@ -345,11 +345,11 @@ const EduDash = () => {
               }}
             />
           </div>
-        </div> */}
+        </div>
         <div
           style={{
             borderRadius: "0.5rem",
-            width: "100%",
+            width: "49%",
             margin: "10px",
             background: "white",
           }}
