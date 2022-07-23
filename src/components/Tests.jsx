@@ -1,24 +1,23 @@
-import React from 'react';
-import TestCatalog from './TestCatalog';
+import React from "react";
+import TestCatalog from "./TestCatalog";
 import "../css/Tests.css";
-import RightTestBar from './RightTestBar';
+import RightTestBar from "./RightTestBar";
 
 const Tests = () => {
-
   return (
     <>
-      <div className="page">
-        <div className="mainwindow">
-          <div className="testContent">
+      <div className='page'>
+        <div className='mainwindow'>
+          <div className='testContent'>
             <TestCatalog />
-          </div> 
+          </div>
         </div>
         {/* <div className="rightBar">
           <RightTestBar />
         </div> */}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Tests
+export default Tests;
