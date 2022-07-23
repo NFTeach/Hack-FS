@@ -247,12 +247,12 @@ const App = ({ isServerInfo }) => {
   // console.log(students)
   // console.log(user)
   // console.log(isUserEducator)
-  // console.log(isUserStudent)
+  console.log(isUserStudent)
 
   return (
     <>
-
-      {isAuthenticated && isUserEducator ||
+      {isAuthenticated && 
+      isUserEducator ||
       isUserStudent ||
       isStudentRegisteringInProgress ||
       isEducatorRegisteringInProgress ? (

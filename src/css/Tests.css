@@ -37,6 +37,12 @@
   color: gray;
 }
 
+.passingGrade {
+    font-size: 15px;
+    font-weight: 400;
+    color: gray;
+}
+
 .interactions {
   margin-top: 10px;
   display: flex;
