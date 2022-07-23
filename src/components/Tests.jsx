@@ -6,9 +6,9 @@ import RightTestBar from "./RightTestBar";
 const Tests = () => {
   return (
     <>
-      <div className='page'>
-        <div className='mainwindow'>
-          <div className='testContent'>
+      <div className="page">
+        <div className="mainwindow">
+          <div className="testContent">
             <TestCatalog />
           </div>
         </div>
