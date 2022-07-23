@@ -137,7 +137,7 @@ const Test = () => {
           </div>
         ),
         onOk() {
-          window.location.assign("/studash");
+          window.location.reload();
         },
       });
     }
@@ -264,7 +264,7 @@ const Test = () => {
             title={`Test ${testData.e.attributes.testName}`}
           >
             <Text style={styles.text}>
-              {`Test over! Your Final Score is ${score}/${Data.length }`}
+              {`Test over! Your Final Score is ${score}/${Data.length - 1}`}
             </Text>
             <br />
             {JSON.stringify(score) >= testData.e.attributes.passingGrade ? (
