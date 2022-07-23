@@ -324,7 +324,7 @@ const EduDash = () => {
         style={{
           display: "flex",
           width: "100%",
-          margin: "0px",
+          margin: "5px",
         }}
       >
         {/* <div
