@@ -34,8 +34,8 @@ const TestCatalog = () => {
     getTestInfo();
   }, []);
 
-  // console.log(testArr)
 
+  // console.log(testArr)
   return (
     <>
       {testArr

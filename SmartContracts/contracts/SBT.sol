@@ -294,6 +294,7 @@ contract SBT is ERC1155, Ownable {
         return (tests[_tokenId].educator);
     }
 
+    /// @return the current amount owed to the educator on the contract
     function getEducatorCurrentPayout(address _educator)
         public
         view
