@@ -46,8 +46,7 @@ const UploadContent = () => {
   const [courseDifficulty, setCourseDifficulty] = useState(null);
   const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState([]);
   const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
-  const [testPrerequisites, setTestPrerequisites] = useState([]);
-  const [chosenTestPrerequisite, setChosenTestPrerequisite] = useState("None");
+  const [testPrerequisites, setTestPrerequisites] = useState({});
   const [courseDescription, setCourseDescription] = useState(null);
   const [courseLength, setCourseLength] = useState(null);
   const [courseFile, setCourseFile] = useState(null);
@@ -81,19 +80,18 @@ const UploadContent = () => {
         setTestPrerequisites(tests)
         // console.log(tests)
         let preReqTests = [];
-        // let tokenIds = [];
-        // let testNames = [];
+        let tokenIds = [];
+        let testNames = [];
         for(let i = 0; i < tests.length; i++) {
           preReqTests.push({
             key: i,
-            testName: tests[i].attributes.testName,
+            name: tests[i].attributes.testName,
             tokenId: tests[i].attributes.tokenId
           })
           // tokenIds.push(JSON.stringify(tests[i].attributes.tokenId))
           // testNames.push(tests[i].attributes.testName)
         }
-        setTestPrerequisites(preReqTests)
-        // console.log(preReqTests)
+        console.log(preReqTests)
         // setTestTokenIdPrerequisites(tokenIds);
         // setTestNamesPrerequisites(testNames);
       } catch(error) {
@@ -103,7 +101,7 @@ const UploadContent = () => {
     getTests();
   },[]);
 
-  console.log(testPrerequisites)
+  // console.log(testPrerequisites)
   // console.log(testTokenIdPrerequisites);
   // console.log(testNamesPrerequisites);
 
@@ -125,10 +123,6 @@ const UploadContent = () => {
     await newCourse.save();
     console.log("Your course was saved");
   }
-
-  const handleChange = (value) => {
-    console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
-  };
 
   return (
     <Card
@@ -228,36 +222,15 @@ const UploadContent = () => {
         }}
       >
         <br />
-        <Form.List name="testPrerequisties">
-          {testPrerequisites.map(({ key, name, tokenId}) => {
-            return(
-              <Form.Item required tooltip="This is a required field" key={key} name={name}>
-              {/* <p>Test Pre-requisites</p> */}
-              <Select
-                  defaultValue={{
-                    value: 'None',
-                    label:'None'
-                  }}
-                  onChange={handleChange}
-                >
-                  <Select.Option key={tokenId} value={name}>{name}</Select.Option>
-                </Select> 
-              </Form.Item>
-            );
-          })}  
-        </Form.List>
-        
-        {/* <Form.List name="tesPrerequisites">
-          {testPrerequisites.map(({key, name, tokenId}) => {
-            return (
-              <Form.Item key={key} id={tokenId}>
-                <Select>
-                  {name.map((option) => {
-                    <Select.Option key={option} value={option}>{option}</Select.Option>
-                  })}
-                </Select>
-              </Form.Item>
-            )
+        {/* <Form.List name="testPrerequisites">
+          {testTokenIdPrerequisites.map(({id}) => {
+            <Form.Item key={id}>
+              <Select>
+                {testNamesPrerequisites.map((option) => (
+                  <Select.Option key={option} value={option}>{option}</Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
           })}
         </Form.List> */}
         {/* <Form.List name="testPrerequisites">

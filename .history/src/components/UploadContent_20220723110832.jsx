@@ -46,8 +46,7 @@ const UploadContent = () => {
   const [courseDifficulty, setCourseDifficulty] = useState(null);
   const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState([]);
   const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
-  const [testPrerequisites, setTestPrerequisites] = useState([]);
-  const [chosenTestPrerequisite, setChosenTestPrerequisite] = useState("None");
+  // const [testPrerequisites, setTestPrerequisites] = useState(null);
   const [courseDescription, setCourseDescription] = useState(null);
   const [courseLength, setCourseLength] = useState(null);
   const [courseFile, setCourseFile] = useState(null);
@@ -78,22 +77,16 @@ const UploadContent = () => {
         const Tests = Moralis.Object.extend("Tests");
         const testQuery = new Moralis.Query(Tests);
         const tests = await testQuery.find();
-        setTestPrerequisites(tests)
-        // console.log(tests)
-        let preReqTests = [];
+        console.log(tests)
+        // console.log(tests);
+        // let preReqTests = {};
         // let tokenIds = [];
         // let testNames = [];
-        for(let i = 0; i < tests.length; i++) {
-          preReqTests.push({
-            key: i,
-            testName: tests[i].attributes.testName,
-            tokenId: tests[i].attributes.tokenId
-          })
-          // tokenIds.push(JSON.stringify(tests[i].attributes.tokenId))
-          // testNames.push(tests[i].attributes.testName)
-        }
-        setTestPrerequisites(preReqTests)
-        // console.log(preReqTests)
+        // for(let i = 0; i < tests.length; i++) {
+        //   preReqTests.push{
+        //   tokenIds.push(JSON.stringify(tests[i].attributes.tokenId)),
+        //   testNames.push(tests[i].attributes.testName)
+        // }}
         // setTestTokenIdPrerequisites(tokenIds);
         // setTestNamesPrerequisites(testNames);
       } catch(error) {
@@ -103,7 +96,7 @@ const UploadContent = () => {
     getTests();
   },[]);
 
-  console.log(testPrerequisites)
+  
   // console.log(testTokenIdPrerequisites);
   // console.log(testNamesPrerequisites);
 
@@ -125,10 +118,6 @@ const UploadContent = () => {
     await newCourse.save();
     console.log("Your course was saved");
   }
-
-  const handleChange = (value) => {
-    console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
-  };
 
   return (
     <Card
@@ -228,58 +217,14 @@ const UploadContent = () => {
         }}
       >
         <br />
-        <Form.List name="testPrerequisties">
-          {testPrerequisites.map(({ key, name, tokenId}) => {
-            return(
-              <Form.Item required tooltip="This is a required field" key={key} name={name}>
-              {/* <p>Test Pre-requisites</p> */}
-              <Select
-                  defaultValue={{
-                    value: 'None',
-                    label:'None'
-                  }}
-                  onChange={handleChange}
-                >
-                  <Select.Option key={tokenId} value={name}>{name}</Select.Option>
-                </Select> 
-              </Form.Item>
-            );
-          })}  
-        </Form.List>
-        
-        {/* <Form.List name="tesPrerequisites">
-          {testPrerequisites.map(({key, name, tokenId}) => {
-            return (
-              <Form.Item key={key} id={tokenId}>
-                <Select>
-                  {name.map((option) => {
-                    <Select.Option key={option} value={option}>{option}</Select.Option>
-                  })}
-                </Select>
-              </Form.Item>
-            )
-          })}
-        </Form.List> */}
-        {/* <Form.List name="testPrerequisites">
-          {testPrerequisites.map(({attributes, id}) => {
-            <Form.Item key={id}>
-              <Select>
-                {attributes.map((option) => (
-                  <Select.Option key={option} value={option}>{option}</Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          })}
-        </Form.List> */}
-
-        {/* <Form.Item required tooltip="This is a required field">
+        <Form.Item required tooltip="This is a required field">
           <p>Test Pre-requisites</p>
 
           <Input
-            onChange={(event) => setTestPrerequisites(event.target.value)}
+            // onChange={(event) => setTestPrerequisites(event.target.value)}
             placeholder="ex: Math101, Solidity202"
           />
-        </Form.Item> */}
+        </Form.Item>
       </div>
       <div
         style={{

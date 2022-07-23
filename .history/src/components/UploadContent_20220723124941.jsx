@@ -47,7 +47,6 @@ const UploadContent = () => {
   const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState([]);
   const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
   const [testPrerequisites, setTestPrerequisites] = useState([]);
-  const [chosenTestPrerequisite, setChosenTestPrerequisite] = useState("None");
   const [courseDescription, setCourseDescription] = useState(null);
   const [courseLength, setCourseLength] = useState(null);
   const [courseFile, setCourseFile] = useState(null);
@@ -86,7 +85,7 @@ const UploadContent = () => {
         for(let i = 0; i < tests.length; i++) {
           preReqTests.push({
             key: i,
-            testName: tests[i].attributes.testName,
+            name: tests[i].attributes.testName,
             tokenId: tests[i].attributes.tokenId
           })
           // tokenIds.push(JSON.stringify(tests[i].attributes.tokenId))
@@ -125,10 +124,6 @@ const UploadContent = () => {
     await newCourse.save();
     console.log("Your course was saved");
   }
-
-  const handleChange = (value) => {
-    console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
-  };
 
   return (
     <Card
@@ -228,25 +223,7 @@ const UploadContent = () => {
         }}
       >
         <br />
-        <Form.List name="testPrerequisties">
-          {testPrerequisites.map(({ key, name, tokenId}) => {
-            return(
-              <Form.Item required tooltip="This is a required field" key={key} name={name}>
-              {/* <p>Test Pre-requisites</p> */}
-              <Select
-                  defaultValue={{
-                    value: 'None',
-                    label:'None'
-                  }}
-                  onChange={handleChange}
-                >
-                  <Select.Option key={tokenId} value={name}>{name}</Select.Option>
-                </Select> 
-              </Form.Item>
-            );
-          })}  
-        </Form.List>
-        
+        {/* <Form.Item key={} */}
         {/* <Form.List name="tesPrerequisites">
           {testPrerequisites.map(({key, name, tokenId}) => {
             return (
