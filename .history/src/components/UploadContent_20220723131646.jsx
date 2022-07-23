@@ -228,25 +228,21 @@ const UploadContent = () => {
         }}
       >
         <br />
-        <Form.List name="testPrerequisties">
-          {testPrerequisites.map(({ key, name, tokenId}) => {
-            return(
-              <Form.Item required tooltip="This is a required field" key={key} name={name}>
-              {/* <p>Test Pre-requisites</p> */}
-              <Select
-                  defaultValue={{
-                    value: 'None',
-                    label:'None'
-                  }}
-                  onChange={handleChange}
-                >
-                  <Select.Option key={tokenId} value={name}>{name}</Select.Option>
-                </Select> 
-              </Form.Item>
-            );
-          })}  
-        </Form.List>
-        
+        <Form.Item required tooltip="This is a required field">
+        <p>Test Pre-requisites</p>
+
+          <Select
+            defaultValue={{
+              value: 'None',
+              label:'None'
+            }}
+            onChange={handleChange}
+          >
+            {testPrerequisites.map((tokenId) => {
+              <Option key={tokenId} value={tokenId}>{tokenId}</Option>
+            })}
+          </Select>
+        </Form.Item>
         {/* <Form.List name="tesPrerequisites">
           {testPrerequisites.map(({key, name, tokenId}) => {
             return (
