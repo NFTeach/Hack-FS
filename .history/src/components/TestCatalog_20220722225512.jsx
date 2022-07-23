@@ -5,7 +5,6 @@ import { useMoralis } from "react-moralis";
 import moralis from "moralis";
 import "../css/Profile.css";
 import "../css/Course.css";
-import "../css/Tests.css";
 import { Avatar, Card, Popover, Button } from "antd";
 import {
   ContainerOutlined,
@@ -39,7 +38,6 @@ const TestCatalog = () => {
   // console.log(testArr)
   return (
     <>
-    <div className="courseContentPage">
       {testArr
         .map((e) => {
           const content = (
@@ -66,63 +64,53 @@ const TestCatalog = () => {
           // console.log(e.id)
           return (
             <>
-              <div>
-                <Card
-                  className='courseCard'
-                  cover={
-                    <img
-                      alt='example'
-                      src='https://images.unsplash.com/photo-1520004434532-668416a08753?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'
-                    />
-                  }
-                  actions={[
-                    <Popover content={content}>
-                      <QuestionOutlined />
-                    </Popover>,
-                    <Popover content={takeTest}>
-                      <Link to={{
-                        pathname: "/test",
-                        state: {testData: {e}}
-                      }}
-                      >
-                        <Button>
-                          <ContainerOutlined />
-                        </Button> 
-                      </Link>
-                    </Popover>,
-                    // <Button
-                    //   onClick={{
-                    //     pathname: "/test",
-                    //     state: { testData: { e } },
-                    //   }}
-                    // >
-                    //   <ContainerOutlined />
-                    // </Button>,
-                    <Popover content={who}>
-                      <EllipsisOutlined />
-                    </Popover>,
-                  ]}
-                >
-                  <Meta
-                    avatar={
-                      <Avatar
-                        src={
-                          e.attributes.educatorPfp
-                            ? e.attributes.educatorPfp
-                            : defaultImgs[0]
-                        }
+              <div className='courseContentPage'>
+                <div>
+                  <Card
+                    className='courseCard'
+                    cover={
+                      <img
+                        alt='example'
+                        src='https://images.unsplash.com/photo-1520004434532-668416a08753?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'
                       />
                     }
-                    title={`Test Name: ${e.attributes.testName}`}
-                    description={`By: ${e.attributes.educatorName}`}
-                  />
-                </Card>
+                    actions={[
+                      <Popover content={content}>
+                        <QuestionOutlined />
+                      </Popover>,
+                      <Button
+                        onClick={{
+                          pathname: "/test",
+                          state: { testData: { e } },
+                        }}
+                      >
+                        <ContainerOutlined />
+                      </Button>,
+                      <Popover content={who}>
+                        <EllipsisOutlined />
+                      </Popover>,
+                    ]}
+                  >
+                    <Meta
+                      avatar={
+                        <Avatar
+                          src={
+                            e.attributes.educatorPfp
+                              ? e.attributes.educatorPfp
+                              : defaultImgs[0]
+                          }
+                        />
+                      }
+                      title={`Test Name: ${e.attributes.testName}`}
+                      description={`By: ${e.attributes.educatorName}`}
+                    />
+                  </Card>
+                </div>
               </div>
             </>
           );
         })
         .reverse()}
-      </div>
     </>
   );
 };

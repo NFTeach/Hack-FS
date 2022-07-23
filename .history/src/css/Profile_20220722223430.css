@@ -58,26 +58,11 @@
     font-weight: 500;
 }
 
-.profileEditEdu {
+.profileEdit {
     color: black;
     position: relative;
     top:-160px;
-    left:700px;
-    font-size: 14px;
-    font-weight: bold;
-    border: 0.5px solid black;
-    width: 100px;
-    justify-content: left;
-    display:flex;
-    padding: 10px 10px;
-    border-radius: 1000px;
-}
-
-.profileEditStu {
-    color: black;
-    position: relative;
-    top:-160px;
-    left:700px;
+    left:400px;
     font-size: 14px;
     font-weight: bold;
     border: 0.5px solid black;
