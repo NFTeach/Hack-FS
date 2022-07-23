@@ -114,7 +114,7 @@ const Test = () => {
   useEffect(() => {
     if (!isLoading && !isFetching && data) {
       setIsMintingInProgress(false);
-      
+
       Modal.success({
         title: "Congrats! You address has been validated and SBT minted to your address! It should appear shortly in your wallet.",
         content: (
@@ -156,9 +156,10 @@ const Test = () => {
   // onlyOwner validate student cloud smart contract call
   const allowValidation = async () => {
     notification.info({
-            message: "Validating address on blockchain and minting the test SBT",
-            description: "THIS  WILL TAKE APPROX. 5 MINS. GO GRAB A CUP OF COFFEE AND COME BACK. PLEASE DON'T REFRESH PAGE!"
-        })
+      message: "Validating address on blockchain and minting the test SBT",
+      description:
+        "THIS  WILL TAKE APPROX. 5 MINS. GO GRAB A CUP OF COFFEE AND COME BACK. PLEASE DON'T REFRESH PAGE!",
+    });
 
     let studentAccount = user.attributes.accounts[0];
     let tokenId = JSON.stringify(testData.e.attributes.tokenId);
@@ -179,40 +180,41 @@ const Test = () => {
   };
 
   const mintSBTtoValidatedStudent = async () => {
-    
-    if(isAuthenticated) {
-            notification.info({
-                message: "Minting SBT",
-                description: "Your SBT is being minted to your address. PLEASE DON'T REFRESH PAGE!"
-            })
-        
-            executeContractFunction({
-                params: {
-                    abi: NFTEACH_CONTRACT_ABI,
-                    contractAddress: CONTRACT_ADDRESS,
-                    functionName: "mintSBT",
-                    params: {
-                        _tokenId: JSON.stringify(testData.e.attributes.tokenId)
-                    },
-                    msgValue: Moralis.Units.ETH(testData.e.attributes.testPrice)
-                },
-                onSuccess: () => {
-                },
-                onError: () => {
-                    notification.error({
-                        message: "Contract error",
-                        description: "Please try again and make sure you haven't already minted this SBT!"
-                    })
-                }
-            })
-        } else {
-            setIsMintingInProgress(false);
-            notification.error({
-                message: "You need to have your wallet connected to create a test",
-                description: "In order to use this feature, you have to connect your wallet."
-            });
-        }
+    if (isAuthenticated) {
+      notification.info({
+        message: "Minting SBT",
+        description:
+          "Your SBT is being minted to your address. PLEASE DON'T REFRESH PAGE!",
+      });
+
+      executeContractFunction({
+        params: {
+          abi: NFTEACH_CONTRACT_ABI,
+          contractAddress: CONTRACT_ADDRESS,
+          functionName: "mintSBT",
+          params: {
+            _tokenId: JSON.stringify(testData.e.attributes.tokenId),
+          },
+          msgValue: Moralis.Units.ETH(testData.e.attributes.testPrice),
+        },
+        onSuccess: () => {},
+        onError: () => {
+          notification.error({
+            message: "Contract error",
+            description:
+              "Please try again and make sure you haven't already minted this SBT!",
+          });
+        },
+      });
+    } else {
+      setIsMintingInProgress(false);
+      notification.error({
+        message: "You need to have your wallet connected to create a test",
+        description:
+          "In order to use this feature, you have to connect your wallet.",
+      });
     }
+  };
 
   if (error) {
     notification.error({
@@ -253,85 +255,82 @@ const Test = () => {
 
   console.log(data);
 
-  if(finish) {
-      return (
-          <form style={styles.container}>
-              <main style={styles.main}>
-                  <Card
-                    style={!isMobile ? styles.card : styles.mobileCard}
-                    title={`Test ${testData.e.attributes.testName}`}
-                  >
-                      <Text style={styles.text}>
-                          {`Test over! Your Final Score is ${score}/${Data.length}`}
-                      </Text>
-                      <br/>
-                      {JSON.stringify(score) >= testData.e.attributes.passingGrade ? (
-                      <Button 
-                          style={styles.button}
-                          type="primary"
-                          loading={isMintingInProgress}
-                          onClick={async () => {
-                              setIsMintingInProgress(true);
-                              await allowValidation();
-                              setTimeout(mintSBTtoValidatedStudent, 300000)
-                          }}
-                      >
-                          You Passed! Click here to validate address and mint SBT!
-                      </Button> 
-                      ) : (
-                      <Button
-                          style={styles.button}
-                          type="primary"
-                          onClick={() => startOver()}
-                      >
-                          You didn't pass. Start Over?
-                      </Button>
-                      )}
-                  </Card> 
-              </main>
-          </form>
-      )
-  } else {
-      return (
-          <form style={styles.container}>
-              <main style={styles.main}>
-              <Card
-                  style={!isMobile ? styles.card : styles.mobileCard}
-                  title={`Test ${testData.e.attributes.testName}`}
+  if (finish) {
+    return (
+      <form style={styles.container}>
+        <main style={styles.main}>
+          <Card
+            style={!isMobile ? styles.card : styles.mobileCard}
+            title={`Test ${testData.e.attributes.testName}`}
+          >
+            <Text style={styles.text}>
+              {`Test over! Your Final Score is ${score}/${Data.length}`}
+            </Text>
+            <br />
+            {JSON.stringify(score) >= testData.e.attributes.passingGrade ? (
+              <Button
+                style={styles.button}
+                type="primary"
+                loading={isMintingInProgress}
+                onClick={async () => {
+                  setIsMintingInProgress(true);
+                  await allowValidation();
+                  setTimeout(mintSBTtoValidatedStudent, 300000);
+                }}
               >
-                  <Text style={styles.text}>
-                      {Data[currentQuestion].question}
-                  </Text>
-                  <br/>
-                  <br/>
+                You Passed! Click here to validate address and mint SBT!
+              </Button>
+            ) : (
+              <Button
+                style={styles.button}
+                type="primary"
+                onClick={() => startOver()}
+              >
+                You didn't pass. Start Over?
+              </Button>
+            )}
+          </Card>
+        </main>
+      </form>
+    );
+  } else {
+    return (
+      <form style={styles.container}>
+        <main style={styles.main}>
+          <Card
+            style={!isMobile ? styles.card : styles.mobileCard}
+            title={`Test ${testData.e.attributes.testName}`}
+          >
+            <Text style={styles.text}>{Data[currentQuestion].question}</Text>
+            <br />
+            <br />
 
-                  {Data[currentQuestion].variants.map((variant) => (
-                      <Button
-                          key={variant.id}
-                          block
-                          className={`variant ${
-                              myAnswer === variant
-                                ? myAnswer === Data[currentQuestion].answer
-                                  ? "correctAnswer"
-                                  : "incorrectAnswer"
-                                : null
-                            }`}
-                          onClick={() => {
-                              checkAnswer(variant);
-
-                          }}
-                      >
-                          {variant}
-                          <br/>
-                      </Button>
-                  ))}
-                  <br/>
-                  <br/>
+            {Data[currentQuestion].variants.map((variant) => (
+              <Button
+                key={variant.id}
+                block
+                className={`variant ${
+                  myAnswer === variant
+                    ? myAnswer === Data[currentQuestion].answer
+                      ? "correctAnswer"
+                      : "incorrectAnswer"
+                    : null
+                }`}
+                onClick={() => {
+                  checkAnswer(variant);
+                }}
+              >
+                {variant}
+                <br />
+              </Button>
+            ))}
+            <br />
+            <br />
 
             {currentQuestion < Data.length - 1 && (
               <Button
                 style={styles.button}
-                type='primary'
+                type="primary"
                 onClick={() => {
                   setCurrentQuestion(currentQuestion + 1);
                   checkCorrectAnswer();
@@ -345,7 +344,7 @@ const Test = () => {
             {currentQuestion === Data.length - 1 && (
               <Button
                 style={styles.button}
-                type='primary'
+                type="primary"
                 onClick={() => finishHandler()}
               >
                 Finish Test

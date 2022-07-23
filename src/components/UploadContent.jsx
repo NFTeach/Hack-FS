@@ -68,6 +68,7 @@ const UploadContent = () => {
   }, [isAuthenticated, isWeb3Enabled]);
 
   async function saveCourse() {
+    const courseCreator = user.get("ethAddress");
     const Course = moralis.Object.extend("Course");
 
     const newCourse = new Course();
@@ -79,6 +80,7 @@ const UploadContent = () => {
     newCourse.set("courseDescription", courseDescription);
     newCourse.set("courseLength", courseLength);
     newCourse.set("courseFile", courseFile);
+    newCourse.set("courseCreator", courseCreator);
 
     await newCourse.save();
     console.log("Your course was saved");
@@ -94,7 +96,7 @@ const UploadContent = () => {
         display: "flex",
       }}
       form={form}
-      title='Upload Course Content'
+      title="Upload Course Content"
       style={{
         boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
         border: "1px solid #e7eaf3",
@@ -121,7 +123,7 @@ const UploadContent = () => {
             margin: "2px",
           }}
           required
-          tooltip='This is a required field'
+          tooltip="This is a required field"
         >
           <Input
             onChange={(event) => setCourseName(event.target.value)}
@@ -132,42 +134,42 @@ const UploadContent = () => {
       <br />
       <p>Course Subject</p>
       <Select
-        mode='multiple'
+        mode="multiple"
         style={{
           width: "100%",
           display: "inline-block",
         }}
-        placeholder='Select Course Category'
+        placeholder="Select Course Category"
         onChange={setCourseSubject}
-        optionLabelProp='label'
+        optionLabelProp="label"
       >
-        <Option value='cryptocurrency' label='Cryptocurrency'>
-          <div className='demo-option-label-item'>
-            <span role='img' aria-label='Cryptocurrency '>
+        <Option value="cryptocurrency" label="Cryptocurrency">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Cryptocurrency ">
               💰{" "}
             </span>
             Cryptocurrency
           </div>
         </Option>
-        <Option value='chemistry' label='Chemistry'>
-          <div className='demo-option-label-item'>
-            <span role='img' aria-label='Chemistry'>
+        <Option value="chemistry" label="Chemistry">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Chemistry">
               🧪{" "}
             </span>
             Chemistry
           </div>
         </Option>
-        <Option value='artificial intelligence' label='Artificial Intelligence'>
-          <div className='demo-option-label-item'>
-            <span role='img' aria-label='Artificial Intelligence'>
+        <Option value="artificial intelligence" label="Artificial Intelligence">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Artificial Intelligence">
               🤖{" "}
             </span>
             Artificial Intelligence
           </div>
         </Option>
-        <Option value='bitcoin' label='Bitcoin'>
-          <div className='demo-option-label-item'>
-            <span role='img' aria-label='Bitcoin'>
+        <Option value="bitcoin" label="Bitcoin">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Bitcoin">
               🪙{" "}
             </span>
             Bitcoin
@@ -182,12 +184,12 @@ const UploadContent = () => {
         }}
       >
         <br />
-        <Form.Item required tooltip='This is a required field'>
+        <Form.Item required tooltip="This is a required field">
           <p>Pre-requisites</p>
 
           <Input
             onChange={(event) => setCoursePrerequisites(event.target.value)}
-            placeholder='ex: Math101, Solidity202'
+            placeholder="ex: Math101, Solidity202"
           />
         </Form.Item>
       </div>
@@ -201,33 +203,33 @@ const UploadContent = () => {
         <br />
         <p>Course Difficulty</p>
         <Select
-          mode='multiple'
+          mode="multiple"
           style={{
             width: "100%",
           }}
-          placeholder='Select Course Difficulty'
+          placeholder="Select Course Difficulty"
           onChange={setCourseDifficulty}
-          optionLabelProp='label'
+          optionLabelProp="label"
         >
-          <Option value='beginner' label='Beginner'>
-            <div className='demo-option-label-item'>
-              <span role='img' aria-label='Beginner '>
+          <Option value="beginner" label="Beginner">
+            <div className="demo-option-label-item">
+              <span role="img" aria-label="Beginner ">
                 👶{" "}
               </span>
               Beginner
             </div>
           </Option>
-          <Option value='intermediate' label='Intermediate'>
-            <div className='demo-option-label-item'>
-              <span role='img' aria-label='Intermediate'>
+          <Option value="intermediate" label="Intermediate">
+            <div className="demo-option-label-item">
+              <span role="img" aria-label="Intermediate">
                 👩‍🦱{" "}
               </span>
               Intermediate
             </div>
           </Option>
-          <Option value='expert' label='Expert'>
-            <div className='demo-option-label-item'>
-              <span role='img' aria-label='Expert'>
+          <Option value="expert" label="Expert">
+            <div className="demo-option-label-item">
+              <span role="img" aria-label="Expert">
                 👵{" "}
               </span>
               Expert
@@ -242,11 +244,11 @@ const UploadContent = () => {
       <br />
       <br />
       <div style={{ display: "grid", width: "100%" }}>
-        <Form.Item required tooltip='This is a required field'>
+        <Form.Item required tooltip="This is a required field">
           <p>Course Description</p>
           <Input
             onChange={(event) => setCourseDescription(event.target.value)}
-            placeholder='ex: Math 101 is a course for students who need to improve their algebraic skills before taking a higher level course such ...'
+            placeholder="ex: Math 101 is a course for students who need to improve their algebraic skills before taking a higher level course such ..."
           />
         </Form.Item>
       </div>
@@ -259,11 +261,11 @@ const UploadContent = () => {
           margin: "2px",
         }}
         required
-        tooltip='This is a required field'
+        tooltip="This is a required field"
       >
         <Input
           onChange={(event) => setCourseLength(event.target.value)}
-          placeholder='ex: 3 weeks'
+          placeholder="ex: 3 weeks"
         />
       </Form.Item>
 
@@ -281,7 +283,7 @@ const UploadContent = () => {
             onChange={(event) => setCourseFile(event.file)}
             maxCount={1}
           >
-            <Button size='large' icon={<UploadOutlined />}>
+            <Button size="large" icon={<UploadOutlined />}>
               Click to Upload
             </Button>
           </Upload>
@@ -297,7 +299,7 @@ const UploadContent = () => {
         }}
       >
         <Form.Item>
-          <Button type='primary' size='large' onClick={saveCourse}>
+          <Button type="primary" size="large" onClick={saveCourse}>
             Submit Course
           </Button>
         </Form.Item>
