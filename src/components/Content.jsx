@@ -20,6 +20,8 @@ const Content = () => {
   const { fetch: executeContractFunction, isFetching } =
     useWeb3ExecuteFunction();
 
+  const [details, setDetails] = useState(null);
+
   async function getUserAvailability(prereq) {
     const user = Moralis.User.current();
     const userAddr = user.get("ethAddress");
@@ -30,11 +32,13 @@ const Content = () => {
         functionName: "balanceOf",
         params: {
           account: userAddr,
-          id: 0,
+          id: prereq,
         },
       },
       onSuccess: (result) => {
+        console.log(result);
         if (result._hex == 0x00) {
+          console.log("FuckYeah");
           return false;
         } else {
           return true;
@@ -51,9 +55,6 @@ const Content = () => {
     else {
       const requisites = await getUserAvailability(testTokenIdPrerequisites);
       console.log(requisites);
-      console.log("nowWeHere");
-      // const Courses = Moralis.Object.extend("Courses");
-      // console.log(Courses);
     }
   };
 
@@ -72,62 +73,73 @@ const Content = () => {
   }, []);
 
   return (
-    <div className="courseContentPage">
-      {courseArr
-        .map((e) => {
-          return (
-            <div>
-              <Card
-                className="courseCard"
-                cover={
-                  <img
-                    alt="example"
-                    src="https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-                  />
-                }
-                actions={[
-                  <Popover
-                    content={
-                      <div>
-                        <p>
-                          Course Difficulty:
-                          <br />
-                          {e.attributes.courseDifficulty[0]}
-                        </p>
-                        <p>
-                          Course Description:
-                          <br />
-                          {e.attributes.courseDescription}
-                        </p>
-                      </div>
-                    }
-                  >
-                    <QuestionOutlined />
-                  </Popover>,
-                  <Popover
-                    content={
-                      <div>
-                        <p>Check Eligibility</p>
-                      </div>
-                    }
-                  >
-                    <CheckSquareOutlined
-                      onClick={() =>
-                        displayCourseDetails(e.attributes.coursePrerequisites)
-                      }
+    <div>
+      {details && (
+        <div className="courseDetails">
+          {/* <div className="closeCourseDetails" onClick={setDetails(null)}></div> */}
+          <div> {details.attributes.courseDescription}</div>
+        </div>
+      )}
+      <div className="courseContentPage">
+        {courseArr
+          .map((e) => {
+            return (
+              <div>
+                <Card
+                  className="courseCard"
+                  cover={
+                    <img
+                      alt="example"
+                      src="https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
                     />
-                  </Popover>,
-                ]}
-              >
-                <Meta
-                  title={`Course Name: ${e.attributes.courseName}`}
-                  description={`By: ${e.attributes.courseCreator}`}
-                />
-              </Card>
-            </div>
-          );
-        })
-        .reverse()}
+                  }
+                  actions={[
+                    <Popover
+                      content={
+                        <div>
+                          <p>
+                            Course Difficulty:
+                            <br />
+                            {e.attributes.courseDifficulty[0]}
+                          </p>
+                          <p>
+                            Course Description:
+                            <br />
+                            {e.attributes.courseDescription}
+                          </p>
+                        </div>
+                      }
+                    >
+                      <QuestionOutlined />
+                    </Popover>,
+                    <Popover
+                      content={
+                        <div>
+                          <p>See Course Details</p>
+                        </div>
+                      }
+                    >
+                      <CheckSquareOutlined
+                        onClick={
+                          () => setDetails(e)
+                          // displayCourseDetails(
+                          //   e.attributes.testTokenIdPrerequisites
+                          // )
+                        }
+                      />
+                    </Popover>,
+                  ]}
+                >
+                  <Meta
+                    title={`Course Name: ${e.attributes.courseName}`}
+                    description={`By: ${e.attributes.courseCreator}`}
+                  />
+                </Card>
+              </div>
+            );
+          })
+          .reverse()}
+      </div>
     </div>
   );
 };
