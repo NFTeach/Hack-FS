@@ -143,7 +143,6 @@ const App = ({ isServerInfo }) => {
         message: "Address registered as student!",
         description: "Your address is being registered as a student!",
       });
-
     }
 
     if (isUserEducator == true) {
@@ -173,15 +172,15 @@ const App = ({ isServerInfo }) => {
       notification.info({
         message: "Address registered as educator!",
 
-        description: "Your address is being registered as a educator!",
+        description: "Your address is being registered as an educator!",
       });
-
     }
 
     if (isUserStudent == true) {
       notification.error({
         message: "Address registered as student!",
-        description: "Please use another address if you want to be a educator!",
+        description:
+          "Please use another address if you want to be an educator!",
       });
       return;
     }
@@ -204,20 +203,20 @@ const App = ({ isServerInfo }) => {
 
   useEffect(() => {
     async function getIsUserEducator() {
-        try {
-            const Educators = Moralis.Object.extend("Educators");
-            const query = new Moralis.Query(Educators);
-            query.equalTo("educator", user.attributes.accounts[0]);
-            const educatorResults = await query.find();
-            if (educatorResults.length != 0) {
-              setIsUserEducator(true);
-            }
-          } catch (error) {
-            console.log(error);
-          }
+      try {
+        const Educators = Moralis.Object.extend("Educators");
+        const query = new Moralis.Query(Educators);
+        query.equalTo("educator", user.attributes.accounts[0]);
+        const educatorResults = await query.find();
+        if (educatorResults.length != 0) {
+          setIsUserEducator(true);
         }
-        getIsUserEducator();
-      }, []);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getIsUserEducator();
+  }, []);
 
   useEffect(() => {
     async function getIsUserStudent() {
@@ -247,12 +246,11 @@ const App = ({ isServerInfo }) => {
   // console.log(students)
   // console.log(user)
   // console.log(isUserEducator)
-  console.log(isUserStudent)
+  console.log(isUserStudent);
 
   return (
     <>
-      {isAuthenticated && 
-      isUserEducator ||
+      {(isAuthenticated && isUserEducator) ||
       isUserStudent ||
       isStudentRegisteringInProgress ||
       isEducatorRegisteringInProgress ? (
@@ -307,7 +305,7 @@ const App = ({ isServerInfo }) => {
           {isAuthenticated ? (
             <Layout>
               <div
-                id='background image'
+                id="background image"
                 style={{
                   height: "100%",
                   backgroundImage:
@@ -327,7 +325,7 @@ const App = ({ isServerInfo }) => {
               </div>
 
               <div
-                id='column container'
+                id="column container"
                 style={{
                   zIndex: "2",
                   marginLeft: "15px",
@@ -336,7 +334,7 @@ const App = ({ isServerInfo }) => {
               >
                 <div style={styles.content}>
                   <div>
-                    <div id='title container'>
+                    <div id="title container">
                       <h2
                         style={{
                           fontWeight: "normal",
@@ -349,7 +347,7 @@ const App = ({ isServerInfo }) => {
                       </h2>
                     </div>
                     <div
-                      id='buttons'
+                      id="buttons"
                       style={{
                         display: "flex",
                         flexDirection: "row",
@@ -415,7 +413,6 @@ const App = ({ isServerInfo }) => {
                     </div>
                   </div>
                 </div>
-
               </div>
             </Layout>
           ) : (
