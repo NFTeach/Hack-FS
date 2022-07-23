@@ -70,7 +70,7 @@ const StuDash = () => {
         console.log(error)
       }
     }
-    getUserSbts();
+    getUserSbts
   }, [])
 
   return (

@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import StuProfile from "./StuProfile";
 import {
   CheckCircleOutlined,
@@ -7,72 +7,9 @@ import {
   BorderOutlined,
 } from "@ant-design/icons";
 
-import { Card, notification, Progress, Image } from "antd";
-import moralis from "moralis";
-import { 
-  useMoralis,
-  useMoralisWeb3Api,
-  useMoralisWeb3ApiCall
-} from 'react-moralis';
-import { CONTRACT_ADDRESS } from './consts/vars';
-import { NFTEACH_CONTRACT_ABI } from './consts/contractABIs';
-
-moralis.initialize(process.env.REACT_APP_MORALIS_APPLICATION_ID);
-moralis.serverURL = process.env.REACT_APP_MORALIS_SERVER_URL;
+import { Card, Space, Progress, Image } from "antd";
 
 const StuDash = () => {
-  const { Moralis } = useMoralis();
-  const { native } = useMoralisWeb3Api();
-  const user = moralis.User.current();
-
-  const [registeredEducators, setRegisteredEducators] = useState("0");
-  const [userTestsPassed, setUserTestsPassed] = useState("0");
-  const [userSbts, setUserSbts] = useState("0");
-
-  useEffect(() => {
-    async function getRegisteredEducators() {
-      try {
-        const Educators = Moralis.Object.extend("Educators");
-        const educatorQuery = new Moralis.Query(Educators);
-        const educators = await educatorQuery.find();
-        setRegisteredEducators(educators.length)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getRegisteredEducators();
-  },[])
-
-  useEffect(() => {
-    async function getUserTestsPassed() {
-      try {
-        const ValidatedTests = Moralis.Object.extend("ValidateTest");
-        const validateTestsQuery = new Moralis.Query(ValidatedTests);
-        validateTestsQuery.equalTo("student", user.attributes.accounts[0]);
-        const validatedTests = await validateTestsQuery.find();
-        setUserTestsPassed(validatedTests.length)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUserTestsPassed();
-  },[])
-
-  useEffect(() => {
-    async function getUserSbts() {
-      try {
-        const MintSBT = Moralis.Object.extend("MintSBT");
-        const mintSbtQuery = new Moralis.Query(MintSBT);
-        mintSbtQuery.equalTo("student", user.attributes.accounts[0]);
-        const mintSBT = await mintSbtQuery.find();
-        setUserSbts(mintSBT.length); 
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUserSbts();
-  }, [])
-
   return (
     <div>
       <div
@@ -114,10 +51,12 @@ const StuDash = () => {
               border: "1px solid #e7eaf3",
               margin: "5px",
             }}
-            title='NFTeach Registered Educators'
+            title='Courses Taken'
             size='large'
           >
-            <p>{`${registeredEducators}`}</p>
+            <p>
+              7 Courses Taken <AreaChartOutlined />
+            </p>
           </Card>
           <Card
             headStyle={{
@@ -140,11 +79,11 @@ const StuDash = () => {
               border: "1px solid #e7eaf3",
               margin: "5px",
             }}
-            title='Tests Passed'
+            title='Courses Passed'
             size='large'
           >
             <p>
-            {`${userTestsPassed}`} <CheckCircleOutlined />
+              5 Courses Passed <CheckCircleOutlined />
             </p>
           </Card>
 
@@ -168,12 +107,10 @@ const StuDash = () => {
               alignItems: "center",
               margin: "5px",
             }}
-            title='SBTs Received'
+            title='Course In Progress: Chemistry 101'
             size='large'
           >
-            <p>{`${userSbts}`}</p>
-            {/* <Progress percent={75} /> */}
-
+            <Progress percent={75} />
           </Card>
         </div>
         <div
@@ -193,7 +130,7 @@ const StuDash = () => {
             }}
           >
             <div id='left column' style={{}}>
-              {/* <Card
+              <Card
                 headStyle={{
                   background: "#21bf96",
                   color: "white",
@@ -238,11 +175,11 @@ const StuDash = () => {
                 <p>From MetaMask Wallet</p>
 
                 <Image style={{ width: "12em", height: "12em" }} src='' />
-              </Card> */}
+              </Card>
             </div>
 
             <div id='inner column' style={{}}>
-              {/* <Card
+              <Card
                 headStyle={{
                   background: "#21bf96",
                   color: "white",
@@ -289,13 +226,13 @@ const StuDash = () => {
               >
                 <p>coming soon!</p>
                 <Image style={{ width: "12em", height: "12em" }} src='' />
-              </Card> */}
+              </Card>
             </div>
           </div>
           <div
             style={{
-              borderRadius: "0rem",
-              width: "100%",
+              borderRadius: "0.5rem",
+              width: "50%",
               margin: "5px",
               background: "white",
             }}

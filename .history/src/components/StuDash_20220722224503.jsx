@@ -27,7 +27,6 @@ const StuDash = () => {
 
   const [registeredEducators, setRegisteredEducators] = useState("0");
   const [userTestsPassed, setUserTestsPassed] = useState("0");
-  const [userSbts, setUserSbts] = useState("0");
 
   useEffect(() => {
     async function getRegisteredEducators() {
@@ -57,21 +56,6 @@ const StuDash = () => {
     }
     getUserTestsPassed();
   },[])
-
-  useEffect(() => {
-    async function getUserSbts() {
-      try {
-        const MintSBT = Moralis.Object.extend("MintSBT");
-        const mintSbtQuery = new Moralis.Query(MintSBT);
-        mintSbtQuery.equalTo("student", user.attributes.accounts[0]);
-        const mintSBT = await mintSbtQuery.find();
-        setUserSbts(mintSBT.length); 
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUserSbts();
-  }, [])
 
   return (
     <div>
@@ -144,7 +128,7 @@ const StuDash = () => {
             size='large'
           >
             <p>
-            {`${userTestsPassed}`} <CheckCircleOutlined />
+            {`Tests Passed: ${userTestsPassed}`} <CheckCircleOutlined />
             </p>
           </Card>
 
@@ -168,10 +152,9 @@ const StuDash = () => {
               alignItems: "center",
               margin: "5px",
             }}
-            title='SBTs Received'
+            title='SBTs Receieved'
             size='large'
           >
-            <p>{`${userSbts}`}</p>
             {/* <Progress percent={75} /> */}
 
           </Card>
