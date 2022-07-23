@@ -324,16 +324,16 @@ const EduDash = () => {
         style={{
           display: "flex",
           width: "100%",
-          margin: "0px",
+          margin: "5px",
         }}
       >
-        {/* <div
+        <div
           id='left section'
           style={{
             width: "100%",
           }}
         >
-          <div id='table' style={{}}>
+          {/* <div id='table' style={{}}>
             <Table
               size='medium'
               dataSource={tableData}
@@ -344,12 +344,12 @@ const EduDash = () => {
                 background: "#21bf96",
               }}
             />
-          </div>
-        </div> */}
+          </div> */}
+        </div>
         <div
           style={{
             borderRadius: "0.5rem",
-            width: "100%",
+            width: "75%",
             margin: "10px",
             background: "white",
           }}

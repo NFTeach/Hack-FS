@@ -33,7 +33,7 @@ const Profile = () => {
                     }
                 </div>
                 <Link to="/profilesettings">
-                    <div className="profileEditStu">Edit Profile</div>
+                    <div className="profileEdit">Edit Profile</div>
                 </Link>
                 <div className="profileBio">
                     {user?.attributes.bio}
