@@ -58,6 +58,10 @@ const UploadContent = () => {
     setRequiredMarkType(requiredMarkValue);
   };
 
+  const handleInputChange = (input) => {
+    this.setState({ open: !!input });
+  };
+
   const {
     Moralis,
     isWeb3Enabled,
@@ -78,34 +82,32 @@ const UploadContent = () => {
         const Tests = Moralis.Object.extend("Tests");
         const testQuery = new Moralis.Query(Tests);
         const tests = await testQuery.find();
-        setTestPrerequisites(tests)
+        setTestPrerequisites(tests);
         // console.log(tests)
         let preReqTests = [];
         // let tokenIds = [];
         // let testNames = [];
-        for(let i = 0; i < tests.length; i++) {
+        for (let i = 0; i < tests.length; i++) {
           preReqTests.push({
             key: i,
             testName: tests[i].attributes.testName,
-            tokenId: tests[i].attributes.tokenId
-          })
+            tokenId: tests[i].attributes.tokenId,
+          });
           // tokenIds.push(JSON.stringify(tests[i].attributes.tokenId))
           // testNames.push(tests[i].attributes.testName)
         }
-        setTestPrerequisites(preReqTests)
+        setTestPrerequisites(preReqTests);
         // console.log(preReqTests)
         // setTestTokenIdPrerequisites(tokenIds);
         // setTestNamesPrerequisites(testNames);
-      } catch(error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
     }
     getTests();
-  },[]);
+  }, []);
 
-  console.log(testPrerequisites)
-  // console.log(testTokenIdPrerequisites);
-  // console.log(testNamesPrerequisites);
+  console.log(testPrerequisites);
 
   async function saveCourse() {
     const courseCreator = user.get("ethAddress");
@@ -116,7 +118,7 @@ const UploadContent = () => {
     newCourse.set("courseName", courseName);
     newCourse.set("courseSubject", courseSubject);
     newCourse.set("courseDifficulty", courseDifficulty);
-    // newCourse.set("testPrerequisites", testPrerequisites);
+    newCourse.set("testTokenIdPrerequisites", testTokenIdPrerequisites);
     newCourse.set("courseDescription", courseDescription);
     newCourse.set("courseLength", courseLength);
     newCourse.set("courseFile", courseFile);
@@ -125,10 +127,6 @@ const UploadContent = () => {
     await newCourse.save();
     console.log("Your course was saved");
   }
-
-  const handleChange = (value) => {
-    console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
-  };
 
   return (
     <Card
@@ -178,7 +176,7 @@ const UploadContent = () => {
       <br />
       <p>Course Subject</p>
       <Select
-        mode="multiple"
+        mode="single"
         style={{
           width: "100%",
           display: "inline-block",
@@ -228,25 +226,29 @@ const UploadContent = () => {
         }}
       >
         <br />
-        {/* <Form.List name="testPrerequisties">
-          {testPrerequisites.map(({ key, name, tokenId}) => {
-            return(
-              <Form.Item required tooltip="This is a required field" key={key} name={name}>
-              <p>Test Pre-requisites</p>
-              <Select
-                  defaultValue={{
-                    value: 'None',
-                    label:'None'
-                  }}
-                  onChange={handleChange}
-                >
-                  <Select.Option key={tokenId} value={name}>{name}</Select.Option>
-                </Select> 
-              </Form.Item>
+        {/* <Form.List name="testPrerequisties"></Form.List> */}
+
+        <p>Course Pre Requisities</p>
+        <Select
+          mode="single"
+          style={{
+            width: "100%",
+            display: "inline-block",
+          }}
+          placeholder="Select Course Prerequisites"
+          onChange={setTestTokenIdPrerequisites}
+          optionLabelProp="label"
+        >
+          {testPrerequisites.map(({ key, testName, tokenId }) => {
+            return (
+              <Option value={key} label={testName}>
+                <div className="demo-option-label-item">{testName}</div>
+              </Option>
             );
-          })}  
-        </Form.List> */}
-        
+          })}
+          ;
+        </Select>
+
         {/* <Form.List name="tesPrerequisites">
           {testPrerequisites.map(({key, name, tokenId}) => {
             return (
@@ -291,7 +293,7 @@ const UploadContent = () => {
         <br />
         <p>Course Difficulty</p>
         <Select
-          mode="multiple"
+          mode="single"
           style={{
             width: "100%",
           }}
