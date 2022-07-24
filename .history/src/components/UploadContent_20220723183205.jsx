@@ -385,20 +385,24 @@ const UploadContent = () => {
           marginRight: "50",
         }}
       >
-        <br />
-        <p>Upload Course Image</p>
-          <input
-            type="file"
-            name="file"
-            multiple={false}
-            accept="image/jpeg, image/png"
+        <Form.Item>
+          <br />
+          <p>Upload Course Image</p>
+          <Upload
+            // {...props}
             ref={inputImageFile}
-            onChange={(e) => (
-              setUploadedImageFile(e.target.files[0]),
-              setSelectedImageFile(URL.createObjectURL(e.target.files[0]))
-            )}
-          />
-        <br />
+            onChange={(event) => {
+              setUploadedImageFile(event.target.files[0]),
+              setSelectedImageFile(URL.createObjectURL(event.target.files[0]))
+            }}
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload>
+          <br />
+        </Form.Item>
       </div>
 
       <div
@@ -407,21 +411,24 @@ const UploadContent = () => {
           marginRight: "50",
         }}
       >
-        <br />
-        <p>Upload Course PDF</p>
-          <input
-            type="file"
-            name="file"
-            multiple={false}
-            accept="file/pdf"
+        <Form.Item>
+          <br />
+          <p>Upload Course PDF</p>
+          <Upload
+            // {...props}
             ref={inputCourseFile}
-            onChange={(e) => (
-              setUploadedCourseFile(e.target.files[0]),
-              setSelectedCourseFile(URL.createObjectURL(e.target.files[0]))
+            onChange={(event) => (
+              setUploadedCourseFile(event.target.files[0]),
+              setSelectedCourseFile(URL.createObjectURL(event.target.files[0]))
             )}
-          />
-        <br />
-        <br />
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload>
+          <br />
+        </Form.Item>
       </div>
 
       <div

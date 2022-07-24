@@ -421,7 +421,6 @@ const UploadContent = () => {
             )}
           />
         <br />
-        <br />
       </div>
 
       <div
