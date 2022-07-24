@@ -14,4 +14,4 @@
 export const CONTRACT_ADDRESS = "0xae63e2d224921F8E406B4bb8f93d9f0756a37a21";
 
 // Contract address Mumbai (NFTeach_Hack-FS)
-// export const CONTRACT_ADDRESS = "0x726A8Ee4cE1B561ABcCa618999Aeba277Bc1B3dA";
+// export const CONTRACT_ADDRESS = "0xae63e2d224921F8E406B4bb8f93d9f0756a37a21";
