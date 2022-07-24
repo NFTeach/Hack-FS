@@ -88,8 +88,8 @@ const Content = () => {
           <div> Course Creator Address: {details.attributes.courseCreator}</div>
           <div className="courseDetailsButton">
             <button onClick={() => setDetails(null)}>Close Details</button>
-            {allowedGated && <a href={details.attributes.courseFile} target="_blank"><button>Course Material</button></a>}
-            {!allowedGated && <p>Can't access material yet!</p>}
+            {allowedGated && <button>Download Course Material</button>}
+            {!allowedGated && <button>Go to required course</button>}
           </div>
         </Card>
       )}
