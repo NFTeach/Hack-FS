@@ -28,16 +28,37 @@
 
 .courseDetails {
   position: absolute;
+  border-radius: 20px;
   border: 1px solid black;
   z-index: 9999;
-  width: 80%;
-  height: 80%;
-  background-color: white;
+  width: 55%;
+  height: 70%;
+  left: 300px;
+  top: 120px;
+  background-color: rgb(246, 245, 245);
 }
 
-.closeCourseDetails {
-  width: 20%;
-  height: 20%;
-  border: 1px solid black;
-  background-color: black;
+.courseDetailsName {
+  text-align: center;
+  font-size: 70px;
+}
+
+.courseDetailsDescription {
+  font-size: 15px;
+}
+
+.courseDetailsDetails {
+}
+
+.courseDetailsButton {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  bottom: 30px;
+  grid-gap: 20px;
 }

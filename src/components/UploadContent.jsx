@@ -44,7 +44,7 @@ const UploadContent = () => {
   const [courseName, setCourseName] = useState(null);
   const [courseSubject, setCourseSubject] = useState(null);
   const [courseDifficulty, setCourseDifficulty] = useState(null);
-  const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState([]);
+  const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState(-1);
   const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
   const [testPrerequisites, setTestPrerequisites] = useState([]);
   const [chosenTestPrerequisite, setChosenTestPrerequisite] = useState("None");
@@ -112,6 +112,7 @@ const UploadContent = () => {
   async function saveCourse() {
     const courseCreator = user.get("ethAddress");
     const Course = moralis.Object.extend("Course");
+    console.log(testTokenIdPrerequisites);
 
     const newCourse = new Course();
 
@@ -193,6 +194,30 @@ const UploadContent = () => {
             Cryptocurrency
           </div>
         </Option>
+        <Option value="mathematics" label="Mathematics">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Mathematics ">
+              📋{" "}
+            </span>
+            Mathematics
+          </div>
+        </Option>
+        <Option value="geometry" label="Geometry">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Geometry ">
+              📐{" "}
+            </span>
+            Geometry
+          </div>
+        </Option>
+        <Option value="biology" label="Biology">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="Biology ">
+              🔬{" "}
+            </span>
+            Biology
+          </div>
+        </Option>
         <Option value="chemistry" label="Chemistry">
           <div className="demo-option-label-item">
             <span role="img" aria-label="Chemistry">
@@ -212,7 +237,7 @@ const UploadContent = () => {
         <Option value="bitcoin" label="Bitcoin">
           <div className="demo-option-label-item">
             <span role="img" aria-label="Bitcoin">
-              🪙{" "}
+              ₿{" "}
             </span>
             Bitcoin
           </div>
