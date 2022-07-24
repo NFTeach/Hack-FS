@@ -10,12 +10,11 @@ import {
   Upload,
   Modal,
 } from "antd";
-import { 
-  useMoralis,
-  useMoralisFile
-} from "react-moralis";
+
+import { useMoralis } from "react-moralis";
 import moralis from "moralis";
-import React, { useEffect, useRef, useState } from "react";
+
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -41,16 +40,13 @@ const props = {
 };
 
 const UploadContent = () => {
-
-  const inputImageFile = useRef(null);
-  const inputCourseFile = useRef(null);
   const [form] = Form.useForm("vertical");
   const [requiredMark, setRequiredMarkType] = useState(null);
   const [courseName, setCourseName] = useState(null);
   const [courseSubject, setCourseSubject] = useState(null);
   const [courseDifficulty, setCourseDifficulty] = useState(null);
-  const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState(-1);
-  const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
+  const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState([]);
+  // const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
   const [testPrerequisites, setTestPrerequisites] = useState([]);
   // const [chosenTestPrerequisite, setChosenTestPrerequisite] = useState("None");
   const [courseDescription, setCourseDescription] = useState(null);
@@ -79,7 +75,6 @@ const UploadContent = () => {
     isWeb3EnableLoading,
   } = useMoralis();
   const user = moralis.User.current();
-  const { error, saveFile } = useMoralisFile();
 
   useEffect(() => {
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) enableWeb3();
@@ -131,7 +126,7 @@ const UploadContent = () => {
       const image = uploadedImageFile;
       const imageFile = new Moralis.File(image.name, image);
       await imageFile.saveIPFS();
-      img = imageFile.ipfs();
+      img = file.ipfs();
     } else {
       img = "No img"
     }
@@ -145,7 +140,7 @@ const UploadContent = () => {
       const file = uploadedCourseFile;
       const courseFile = new Moralis.File(file.name, file);
       await courseFile.saveIPFS();
-      material = courseFile.ipfs() 
+      material = file.ipfs() 
     } else {
       material = "No material"
     }
@@ -156,7 +151,6 @@ const UploadContent = () => {
     
     const courseCreator = user.get("ethAddress");
     const Course = moralis.Object.extend("Course");
-    console.log(testTokenIdPrerequisites);
 
     const newCourse = new Course();
 
@@ -232,7 +226,7 @@ const UploadContent = () => {
         onChange={setCourseSubject}
         optionLabelProp="label"
       > 
-        <Option value="math" label="Math">
+        <Option value="cryptocurrency" label="Cryptocurrency">
           <div className="demo-option-label-item">
             <span role="img" aria-label="Cryptocurrency ">
               ✏️{" "}
@@ -246,30 +240,6 @@ const UploadContent = () => {
               💰{" "}
             </span>
             Cryptocurrency
-          </div>
-        </Option>
-        <Option value="mathematics" label="Mathematics">
-          <div className="demo-option-label-item">
-            <span role="img" aria-label="Mathematics ">
-              📋{" "}
-            </span>
-            Mathematics
-          </div>
-        </Option>
-        <Option value="geometry" label="Geometry">
-          <div className="demo-option-label-item">
-            <span role="img" aria-label="Geometry ">
-              📐{" "}
-            </span>
-            Geometry
-          </div>
-        </Option>
-        <Option value="biology" label="Biology">
-          <div className="demo-option-label-item">
-            <span role="img" aria-label="Biology ">
-              🔬{" "}
-            </span>
-            Biology
           </div>
         </Option>
         <Option value="chemistry" label="Chemistry">
@@ -291,7 +261,7 @@ const UploadContent = () => {
         <Option value="bitcoin" label="Bitcoin">
           <div className="demo-option-label-item">
             <span role="img" aria-label="Bitcoin">
-              ₿{" "}
+              🪙{" "}
             </span>
             Bitcoin
           </div>
@@ -410,20 +380,23 @@ const UploadContent = () => {
           marginRight: "50",
         }}
       >
-        <br />
-        <p>Upload Course Image</p>
-          <input
-            type="file"
-            name="file"
-            multiple={false}
-            accept="image/jpeg, image/png"
-            ref={inputImageFile}
-            onChange={(e) => (
-              setUploadedImageFile(e.target.files[0]),
-              setSelectedImageFile(URL.createObjectURL(e.target.files[0]))
+        <Form.Item>
+          <br />
+          <p>Upload Course Image</p>
+          <Upload
+            {...props}
+            onChange={(event) => (
+              setUploadedImageFile(event.target.files[0]),
+              setSelectedImageFile(URL.createObjectURL(event.target.files[0]))
             )}
-          />
-        <br />
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload>
+          <br />
+        </Form.Item>
       </div>
 
       <div
@@ -432,21 +405,23 @@ const UploadContent = () => {
           marginRight: "50",
         }}
       >
-        <br />
-        <p>Upload Course PDF</p>
-          <input
-            type="file"
-            name="file"
-            multiple={false}
-            accept="file/pdf"
-            ref={inputCourseFile}
-            onChange={(e) => (
-              setUploadedCourseFile(e.target.files[0]),
-              setSelectedCourseFile(URL.createObjectURL(e.target.files[0]))
+        <Form.Item>
+          <br />
+          <p>Upload Course PDF</p>
+          <Upload
+            {...props}
+            onChange={(event) => (
+              setUploadedCourseFile(event.target.files[0]),
+              setSelectedCourseFile(URL.createObjectURL(event.target.files[0]))
             )}
-          />
-        <br />
-        <br />
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload>
+          <br />
+        </Form.Item>
       </div>
 
       <div

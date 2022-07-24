@@ -137,7 +137,7 @@ const Test = () => {
           </div>
         ),
         onOk() {
-          window.location.assign("/studash");
+          window.location.reload();
         },
       });
     }
