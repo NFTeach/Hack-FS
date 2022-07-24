@@ -10,12 +10,11 @@ import {
   Upload,
   Modal,
 } from "antd";
-import { 
-  useMoralis,
-  useMoralisFile
-} from "react-moralis";
+
+import { useMoralis } from "react-moralis";
 import moralis from "moralis";
-import React, { useEffect, useRef, useState } from "react";
+
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -41,27 +40,21 @@ const props = {
 };
 
 const UploadContent = () => {
-
-  const inputImageFile = useRef(null);
-  const inputCourseFile = useRef(null);
   const [form] = Form.useForm("vertical");
   const [requiredMark, setRequiredMarkType] = useState(null);
   const [courseName, setCourseName] = useState(null);
   const [courseSubject, setCourseSubject] = useState(null);
   const [courseDifficulty, setCourseDifficulty] = useState(null);
   const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState([]);
-  // const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
+  const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
   const [testPrerequisites, setTestPrerequisites] = useState([]);
-  // const [chosenTestPrerequisite, setChosenTestPrerequisite] = useState("None");
+  const [chosenTestPrerequisite, setChosenTestPrerequisite] = useState("None");
   const [courseDescription, setCourseDescription] = useState(null);
   const [courseLength, setCourseLength] = useState(null);
-  const [uploadedCourseFile, setUploadedCourseFile] = useState(null);
-  const [selectedCourseFile, setSelectedCourseFile] = useState(null);
-  const [uploadedImageFile, setUploadedImageFile] = useState(null);
-  const [selectedImageFile, setSelectedImageFile] = useState(null);
+  const [courseFile, setCourseFile] = useState(null);
   const [course, setCourse] = useState(null);
-  
-  
+  const [uploadedImageFile, setUploadedImageFile] = useState(null);
+  const [uploadedImageUri, setUploadedImageUri] = useState(null);
 
   const onRequiredTypeChange = ({ requiredMarkValue }) => {
     setRequiredMarkType(requiredMarkValue);
@@ -79,7 +72,6 @@ const UploadContent = () => {
     isWeb3EnableLoading,
   } = useMoralis();
   const user = moralis.User.current();
-  const { error, saveFile } = useMoralisFile();
 
   useEffect(() => {
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) enableWeb3();
@@ -125,34 +117,6 @@ const UploadContent = () => {
   })
 
   async function saveCourse() {
-
-    let img;
-    if(uploadedImageFile) {
-      const image = uploadedImageFile;
-      const imageFile = new Moralis.File(image.name, image);
-      await imageFile.saveIPFS();
-      img = imageFile.ipfs();
-    } else {
-      img = "No img"
-    }
-
-    if (error) {
-      console.error("Error uploading Image to IPFS");
-    }
-
-    let material;
-    if(uploadedCourseFile) {
-      const file = uploadedCourseFile;
-      const courseFile = new Moralis.File(file.name, file);
-      await courseFile.saveIPFS();
-      material = courseFile.ipfs() 
-    } else {
-      material = "No material"
-    }
-
-    if (error) {
-      console.error("Error uploading material to IPFS");
-    }
     
     const courseCreator = user.get("ethAddress");
     const Course = moralis.Object.extend("Course");
@@ -165,8 +129,7 @@ const UploadContent = () => {
     newCourse.set("testTokenIdPrerequisites", testTokenIdPrerequisites);
     newCourse.set("courseDescription", courseDescription);
     newCourse.set("courseLength", courseLength);
-    newCourse.set("imageFile", img);
-    newCourse.set("courseFile", material);
+    newCourse.set("courseFile", courseFile);
     newCourse.set("courseCreator", courseCreator);
 
     await newCourse.save();
@@ -231,7 +194,7 @@ const UploadContent = () => {
         onChange={setCourseSubject}
         optionLabelProp="label"
       > 
-        <Option value="math" label="Math">
+        <Option value="cryptocurrency" label="Cryptocurrency">
           <div className="demo-option-label-item">
             <span role="img" aria-label="Cryptocurrency ">
               ✏️{" "}
@@ -280,6 +243,7 @@ const UploadContent = () => {
         }}
       >
         <br />
+        {/* <Form.List name="testPrerequisties"></Form.List> */}
 
         <p>Course Pre Requisities</p>
         <Select
@@ -302,6 +266,39 @@ const UploadContent = () => {
           ;
         </Select>
 
+        {/* <Form.List name="tesPrerequisites">
+          {testPrerequisites.map(({key, name, tokenId}) => {
+            return (
+              <Form.Item key={key} id={tokenId}>
+                <Select>
+                  {name.map((option) => {
+                    <Select.Option key={option} value={option}>{option}</Select.Option>
+                  })}
+                </Select>
+              </Form.Item>
+            )
+          })}
+        </Form.List> */}
+        {/* <Form.List name="testPrerequisites">
+          {testPrerequisites.map(({attributes, id}) => {
+            <Form.Item key={id}>
+              <Select>
+                {attributes.map((option) => (
+                  <Select.Option key={option} value={option}>{option}</Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          })}
+        </Form.List> */}
+
+        {/* <Form.Item required tooltip="This is a required field">
+          <p>Test Pre-requisites</p>
+
+          <Input
+            onChange={(event) => setTestPrerequisites(event.target.value)}
+            placeholder="ex: Math101, Solidity202"
+          />
+        </Form.Item> */}
       </div>
       <div
         style={{
@@ -385,20 +382,20 @@ const UploadContent = () => {
           marginRight: "50",
         }}
       >
-        <br />
-        <p>Upload Course Image</p>
-          <input
-            type="file"
-            name="file"
-            multiple={false}
-            accept="image/jpeg, image/png"
-            ref={inputImageFile}
-            onChange={(e) => (
-              setUploadedImageFile(e.target.files[0]),
-              setSelectedImageFile(URL.createObjectURL(e.target.files[0]))
-            )}
-          />
-        <br />
+        <Form.Item>
+          <br />
+          <p>Upload Course Image</p>
+          <Upload
+            {...props}
+            onChange={(event) => setCourseFile(event.file)}
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload>
+          <br />
+        </Form.Item>
       </div>
 
       <div
@@ -407,21 +404,20 @@ const UploadContent = () => {
           marginRight: "50",
         }}
       >
-        <br />
-        <p>Upload Course PDF</p>
-          <input
-            type="file"
-            name="file"
-            multiple={false}
-            accept="file/pdf"
-            ref={inputCourseFile}
-            onChange={(e) => (
-              setUploadedCourseFile(e.target.files[0]),
-              setSelectedCourseFile(URL.createObjectURL(e.target.files[0]))
-            )}
-          />
-        <br />
-        <br />
+        <Form.Item>
+          <br />
+          <p>Upload Course PDF</p>
+          <Upload
+            {...props}
+            onChange={(event) => setCourseFile(event.file)}
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload>
+          <br />
+        </Form.Item>
       </div>
 
       <div
