@@ -49,8 +49,8 @@ const UploadContent = () => {
   const [courseName, setCourseName] = useState(null);
   const [courseSubject, setCourseSubject] = useState(null);
   const [courseDifficulty, setCourseDifficulty] = useState(null);
-  const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState(-1);
-  const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
+  const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState([]);
+  // const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
   const [testPrerequisites, setTestPrerequisites] = useState([]);
   // const [chosenTestPrerequisite, setChosenTestPrerequisite] = useState("None");
   const [courseDescription, setCourseDescription] = useState(null);
@@ -156,7 +156,6 @@ const UploadContent = () => {
     
     const courseCreator = user.get("ethAddress");
     const Course = moralis.Object.extend("Course");
-    console.log(testTokenIdPrerequisites);
 
     const newCourse = new Course();
 
@@ -248,30 +247,6 @@ const UploadContent = () => {
             Cryptocurrency
           </div>
         </Option>
-        <Option value="mathematics" label="Mathematics">
-          <div className="demo-option-label-item">
-            <span role="img" aria-label="Mathematics ">
-              📋{" "}
-            </span>
-            Mathematics
-          </div>
-        </Option>
-        <Option value="geometry" label="Geometry">
-          <div className="demo-option-label-item">
-            <span role="img" aria-label="Geometry ">
-              📐{" "}
-            </span>
-            Geometry
-          </div>
-        </Option>
-        <Option value="biology" label="Biology">
-          <div className="demo-option-label-item">
-            <span role="img" aria-label="Biology ">
-              🔬{" "}
-            </span>
-            Biology
-          </div>
-        </Option>
         <Option value="chemistry" label="Chemistry">
           <div className="demo-option-label-item">
             <span role="img" aria-label="Chemistry">
@@ -291,7 +266,7 @@ const UploadContent = () => {
         <Option value="bitcoin" label="Bitcoin">
           <div className="demo-option-label-item">
             <span role="img" aria-label="Bitcoin">
-              ₿{" "}
+              🪙{" "}
             </span>
             Bitcoin
           </div>
@@ -410,20 +385,35 @@ const UploadContent = () => {
           marginRight: "50",
         }}
       >
-        <br />
-        <p>Upload Course Image</p>
-          <input
-            type="file"
-            name="file"
-            multiple={false}
-            accept="image/jpeg, image/png"
+        <Form.Item>
+          <br />
+          <p>Upload Course Image</p>
+            <input
+              type="file"
+              name="file"
+              multiple={false}
+              accept="image/jpeg, image/png"
+              ref={inputImageFile}
+              onChange={(e) => {
+                setUploadedImageFile(e.target.files[0]),
+                setSelectedImageFile(URL.createObjectURL(e.target.files[0]))
+              }}
+            />
+          {/* <Upload
+            // {...props}
             ref={inputImageFile}
-            onChange={(e) => (
-              setUploadedImageFile(e.target.files[0]),
-              setSelectedImageFile(URL.createObjectURL(e.target.files[0]))
-            )}
-          />
-        <br />
+            onChange={(event) => {
+              setUploadedImageFile(event.target.files[0]),
+              setSelectedImageFile(URL.createObjectURL(event.target.files[0]))
+            }}
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload> */}
+          <br />
+        </Form.Item>
       </div>
 
       <div
@@ -432,21 +422,24 @@ const UploadContent = () => {
           marginRight: "50",
         }}
       >
-        <br />
-        <p>Upload Course PDF</p>
-          <input
-            type="file"
-            name="file"
-            multiple={false}
-            accept="file/pdf"
+        <Form.Item>
+          <br />
+          <p>Upload Course PDF</p>
+          <Upload
+            // {...props}
             ref={inputCourseFile}
-            onChange={(e) => (
-              setUploadedCourseFile(e.target.files[0]),
-              setSelectedCourseFile(URL.createObjectURL(e.target.files[0]))
+            onChange={(event) => (
+              setUploadedCourseFile(event.target.files[0]),
+              setSelectedCourseFile(URL.createObjectURL(event.target.files[0]))
             )}
-          />
-        <br />
-        <br />
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload>
+          <br />
+        </Form.Item>
       </div>
 
       <div

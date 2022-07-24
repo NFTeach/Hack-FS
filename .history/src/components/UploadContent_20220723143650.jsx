@@ -8,14 +8,12 @@ import {
   Card,
   message,
   Upload,
-  Modal,
 } from "antd";
-import { 
-  useMoralis,
-  useMoralisFile
-} from "react-moralis";
+
+import { useMoralis } from "react-moralis";
 import moralis from "moralis";
-import React, { useEffect, useRef, useState } from "react";
+
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -41,34 +39,23 @@ const props = {
 };
 
 const UploadContent = () => {
-
-  const inputImageFile = useRef(null);
-  const inputCourseFile = useRef(null);
   const [form] = Form.useForm("vertical");
   const [requiredMark, setRequiredMarkType] = useState(null);
   const [courseName, setCourseName] = useState(null);
   const [courseSubject, setCourseSubject] = useState(null);
   const [courseDifficulty, setCourseDifficulty] = useState(null);
-  const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState(-1);
+  const [testTokenIdPrerequisites, setTestTokenIdPrerequisites] = useState([]);
   const [testNamesPrerequisites, setTestNamesPrerequisites] = useState([]);
   const [testPrerequisites, setTestPrerequisites] = useState([]);
-  // const [chosenTestPrerequisite, setChosenTestPrerequisite] = useState("None");
+  const [chosenTestPrerequisite, setChosenTestPrerequisite] = useState("None");
   const [courseDescription, setCourseDescription] = useState(null);
   const [courseLength, setCourseLength] = useState(null);
-  const [uploadedCourseFile, setUploadedCourseFile] = useState(null);
-  const [selectedCourseFile, setSelectedCourseFile] = useState(null);
+  const [courseFile, setCourseFile] = useState(null);
   const [uploadedImageFile, setUploadedImageFile] = useState(null);
-  const [selectedImageFile, setSelectedImageFile] = useState(null);
-  const [course, setCourse] = useState(null);
-  
-  
+  const [uploadedImageUri, setUploadedImageUri] = useState(null);
 
   const onRequiredTypeChange = ({ requiredMarkValue }) => {
     setRequiredMarkType(requiredMarkValue);
-  };
-
-  const handleInputChange = (input) => {
-    this.setState({ open: !!input });
   };
 
   const {
@@ -79,7 +66,6 @@ const UploadContent = () => {
     isWeb3EnableLoading,
   } = useMoralis();
   const user = moralis.User.current();
-  const { error, saveFile } = useMoralisFile();
 
   useEffect(() => {
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) enableWeb3();
@@ -92,88 +78,57 @@ const UploadContent = () => {
         const Tests = Moralis.Object.extend("Tests");
         const testQuery = new Moralis.Query(Tests);
         const tests = await testQuery.find();
-        setTestPrerequisites(tests);
+        setTestPrerequisites(tests)
+        // console.log(tests)
         let preReqTests = [];
-
-        for (let i = 0; i < tests.length; i++) {
+        // let tokenIds = [];
+        // let testNames = [];
+        for(let i = 0; i < tests.length; i++) {
           preReqTests.push({
             key: i,
             testName: tests[i].attributes.testName,
-            tokenId: tests[i].attributes.tokenId,
-          });
+            tokenId: tests[i].attributes.tokenId
+          })
+          // tokenIds.push(JSON.stringify(tests[i].attributes.tokenId))
+          // testNames.push(tests[i].attributes.testName)
         }
-        setTestPrerequisites(preReqTests);
-      } catch (error) {
-        console.log(error);
+        setTestPrerequisites(preReqTests)
+        // console.log(preReqTests)
+        // setTestTokenIdPrerequisites(tokenIds);
+        // setTestNamesPrerequisites(testNames);
+      } catch(error) {
+        console.log(error)
       }
     }
     getTests();
-  }, []);
+  },[]);
 
-  // console.log(testPrerequisites);
-
-  useEffect(() => {
-    if(course) {
-      Modal.success({
-        title: "Congrats! Your content has been upload.",
-        onOk() {
-          setCourse(null);
-          window.location.reload();
-        }
-      })
-    }
-  })
+  console.log(testPrerequisites)
+  // console.log(testTokenIdPrerequisites);
+  // console.log(testNamesPrerequisites);
 
   async function saveCourse() {
-
-    let img;
-    if(uploadedImageFile) {
-      const image = uploadedImageFile;
-      const imageFile = new Moralis.File(image.name, image);
-      await imageFile.saveIPFS();
-      img = imageFile.ipfs();
-    } else {
-      img = "No img"
-    }
-
-    if (error) {
-      console.error("Error uploading Image to IPFS");
-    }
-
-    let material;
-    if(uploadedCourseFile) {
-      const file = uploadedCourseFile;
-      const courseFile = new Moralis.File(file.name, file);
-      await courseFile.saveIPFS();
-      material = courseFile.ipfs() 
-    } else {
-      material = "No material"
-    }
-
-    if (error) {
-      console.error("Error uploading material to IPFS");
-    }
-    
     const courseCreator = user.get("ethAddress");
     const Course = moralis.Object.extend("Course");
-    console.log(testTokenIdPrerequisites);
 
     const newCourse = new Course();
 
     newCourse.set("courseName", courseName);
     newCourse.set("courseSubject", courseSubject);
     newCourse.set("courseDifficulty", courseDifficulty);
-    newCourse.set("testTokenIdPrerequisites", testTokenIdPrerequisites);
+    // newCourse.set("testPrerequisites", testPrerequisites);
     newCourse.set("courseDescription", courseDescription);
     newCourse.set("courseLength", courseLength);
-    newCourse.set("imageFile", img);
-    newCourse.set("courseFile", material);
+    newCourse.set("courseFile", courseFile);
     newCourse.set("courseCreator", courseCreator);
 
     await newCourse.save();
-    setCourse(newCourse);
     console.log("Your course was saved");
   }
+
+  const handleChange = (value) => {
+    console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
+  };
 
   return (
     <Card
@@ -223,7 +178,7 @@ const UploadContent = () => {
       <br />
       <p>Course Subject</p>
       <Select
-        mode="single"
+        mode="multiple"
         style={{
           width: "100%",
           display: "inline-block",
@@ -231,45 +186,13 @@ const UploadContent = () => {
         placeholder="Select Course Category"
         onChange={setCourseSubject}
         optionLabelProp="label"
-      > 
-        <Option value="math" label="Math">
-          <div className="demo-option-label-item">
-            <span role="img" aria-label="Cryptocurrency ">
-              ✏️{" "}
-            </span>
-            Math
-          </div>
-        </Option>
+      >
         <Option value="cryptocurrency" label="Cryptocurrency">
           <div className="demo-option-label-item">
             <span role="img" aria-label="Cryptocurrency ">
               💰{" "}
             </span>
             Cryptocurrency
-          </div>
-        </Option>
-        <Option value="mathematics" label="Mathematics">
-          <div className="demo-option-label-item">
-            <span role="img" aria-label="Mathematics ">
-              📋{" "}
-            </span>
-            Mathematics
-          </div>
-        </Option>
-        <Option value="geometry" label="Geometry">
-          <div className="demo-option-label-item">
-            <span role="img" aria-label="Geometry ">
-              📐{" "}
-            </span>
-            Geometry
-          </div>
-        </Option>
-        <Option value="biology" label="Biology">
-          <div className="demo-option-label-item">
-            <span role="img" aria-label="Biology ">
-              🔬{" "}
-            </span>
-            Biology
           </div>
         </Option>
         <Option value="chemistry" label="Chemistry">
@@ -291,7 +214,7 @@ const UploadContent = () => {
         <Option value="bitcoin" label="Bitcoin">
           <div className="demo-option-label-item">
             <span role="img" aria-label="Bitcoin">
-              ₿{" "}
+              🪙{" "}
             </span>
             Bitcoin
           </div>
@@ -305,28 +228,58 @@ const UploadContent = () => {
         }}
       >
         <br />
-
-        <p>Course Pre Requisities</p>
-        <Select
-          mode="single"
-          style={{
-            width: "100%",
-            display: "inline-block",
-          }}
-          placeholder="Select Course Prerequisites"
-          onChange={setTestTokenIdPrerequisites}
-          optionLabelProp="label"
-        >
-          {testPrerequisites.map(({ key, testName, tokenId }) => {
-            return (
-              <Option value={key} label={testName}>
-                <div className="demo-option-label-item">{testName}</div>
-              </Option>
+        {/* <Form.List name="testPrerequisties">
+          {testPrerequisites.map(({ key, name, tokenId}) => {
+            return(
+              <Form.Item required tooltip="This is a required field" key={key} name={name}>
+              {/* <p>Test Pre-requisites</p> */}
+              <Select
+                  defaultValue={{
+                    value: 'None',
+                    label:'None'
+                  }}
+                  onChange={handleChange}
+                >
+                  <Select.Option key={tokenId} value={name}>{name}</Select.Option>
+                </Select> 
+              </Form.Item>
             );
+          })}  
+        </Form.List> */}
+        
+        {/* <Form.List name="tesPrerequisites">
+          {testPrerequisites.map(({key, name, tokenId}) => {
+            return (
+              <Form.Item key={key} id={tokenId}>
+                <Select>
+                  {name.map((option) => {
+                    <Select.Option key={option} value={option}>{option}</Select.Option>
+                  })}
+                </Select>
+              </Form.Item>
+            )
           })}
-          ;
-        </Select>
+        </Form.List> */}
+        {/* <Form.List name="testPrerequisites">
+          {testPrerequisites.map(({attributes, id}) => {
+            <Form.Item key={id}>
+              <Select>
+                {attributes.map((option) => (
+                  <Select.Option key={option} value={option}>{option}</Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          })}
+        </Form.List> */}
 
+        {/* <Form.Item required tooltip="This is a required field">
+          <p>Test Pre-requisites</p>
+
+          <Input
+            onChange={(event) => setTestPrerequisites(event.target.value)}
+            placeholder="ex: Math101, Solidity202"
+          />
+        </Form.Item> */}
       </div>
       <div
         style={{
@@ -338,7 +291,7 @@ const UploadContent = () => {
         <br />
         <p>Course Difficulty</p>
         <Select
-          mode="single"
+          mode="multiple"
           style={{
             width: "100%",
           }}
@@ -410,20 +363,20 @@ const UploadContent = () => {
           marginRight: "50",
         }}
       >
-        <br />
-        <p>Upload Course Image</p>
-          <input
-            type="file"
-            name="file"
-            multiple={false}
-            accept="image/jpeg, image/png"
-            ref={inputImageFile}
-            onChange={(e) => (
-              setUploadedImageFile(e.target.files[0]),
-              setSelectedImageFile(URL.createObjectURL(e.target.files[0]))
-            )}
-          />
-        <br />
+        <Form.Item>
+          <br />
+          <p>Upload Course Image</p>
+          <Upload
+            {...props}
+            onChange={(event) => setCourseFile(event.file)}
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload>
+          <br />
+        </Form.Item>
       </div>
 
       <div
@@ -432,21 +385,20 @@ const UploadContent = () => {
           marginRight: "50",
         }}
       >
-        <br />
-        <p>Upload Course PDF</p>
-          <input
-            type="file"
-            name="file"
-            multiple={false}
-            accept="file/pdf"
-            ref={inputCourseFile}
-            onChange={(e) => (
-              setUploadedCourseFile(e.target.files[0]),
-              setSelectedCourseFile(URL.createObjectURL(e.target.files[0]))
-            )}
-          />
-        <br />
-        <br />
+        <Form.Item>
+          <br />
+          <p>Upload Course PDF</p>
+          <Upload
+            {...props}
+            onChange={(event) => setCourseFile(event.file)}
+            maxCount={1}
+          >
+            <Button size="large" icon={<UploadOutlined />}>
+              Click to Upload
+            </Button>
+          </Upload>
+          <br />
+        </Form.Item>
       </div>
 
       <div
