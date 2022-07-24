@@ -21,42 +21,38 @@ const Content = () => {
     useWeb3ExecuteFunction();
 
   const [details, setDetails] = useState(null);
+  const [allowedGated, setAllowGated] = useState(null);
 
   async function getUserAvailability(prereq) {
-    const user = Moralis.User.current();
-    const userAddr = user.get("ethAddress");
-    executeContractFunction({
-      params: {
-        abi: NFTEACH_CONTRACT_ABI,
-        contractAddress: CONTRACT_ADDRESS,
-        functionName: "balanceOf",
+    if (prereq === -1) {
+      setAllowGated(true);
+    } else {
+      const user = Moralis.User.current();
+      const userAddr = user.get("ethAddress");
+      executeContractFunction({
         params: {
-          account: userAddr,
-          id: prereq,
+          abi: NFTEACH_CONTRACT_ABI,
+          contractAddress: CONTRACT_ADDRESS,
+          functionName: "balanceOf",
+          params: {
+            account: userAddr,
+            id: prereq,
+          },
         },
-      },
-      onSuccess: (result) => {
-        console.log(result);
-        if (result._hex == 0x00) {
-          console.log("FuckYeah");
-          return false;
-        } else {
-          return true;
-        }
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    });
-  }
-
-  const displayCourseDetails = async (testTokenIdPrerequisites) => {
-    if (testTokenIdPrerequisites == null) return true;
-    else {
-      const requisites = await getUserAvailability(testTokenIdPrerequisites);
-      console.log(requisites);
+        onSuccess: (result) => {
+          console.log(result);
+          if (result._hex == 0x01) {
+            setAllowGated(true);
+          } else {
+            setAllowGated(false);
+          }
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
     }
-  };
+  }
 
   useEffect(() => {
     async function getCourses() {
@@ -75,10 +71,26 @@ const Content = () => {
   return (
     <div>
       {details && (
-        <div className="courseDetails">
-          {/* <div className="closeCourseDetails" onClick={setDetails(null)}></div> */}
-          <div> {details.attributes.courseDescription}</div>
-        </div>
+        <Card className="courseDetails">
+          <div className="courseDetailsName">
+            {" "}
+            {details.attributes.courseName}
+          </div>
+          Required level: {details.attributes.courseDifficulty}
+          <br />
+          Study time: {details.attributes.courseLength}
+          <br />
+          <div className="courseDetailsDescription">
+            Course description: {details.attributes.courseDescription}
+          </div>
+          <div> Course subject: {details.attributes.courseSubject}</div>
+          <div> Course Creator Address: {details.attributes.courseCreator}</div>
+          <div className="courseDetailsButton">
+            <button onClick={() => setDetails(null)}>Close Details</button>
+            {allowedGated && <button>Enroll in this Course</button>}
+            {!allowedGated && <button>Go to required course</button>}
+          </div>
+        </Card>
       )}
       <div className="courseContentPage">
         {courseArr
@@ -121,7 +133,12 @@ const Content = () => {
                     >
                       <CheckSquareOutlined
                         onClick={
-                          () => setDetails(e)
+                          () => {
+                            setDetails(e);
+                            getUserAvailability(
+                              e.attributes.testTokenIdPrerequisites
+                            );
+                          }
                           // displayCourseDetails(
                           //   e.attributes.testTokenIdPrerequisites
                           // )
