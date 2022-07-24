@@ -88,8 +88,8 @@ const Content = () => {
           <div> Course Creator Address: {details.attributes.courseCreator}</div>
           <div className="courseDetailsButton">
             <button onClick={() => setDetails(null)}>Close Details</button>
-            {allowedGated && <a href={details.attributes.courseFile} target="_blank"><button>Course Material</button></a>}
-            {!allowedGated && <p>Can't access material yet!</p>}
+            {allowedGated && <button>Enroll in this Course</button>}
+            {!allowedGated && <button>Go to required course</button>}
           </div>
         </Card>
       )}
@@ -103,7 +103,7 @@ const Content = () => {
                   cover={
                     <img
                       alt="example"
-                      src={e.attributes.imageFile}
+                      src="https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
                     />
                   }
                   actions={[
@@ -113,7 +113,7 @@ const Content = () => {
                           <p>
                             Course Difficulty:
                             <br />
-                            {e.attributes.courseDifficulty}
+                            {e.attributes.courseDifficulty[0]}
                           </p>
                           <p>
                             Course Description:
