@@ -80,14 +80,6 @@ const Test = () => {
   const [Data, setData] = useState(dummyData);
   const [isMintingInProgress, setIsMintingInProgress] = useState(false);
 
-  // certification state
-  const [certificationData, setCertificationData] = useState({
-    name: "",
-    course: "",
-  });
-  const [isCertificationGenerationInProgress, setIsCertificationGenerationInProgress] = useState(false);
-  const [certificate, setCertificate] = useState(null);
-
   const {
     data,
     error: executeContractError,
@@ -273,7 +265,7 @@ const Test = () => {
             title={`Test ${testData.e.attributes.testName}`}
           >
             <Text style={styles.text}>
-              {`Test over! Your Final Score is ${score + 1}/${Data.length}`}
+              {`Test over! Your Final Score is ${score}/${Data.length }`}
             </Text>
             <br />
             {JSON.stringify(score) >= testData.e.attributes.passingGrade ? (
